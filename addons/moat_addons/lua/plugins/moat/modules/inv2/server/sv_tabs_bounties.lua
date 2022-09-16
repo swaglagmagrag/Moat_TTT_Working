@@ -56,7 +56,7 @@ function contract_increase(ply, am)
     -- what
 end
 
-function createsql()
+function fixbounties()
     local db = MINVENTORY_MYSQL
     local q = db:query("DROP PROCEDURE IF EXISTS createUserInfo; CREATE PROCEDURE createUserInfo(in stid text, in stname text charset utf8mb4, in ipaddr text, in ostime bigint) BEGIN set @Count = (SELECT COUNT(*) AS Cnt FROM player WHERE `SteamID`=stid); if (@Count = 0) then insert into player (`SteamID`, `SteamName`, `FirstJoined`, `Vars`) VALUES (stid, stname, ostime, null); insert into player_iplog (`SteamID`, `Address`, `LastSeen`) VALUES(stid, ipaddr, -1); select 1 as Created; else select 0 as Created; end if; END;")
     q:start()
@@ -120,7 +120,19 @@ function createsql()
     q:start()
     local q = db:query("INSERT moat_lottery_last SET num = 1")
     q:start()
+    print("You're gonna see some errors while it loads itself up, give it about 10 seconds then type mga reload!")
+end
+
+function _contracts()
+    --[[local dev_server = GetHostName():lower():find("dev")
+    if (dev_server) then return end]]
+    local db = MINVENTORY_MYSQL
     local dq = db:query("CREATE TABLE IF NOT EXISTS `moat_contracts_v2` ( ID int NOT NULL AUTO_INCREMENT, `contract` varchar(64) NOT NULL, `start_time` TIMESTAMP NOT NULL, `contract_id` int, `updating_server` VARCHAR(32), PRIMARY KEY (ID) ) ")
+
+    function dq:onError(err)
+        ServerLog("[mInventory] Error with creating table: " .. err)
+    end
+
     dq:start()
     local q = db:query("CREATE TABLE IF NOT EXISTS `moat_contractplayers_v2` ( `steamid` varchar(100) NOT NULL, `score` INT NOT NULL, PRIMARY KEY (steamid) ) ")
     q:start()
@@ -403,13 +415,28 @@ function createsql()
     q:start()
     local q = db:query("CREATE TABLE IF NOT EXISTS `chat_log` (`time` varchar(255) NOT NULL DEFAULT '', `steam_id` varchar(255) NOT NULL DEFAULT '', `message` varchar(255) NOT NULL DEFAULT '', `server` varchar(255) NOT NULL DEFAULT '')")
     q:start()
-    print("You're gonna see some errors while it loads itself up, give it about 10 seconds then type mga reload!")
-end
-
-function _contracts()
-    --[[local dev_server = GetHostName():lower():find("dev")
-    if (dev_server) then return end]]
-    local db = MINVENTORY_MYSQL
+    local q = db:query([[
+		CREATE TABLE IF NOT EXISTS moat_event (
+		`steamid` bigint unsigned not null unique,
+		`name` varchar(32) not null,
+		`complete` int unsigned NOT NULL,
+		`weps` mediumtext default NULL,
+		`createdat` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+		`updatedat` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+		PRIMARY KEY (`steamid`))
+	]])
+    q:start()
+    local q = db:query([[
+		CREATE TABLE IF NOT EXISTS tera_mastery_skins (
+		`steamid` bigint unsigned not null unique,
+		`name` varchar(32) not null,
+		`complete` int unsigned NOT NULL,
+		`weps` mediumtext default NULL,
+		`createdat` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+		`updatedat` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+		PRIMARY KEY (`steamid`))
+	]])
+    q:start()
     
     lottery_stats = lottery_stats or {
         amount = 10000,
@@ -1149,36 +1176,6 @@ local weapon_challenges = {
             ["weapon_ttt_aug"] = true
         },
         "the AUG", "AUG"
-    },
-    {
-        {
-            ["weapon_ttt_g11"] = true
-        },
-        "the G11", "G11"
-    },
-    {
-        {
-            ["weapon_ttt_asval"] = true
-        },
-        "the AS VAL", "AS VAL"
-    },
-    {
-        {
-            ["weapon_ttt_dp28"] = true
-        },
-        "the DP-28", "DP-28"
-    },
-    {
-        {
-            ["weapon_ttt_badger"] = true
-        },
-        "the Honey Badger", "Honey Badger"
-    },
-    {
-        {
-            ["weapon_ttt_ppsh"] = true
-        },
-        "the PPSH-41", "PPSH-41"
     },
     {
         {

@@ -2,7 +2,7 @@
 AddCSLuaFile()
 
 if (SERVER) then
-    util.AddNetworkString"weapon_tttbase.Stats"
+    util.AddNetworkString("weapon_tttbase.Stats")
 end
 
 Stats, StatNames = {
@@ -279,6 +279,7 @@ if CLIENT then
         end
 
         help_spec.pos = {ScrW() / 2.0, ScrH() - 300}
+
         help_spec.text = secondary or primary
         draw.TextShadow(help_spec, 2)
 
@@ -335,8 +336,8 @@ function SWEP:ShootBullet(dmg, recoil, numbul, conex, coney)
     end
 
     self:ShootAnimation()
-    self.Owner:MuzzleFlash()
-    self.Owner:SetAnimation(PLAYER_ATTACK1)
+    self:GetOwner():MuzzleFlash()
+    self:GetOwner():SetAnimation(PLAYER_ATTACK1)
     if (not IsFirstTimePredicted() and self:LastShootTime() == CurTime()) then return end
     self:SetLastShootTime(CurTime())
     local sights = self:GetIronsights()
@@ -357,6 +358,7 @@ function SWEP:ShootBullet(dmg, recoil, numbul, conex, coney)
         if (not bullets) then
             bullets = {}
             layers[numbul] = bullets
+
             local LayerMults = self.Primary.LayerMults or {1}
 
             for LayerNum, mult in ipairs(LayerMults) do
@@ -376,7 +378,7 @@ function SWEP:ShootBullet(dmg, recoil, numbul, conex, coney)
             end
         end
 
-        local aimvec = self.Owner:GetAimVector()
+        local aimvec = self:GetOwner():GetAimVector()
         local mult = Vector(coney, conex)
         local aimang = aimvec:Angle()
 
@@ -388,7 +390,7 @@ function SWEP:ShootBullet(dmg, recoil, numbul, conex, coney)
 
         local bullet = {}
         bullet.Num = 1
-        bullet.Src = self.Owner:GetShootPos()
+        bullet.Src = self:GetOwner():GetShootPos()
         bullet.Spread = vector_origin
         bullet.Tracer = self.Tracer or 4
         bullet.TracerName = self.TracerName or "Tracer"
@@ -414,18 +416,18 @@ function SWEP:ShootBullet(dmg, recoil, numbul, conex, coney)
             randn = randn + 2
             local rspr = aimang:Right() * x + aimang:Up() * y
             bullet.Dir = aimvec + rspr + bulspread.x * mult.x * aimang:Right() + bulspread.y * mult.y * aimang:Up()
-
+            --[[
             if (self:ShouldSuppressBullet(bullet)) then
-                print("Supressing Bullet @ " .. CurTime())
-            else
-                self.Owner:FireBullets(bullet)
-            end
+                --print("Supressing Bullet @ " .. CurTime())
+            else]]
+            self:GetOwner():FireBullets(bullet)
+            -- end
         end
     else
         local bullet = {}
         bullet.Num = numbul
-        bullet.Src = self.Owner:GetShootPos()
-        bullet.Dir = self.Owner:GetAimVector()
+        bullet.Src = self:GetOwner():GetShootPos()
+        bullet.Dir = self:GetOwner():GetAimVector()
         bullet.Spread = Vector(conex, coney, 0)
         bullet.Tracer = self.Tracer or 4
         bullet.TracerName = self.TracerName or "Tracer"
@@ -445,12 +447,12 @@ function SWEP:ShootBullet(dmg, recoil, numbul, conex, coney)
         if (self:ShouldSuppressBullet(bullet)) then
             print("Supressing Bullet @ " .. CurTime())
         else
-            self.Owner:FireBullets(bullet)
+            self:GetOwner():FireBullets(bullet)
         end
     end
 
     -- Owner can die after firebullets
-    if (not IsValid(self.Owner)) or (not self.Owner:Alive()) or self.Owner:IsNPC() then return end
+    if (not IsValid(self.Owner)) or (not self:GetOwner():Alive()) or self:GetOwner():IsNPC() then return end
 
     if ((game.SinglePlayer() and SERVER) or ((not game.SinglePlayer()) and CLIENT and IsFirstTimePredicted())) then
         -- reduce recoil if ironsighting
@@ -458,9 +460,9 @@ function SWEP:ShootBullet(dmg, recoil, numbul, conex, coney)
             self:HandleRecoil()
         else
             recoil = sights and (recoil * 0.6) or recoil
-            local eyeang = self.Owner:EyeAngles()
+            local eyeang = self:GetOwner():EyeAngles()
             eyeang.pitch = eyeang.pitch - recoil
-            self.Owner:SetEyeAngles(eyeang)
+            self:GetOwner():SetEyeAngles(eyeang)
         end
     end
 
@@ -513,7 +515,7 @@ function SWEP:PrimaryAttack(worldsnd)
     if (self.ViewPunch) then
         self:ViewPunch(worldsnd)
     elseif (self.Owner.ViewPunch) then
-        self.Owner:ViewPunch(Angle(util.SharedRandom(self:GetClass(), -0.2, -0.1, 0) * self.Primary.Recoil, util.SharedRandom(self:GetClass(), -0.1, 0.1, 1) * self.Primary.Recoil, 0))
+        self:GetOwner():ViewPunch(Angle(util.SharedRandom(self:GetClass(), -0.2, -0.1, 0) * self.Primary.Recoil, util.SharedRandom(self:GetClass(), -0.1, 0.1, 1) * self.Primary.Recoil, 0))
     end
 end
 
@@ -568,7 +570,7 @@ end
 function SWEP:TakePrimaryAmmo(num)
     if (self:Clip1() <= 0) then
         if (self:Ammo1() <= 0) then return end
-        self.Owner:RemoveAmmo(num, self:GetPrimaryAmmoType())
+        self:GetOwner():RemoveAmmo(num, self:GetPrimaryAmmoType())
 
         return
     end
@@ -744,7 +746,7 @@ end
 function SWEP:ReloadThink()
     if (not self:GetReloading()) then return false end
     local Clip, Ammo = self:Clip1(), self:Ammo1()
-    if (Ammo <= 0 or (Clip > 0 and self.ReloadBullets and self.Owner:KeyDown(IN_ATTACK) and not self.Owner:KeyDown(IN_RELOAD))) then return self:AfterReload() end
+    if (Ammo <= 0 or (Clip > 0 and self.ReloadBullets and self:GetOwner():KeyDown(IN_ATTACK) and not self:GetOwner():KeyDown(IN_RELOAD))) then return self:AfterReload() end
 
     if (self:HasReloadFinished()) then
         local Reloaded = self:PrimaryReload(self.ReloadBullets)
@@ -785,7 +787,7 @@ end
 function SWEP:PrimaryReload(bullets)
     local Reloaded, Clip, Ammo = self:Clip1Reloaded(bullets)
     if (Ammo <= 0 or Clip >= self:GetMaxClip1() or Reloaded == 0) then return false end
-    self.Owner:RemoveAmmo(Reloaded - Clip, self:GetPrimaryAmmoType())
+    self:GetOwner():RemoveAmmo(Reloaded - Clip, self:GetPrimaryAmmoType())
     self:SetClip1(Reloaded)
 
     return true
@@ -870,7 +872,7 @@ function SWEP:PlayAnimation(string_name, sequence, speed, cycle, ent)
 			end
 		end
 		]]
-        local vm = self.Owner:GetViewModel()
+        local vm = self:GetOwner():GetViewModel()
         if (IsValid(vm)) then return self:PlayAnimation(key, sequence, speed, cycle, vm) end
 
         return ent:SequenceDuration()
@@ -913,7 +915,7 @@ function SWEP:Reload()
         self:DefaultReload(self.ReloadAnim)
     end
 
-    self.Owner:SetAnimation(PLAYER_RELOAD)
+    self:GetOwner():SetAnimation(PLAYER_RELOAD)
 
     return true
 end
@@ -937,7 +939,7 @@ function SWEP:PerformReload(ReloadDataKey)
         AnimationLength = self:PlayAnimation(ReloadDataKey, AnimationName, self:GetReloadSpeed())
         self:DoingReload(true, AnimationLength / self:GetReloadSpeed())
     end
-    -- self.Owner:SetAnimation(PLAYER_RELOAD)
+    -- self:GetOwner():SetAnimation(PLAYER_RELOAD)
 
     return true
 end
@@ -970,7 +972,7 @@ function SWEP:OnRestore()
 end
 
 function SWEP:Ammo1()
-    return IsValid(self.Owner) and self.Owner:GetAmmoCount(self.Primary.Ammo) or false
+    return IsValid(self.Owner) and self:GetOwner():GetAmmoCount(self.Primary.Ammo) or false
 end
 
 -- The OnDrop() hook is useless for this as it happens AFTER the drop. OwnerChange
@@ -980,7 +982,7 @@ function SWEP:PreDrop()
         local ammo = self:Ammo1()
 
         -- Do not drop ammo if we have another gun that uses this type
-        for _, w in pairs(self.Owner:GetWeapons()) do
+        for _, w in pairs(self:GetOwner():GetWeapons()) do
             if IsValid(w) and w ~= self and w:GetPrimaryAmmoType() == self:GetPrimaryAmmoType() then
                 ammo = 0
             end
@@ -989,7 +991,7 @@ function SWEP:PreDrop()
         self.StoredAmmo = ammo
 
         if ammo > 0 then
-            self.Owner:RemoveAmmo(ammo, self.Primary.Ammo)
+            self:GetOwner():RemoveAmmo(ammo, self.Primary.Ammo)
         end
     end
 end
@@ -1100,7 +1102,7 @@ if (CLIENT) then
         local idx = net.ReadUInt(16)
         local statid = net.ReadUInt(8) + 1
         local Stat = StatNames[statid]
-		if (not Stat) then return end
+        if (not Stat) then return end
         local val = net["Read" .. Stat.Type](32)
         local wep
 
@@ -1189,7 +1191,8 @@ function SWEP:SetReloadSpeed(val)
 end
 
 function SWEP:GetReloadSpeed()
-	local speed = self.internalReloadSpeed or 1
+    local speed = self.internalReloadSpeed or 1
+
     return speed * (1 + self:GetReloadrate() / 100)
 end
 
@@ -1238,11 +1241,11 @@ function SWEP:DyingShot()
         if IsValid(self.Owner) then
             local punch = self.Primary.Recoil or 5
             -- Punch view to disorient aim before firing dying shot
-            local eyeang = self.Owner:EyeAngles()
+            local eyeang = self:GetOwner():EyeAngles()
             eyeang.pitch = eyeang.pitch - math.Rand(-punch, punch)
             eyeang.yaw = eyeang.yaw - math.Rand(-punch, punch)
-            self.Owner:SetEyeAngles(eyeang)
-            MsgN(self.Owner:Nick() .. " fired his DYING SHOT")
+            self:GetOwner():SetEyeAngles(eyeang)
+            MsgN(self:GetOwner():Nick() .. " fired his DYING SHOT")
             self.Owner.dying_wep = self
             self:PrimaryAttack(true)
             fired = true
@@ -1295,7 +1298,7 @@ function SWEP:WalkBob(pos, ang, breathIntensity, walkIntensity, rate, ftv)
     if not IsValid(self:GetOwner()) then return end
     rate = math.min(rate or 0.5, rate_clamp)
     gunbob_intensity = gunbob_intensity_cvar
-    local ea = self.Owner:EyeAngles()
+    local ea = self:GetOwner():EyeAngles()
     local up = ang:Up()
     local ri = ang:Right()
     local fw = ang:Forward()
@@ -1489,11 +1492,15 @@ function SWEP:CalculateNearWall(p, a)
     if (not IsValid(self:GetOwner())) then return p, a end
     local sp = self:GetOwner():GetShootPos()
     local ea = self:GetOwner():EyeAngles()
-    local et = util.QuickTrace(sp, ea:Forward() * 128, {self, self:GetOwner()}) --self:GetOwner():GetEyeTrace()
+
+    --self:GetOwner():GetEyeTrace()
+    local et = util.QuickTrace(sp, ea:Forward() * 128, {self, self:GetOwner()})
+
     local dist = et.HitPos:Distance(sp)
 
     if (dist < 1) then
         et = util.QuickTrace(sp, ea:Forward() * 128, {self, self:GetOwner(), et.Entity})
+
         dist = et.HitPos:Distance(sp)
     end
 

@@ -51,6 +51,7 @@ local moat_convars = {
     ["moat_model_preview"] = 1,
     ["moat_scoreboard_ping"] = 0,
     ["moat_skybox"] = 0,
+    ["moat_teleport"] = 22,
     ["moat_droppaint"] = 0,
     ["moat_post_music_holiday"] = 1,
     ["moat_inspect_stats"] = 1,

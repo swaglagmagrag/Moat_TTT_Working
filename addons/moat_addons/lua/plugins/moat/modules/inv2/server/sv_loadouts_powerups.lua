@@ -55,6 +55,30 @@ hook.Add("ScalePlayerDamage", "moat_ApplyScaleDamagePowerups", function(ply, hit
     end
 end)
 
+hook.Add("PlayerDeath", "moat_ApplyDeathPowerups", function(victim, inflictor, attacker) 
+	local powerup = MOAT_POWERUPTABLE[attacker]
+    if (not victim:IsValid() or not (attacker and attacker:IsValid() and attacker:IsPlayer())) or attacker:GetRole() == victim:GetRole() then return end
+	if ((victim ~= attacker) and powerup and powerup.item) then
+		local powerup_servertbl = powerup.item
+		local powerup_mods = powerup.s or {}
+    	if (powerup_servertbl.PlayerDeath) then
+			powerup_servertbl:PlayerDeath(victim, inflictor, attacker, powerup_mods)
+		end
+	end
+end)
+
+hook.Add("PlayerDeath", "moat_ApplyKilledPowerups", function(victim, inflictor, attacker)
+	local powerup = MOAT_POWERUPTABLE[victim]
+    if (not attacker:IsValid()) then return end
+	if ((victim ~= attacker) and powerup and powerup.item) then
+		local powerup_servertbl = powerup.item
+		local powerup_mods = powerup.s or {}
+    	if (powerup_servertbl.PlayerKilled) then
+			powerup_servertbl:PlayerKilled(victim, inflictor, attacker, powerup_mods)
+		end
+	end
+end)
+
 util.AddNetworkString("theres more detections somewhere faggot")
 
 net.Receive("theres more detections somewhere faggot", function(l, pl)

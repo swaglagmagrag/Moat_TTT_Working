@@ -116,27 +116,6 @@ function joystick_detect(p, detect, c)
     -- Logs[p] = Logs[p][detect]
 
     local info = Detections[detect]
-    if (IsDev() or not Logs[p][detect].NextMessage or Logs[p][detect].NextMessage < CurTime()) then
-        local msg = "Detected: `" .. p:Nick() .. "(" .. sid .. ") [" .. p:IPAddress() .. "] lvl(" .. p:GetNW2Int("MOAT_STATS_LVL", -1) .. ")` Server: " .. game.GetIP()
-        msg = msg .. "\nDetection: `" .. (info and info.Name or tostring(detect)) .. "`"
-        msg = msg .. "\ncur_random_roound: `" .. tostring(cur_random_round) .. "`"
-        local wep = p:GetActiveWeapon()
-        msg = msg .. "\nweapon class: `" .. (IsValid(wep) and wep:GetClass() or "NONE") .. "`"
-        msg = msg .. "\nalive: " .. ((p:IsDeadTerror() or p:IsSpec()) and "`no`" or "`yes`")
-
-        msg = msg .. "\nPacketLoss: `" .. tostring(p:PacketLoss()) .. "`"
-        msg = msg .. "\nTimingOut: `" .. tostring(p:IsTimingOut()) .. "`"
-        msg = msg .. "\nMap: `" .. game.GetMap() .. "` pos: `" .. tostring(p:GetPos()) .."`"
-        msg = msg .. "\nVersion: `Total`"
-
-        if (IsDev()) then
-            print(msg)
-        elseif (info.Punishment ~= Ignore) then
-            discord.Send("Skid", msg)
-            Logs[p][detect].NextMessage = CurTime() + 120
-        end
-    end
-
     if (not IsDev()) then
         if (not info or info.Punishment == Ban) then
             banned[sid] = true

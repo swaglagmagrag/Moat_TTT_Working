@@ -289,3 +289,7 @@ MODELS_COLORABLE = {
 ['models/sterling/mg_hat_number1.mdl']=true,
 ['models/sterling/mg_hat_punk.mdl']=true,
 }
+
+MOAT_ITEM_CHECK[16] = {function(i) return ((i.item.ID == 867530)) end, "Item must be an American Made!"}
+
+MOAT_ITEM_CHECK[17] = {function(i) return ((i.item.Talents) or (i.item.ID == 867530)) end, "Item must have talents!"}

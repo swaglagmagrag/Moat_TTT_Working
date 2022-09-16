@@ -205,7 +205,8 @@ MOAT_THEME.Themes["Blur"] = {
         Panel = function(s, w, h, crate_contents)
             draw.RoundedBox(0, 0, 0, w, h, Color(0, 0, 0, 50))
             draw.RoundedBox(0, 1, 1, w - 2, h - 2, Color(0, 0, 0, 50))
-            m_DrawShadowedText(1, "This crate contains one of the following " .. #crate_contents .. " items:", "moat_ItemDesc", 5, 2, Color(200, 200, 200))
+            local a = moat_customcrate or #crate_contents
+            m_DrawShadowedText(1, "This crate contains one of the following " .. a .. " items:", "moat_ItemDesc", 5, 2, Color(200, 200, 200))
         end,
         CloseB = {23, 3, 20, 20},
         CLOSE_PAINT = function(s, w, h)

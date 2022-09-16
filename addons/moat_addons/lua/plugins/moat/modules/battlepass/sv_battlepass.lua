@@ -515,31 +515,127 @@ function bp_sql()
     end
 
     local custom_rewards = {
-        [-1] = function(ply)
-            ply:m_GiveIC(5000)
-        end,
-        [-2] = function(ply)
-            ply:m_GiveIC(10000)
-        end,
-        [-3] = function(ply)
-            local crates = m_GetActiveCrates()
-
-            for i = 1, 5 do
-                ply:m_DropInventoryItem(crates[math.random(1, #crates)].Name, "hide_chat_obtained", false, false)
-            end
-        end,
-        [-4] = function(ply)
-            local crates = m_GetActiveCrates()
-
-            for i = 1, 10 do
-                ply:m_DropInventoryItem(crates[math.random(1, #crates)].Name, "hide_chat_obtained", false, false)
-            end
-        end,
-        [-5] = function(ply)
-            ply:m_DropInventoryItem("Cosmic Talent Mutator", "hide_chat_obtained", false, false)
-        end,
         [-6] = function(ply)
-            ply:m_DropInventoryItem("Cosmic Stat Mutator", "hide_chat_obtained", false, false)
+            for i = 1, 3 do
+                ply:m_DropInventoryItem("Joyful", nil, nil, 1)
+            end
+            m_SaveInventory(ply)
+        end,
+        [-7] = function(ply)
+            for i = 1, 30 do
+                ply:m_DropInventoryItem("Summer Climb Crate", nil, nil, 1)
+            end
+            m_SaveInventory(ply)
+        end,
+        [-10] = function(ply)
+            local uniques = {"Heavenly", "Flourishing", "Sunny"}
+            ply:m_DropInventoryItem(uniques[math.random(1, #uniques)])
+        end,
+        [-13] = function(ply)
+            for i = 1, 2 do
+                ply:m_DropInventoryItem("Authentic", nil, nil, 1)
+            end
+            m_SaveInventory(ply)
+        end,
+        [-21] = function(ply)
+            ply:m_DropInventoryItem(6)
+        end,
+        [-22] = function(ply)
+            ply:m_DropInventoryItem(7)
+        end,
+        [-24] = function(ply)
+            for i = 1, 5 do
+                ply:m_DropInventoryItem("Independence Crate", nil, nil, 1)
+            end
+            m_SaveInventory(ply)
+        end,
+        [-25] = function(ply)
+            for i = 1, 2 do
+                ply:m_DropInventoryItem("1/3 Crate", nil, nil, 1)
+            end
+            m_SaveInventory(ply)
+        end,
+        [-26] = function(ply)
+            for i = 1, 30 do
+                ply:m_DropInventoryItem("Aqua Palm Crate", nil, nil, 1)
+            end
+            m_SaveInventory(ply)
+        end,
+        [-27] = function(ply)
+            local uniques = {"Energizing G36C", "Energizing MP5K SE"}
+            ply:m_DropInventoryItem(uniques[math.random(1, #uniques)])
+        end,
+        [-24] = function(ply)
+            ply:m_GiveIC(35000)
+        end,
+        [-25] = function(ply)
+            ply:m_DropInventoryItem(7)
+        end,
+        [-26] = function(ply)
+            ply:m_GiveIC(40000)
+        end,
+        [-27] = function(ply)
+            for i = 1, 50 do
+                ply:m_DropInventoryItem("Summer Climb Crate")
+            end
+        end,
+        [-28] = function(ply)
+            ply:m_GiveIC(45000)
+        end,
+        [-29] = function(ply)
+            for i = 1, 15 do
+                ply:m_DropInventoryItem("Antique Chest")
+            end
+        end,
+        [-30] = function(ply)
+            for i = 1, 5 do
+                ply:m_DropInventoryItem("Antique Chest")
+            end
+        end,
+        [-28] = function(ply)
+            local uniques = {"Rebirth", "Sunfall", "Joule Newell"}
+            ply:m_DropInventoryItem(uniques[math.random(1, #uniques)])
+        end,
+        [-29] = function(ply)
+            ply:m_GiveIC(50000)
+        end,
+        [-30] = function(ply)
+            for i = 1, 5 do
+                ply:m_DropInventoryItem("Antique Chest", nil, nil, 1)
+            end
+            m_SaveInventory(ply)
+        end,
+        [-31] = function(ply)
+            for i = 1, 3 do
+                ply:m_DropInventoryItem("Fists", nil, nil, 1)
+            end
+            m_SaveInventory(ply)
+        end,
+        [-32] = function(ply)
+            for i = 1, 2 do
+                ply:m_DropInventoryItem("Unusable", nil, nil, 1)
+            end
+            m_SaveInventory(ply)
+        end,
+        [-33] = function(ply)
+            for i = 1, 3 do
+                ply:m_DropInventoryItem("Name Mutator", nil, nil, 1)
+            end
+            m_SaveInventory(ply)
+        end,
+        [-34] = function(ply)
+            local uniques = {"La Vaux Gloss", "Spanish Splatter", "Joule Newell"}
+            ply:m_DropInventoryItem(uniques[math.random(1, #uniques)])
+        end,
+        [-35] = function(ply)
+            local prefixes = {"Slip-N-Slide", "Sun-Kissed", "Verdant", "Sweltering", "Burning"}
+            ply:m_DropInventoryItem(prefixes[math.random(1, #prefixes)])
+        end,
+        [-36] = function(ply)
+            for i = 1, 2 do
+                ply:m_DropInventoryItem("Rapid", nil, nil, 1)
+            end
+            m_SaveInventory(ply)
         end
     }
 

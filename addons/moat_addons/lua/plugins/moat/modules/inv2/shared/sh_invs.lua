@@ -2,6 +2,7 @@ MOAT_VIP = {"vip", "mvp", "hoodninja", "trialstaff", "moderator", "admin", "seni
 local pl = FindMetaTable("Player")
 local MOAT_TALENT_FOLDER = "plugins/moat/modules/inv2/data"
 MOAT_TALENTS = {}
+MOAT_TESTING_TALENTS = {}
 
 function m_AddTalent(talent_tbl)
 	if (talent_tbl.Name and not talent_tbl.NameExact) then
@@ -11,8 +12,11 @@ function m_AddTalent(talent_tbl)
 	if (talent_tbl.Description and not talent_tbl.DescExact) then
 		talent_tbl.Description = string.Grammarfy(talent_tbl.Description, not (talent_tbl.Description:EndsWith"!" or talent_tbl.Description:EndsWith"?" or talent_tbl.Description:EndsWith"."))
 	end
-
-    MOAT_TALENTS[talent_tbl.ID] = talent_tbl
+	if (talent_tbl.Testing) then
+        MOAT_TESTING_TALENTS[talent_tbl.ID] = talent_tbl
+	else
+		MOAT_TALENTS[talent_tbl.ID] = talent_tbl
+    end
 end
 
 function m_InitializeTalents()

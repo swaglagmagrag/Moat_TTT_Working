@@ -1,5 +1,7 @@
 local bounties_y = 120
 
+tera_pinned = {}
+
 local HSVColor = HSVToColor(1, 1, 255)
 
 local gradient_d = Material("vgui/gradient-d")

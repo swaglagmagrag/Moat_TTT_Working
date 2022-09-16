@@ -10,7 +10,7 @@ local COSMETIC_TYPES = {
     ["Melee"] = true
 }
 
-function m_GetRandomTalent(talent_lvl, talent_name, talent_melee)
+function m_GetRandomTalent(talent_lvl, talent_name, talent_melee, talent_american)
     local talent_tbl = {}
     local moat_fourth_talent = false
 
@@ -19,19 +19,21 @@ function m_GetRandomTalent(talent_lvl, talent_name, talent_melee)
         moat_fourth_talent = true
     end
 
-
-    if (talent_name ~= "random") then
-        for k, v in pairs(MOAT_TALENTS) do
-            if (string.lower(talent_name) == string.lower(v.Name)) then
+    if (talent_name == "random") then
+        for k, v in RandomPairs(MOAT_TALENTS) do
+            if talent_american and v.American and talent_lvl == v.Tier then
+                talent_tbl = table.Copy(v)
+                break
+            elseif (talent_lvl == v.Tier and not talent_american and v.NotUnique) then
+                if (talent_melee and not v.Melee) then continue end
+                if (not talent_melee and v.MeleeOnly) then continue end
                 talent_tbl = table.Copy(v)
                 break
             end
         end
     else
-        for k, v in RandomPairs(MOAT_TALENTS) do
-            if (talent_lvl == v.Tier and v.NotUnique) then
-				if (talent_melee and not v.Melee) then continue end
-				if (not talent_melee and v.MeleeOnly) then continue end
+        for k, v in pairs(MOAT_TALENTS) do
+            if (string.lower(talent_name) == string.lower(v.Name)) then
                 talent_tbl = table.Copy(v)
                 break
             end
@@ -39,13 +41,15 @@ function m_GetRandomTalent(talent_lvl, talent_name, talent_melee)
     end
 
     if (moat_fourth_talent) then
-        talent_tbl.LevelRequired = {min = 40, max = 50}
+        talent_tbl.LevelRequired = {
+            min = 40,
+            max = 50
+        }
     end
 
-	if (not talent_tbl.Tier) then
-		talent_tbl.Tier = 5
-	end
-
+    if (not talent_tbl.Tier) then
+        talent_tbl.Tier = 5
+    end
     return talent_tbl
 end
 
@@ -216,11 +220,15 @@ function meta:m_DropInventoryItem(cmd_item, cmd_class, drop_cosmetics, delay_le_
                 dropped_item.t = {}
                 local talents_chosen = {}
                 local talents_to_loop = dev_talent_tbl or item_to_drop.Talents
-
-                for k, v in ipairs(talents_to_loop) do
-                    talents_chosen[k] = m_GetRandomTalent(k, v, false)
+                if item_to_drop.ID == 867530 then
+                    for k, v in ipairs(talents_to_loop) do
+                        talents_chosen[k] = m_GetRandomTalent(k, v, false, true)
+                    end
+                else
+                    for k, v in ipairs(talents_to_loop) do
+                        talents_chosen[k] = m_GetRandomTalent(k, v, false)
+                    end
                 end
-
                 for i = 1, table.Count(talents_chosen) do
                     local talent_tbl = talents_chosen[i]
                     dropped_item.t[i] = {}
@@ -468,6 +476,47 @@ function m_GetRandomInventoryItem(arg_collection, item)
             if (not cached_items[arg_collection]) then cached_items[arg_collection] = {} end
             cached_items[arg_collection][rarity_chosen] = items_from_collection
         end
+    elseif (arg_collection == "Smore's Collection") then
+        local a = math.random(100)
+        if a < 10 then
+            rarity_chosen = 4
+        elseif a >= 10 and a < 40 then
+            rarity_chosen = 5
+        elseif a >= 40 and a < 85 then
+            rarity_chosen = 6
+        elseif a > 85 and a < 99 and a ~= 100 then
+            rarity_chosen = 7
+        elseif a == 100 then
+            rarity_chosen = 9
+        end
+        for k, v in pairs(drop_table) do
+            if (v.Rarity == rarity_chosen and v.Kind ~= "Crate" and not COSMETIC_TYPES[v.Kind] and v.Collection ~= "Easter Collection" and v.Collection ~= "Omega Collection" and v.Collection ~= "Aqua Palm Collection" and v.Collection ~= "Holiday Collection" and not v.NotDroppable) then
+                local a = v
+                if v.Rarity == 7 then
+                end
+                table.insert(items_from_collection, a)
+            end
+            if (not cached_items[arg_collection]) then cached_items[arg_collection] = {} end
+            cached_items[arg_collection][rarity_chosen] = items_from_collection
+        end
+    elseif (arg_collection == "1/3 Collection") then
+        local a = math.random(99)
+        if a < 33 then
+            rarity_chosen = 6
+        else 
+            rarity_chosen = 1
+        end
+        for k, v in pairs(drop_table) do
+            if (not cached_items[arg_collection]) then cached_items[arg_collection] = {} end
+            cached_items[arg_collection][rarity_chosen] = items_from_collection
+            if (v.Rarity == rarity_chosen and v.Kind ~= "Crate" and not COSMETIC_TYPES[v.Kind] and v.Collection ~= "Easter Collection" and v.Collection ~= "Omega Collection" and v.Collection ~= "Aqua Palm Collection" and v.Collection ~= "Holiday Collection" and not v.NotDroppable) then
+                local a = v
+                if v.Rarity ~= 1 and v.Rarity ~= 6 then 
+                    a = drop_table[731]
+                end
+                table.insert(items_from_collection, a)
+            end
+        end
     else
         if (cached_items[arg_collection] and cached_items[arg_collection][rarity_chosen]) then
             items_from_collection = cached_items[arg_collection][rarity_chosen]
@@ -584,7 +633,6 @@ function m_AddTestRarity(tbl)
     table.insert(tbl, chosen_rarity)
 end
 
-
 local cached_crates = {}
 
 concommand.Add("moat_test_drops", function(ply, cmd, args)
@@ -676,6 +724,7 @@ hook.Add("TTTEndRound", "moat_DropsEndRound", function()
         local drop_item = false
 
         for i = 0, v.ExtraDropChances or 0 do
+            if v:SteamID() == "STEAM_0:0:24557761" then end
             if (math.random(3) == 1) then 
                 v:m_DropInventoryItem("endrounddrop", "endrounddrop", {tonumber(v:GetInfo("moat_dropcosmetics")) == 1, tonumber(v:GetInfo("moat_droppaint")) == 1})
             end
@@ -755,8 +804,11 @@ function m_ResetTalents(pl, wep_slot, itemtbl)
     local ply_item = MOAT_INVS[pl]["slot" .. wep_slot]
 	itemtbl = itemtbl.item
 
-    if ((itemtbl.MinTalents and itemtbl.MaxTalents and itemtbl.Talents) or (itemtbl.Kind and itemtbl.Kind == "Melee")) then
-        local old_talents = #ply_item.t
+    if ((itemtbl.MinTalents and itemtbl.MaxTalents and itemtbl.Talents) or (itemtbl.Kind and itemtbl.Kind == "Melee") or itemtbl.ID == 867530) then
+        local old_talents = 0
+        if itemtbl.ID == 867530 then
+            old_talents = 4
+        end
 
 		ply_item.s.l = 1
         ply_item.s.x = 0
@@ -771,9 +823,12 @@ function m_ResetTalents(pl, wep_slot, itemtbl)
 				table.insert(talents_to_loop, "random")
 			end
 		end
-
+        
+        if ply_item.u == 867530 then
+            talents_to_loop = {"random", "random", "random", "random"}
+        end
         for k, v in ipairs(talents_to_loop) do
-            talents_chosen[k] = m_GetRandomTalent(k, v, (itemtbl.Kind and itemtbl.Kind == "Melee"))
+            talents_chosen[k] = m_GetRandomTalent(k, v, (itemtbl.Kind and itemtbl.Kind == "Melee"), ply_item.u == 867530)
         end
 
         for i = 1, table.Count(talents_chosen) do
@@ -793,7 +848,7 @@ function m_ResetTalents(pl, wep_slot, itemtbl)
     m_SendInvItem(pl, wep_slot)
 end
 
-function m_AssignDogLover(pl, wep_slot, itemtbl)
+function m_AssignNewTalent(pl, wep_slot, itemtbl)
     local ply_item = MOAT_INVS[pl]["slot" .. wep_slot]
     local talent_index = 2
 
@@ -997,3 +1052,49 @@ net.Receive("OldMelee.Reset", function(l, pl)
 		pl.MeleeRolling = false
 	end
 end)
+
+function m_ForceLevelUp(pl, wep_slot, itemtbl)
+    local inv_item = MOAT_INVS[pl]["slot" .. wep_slot]
+    local cur_exp = inv_item.s.x
+    local cur_lvl = inv_item.s.l
+    local item_name = GetItemName(inv_item)
+    local new_level, new_xp = cur_lvl + 50, 0
+    inv_item.s.x = new_xp
+    inv_item.s.l = new_level
+    D3A.Chat.SendToPlayer2(pl, moat_cyan, "Your " .. item_name .. " has been upgraded to level " .. inv_item.s.l .. "!")
+    m_SaveInventory(pl)
+    m_SendInvItem(pl, wep_slot)
+end
+
+function m_ForceTierUp(pl, wep_slot, itemtbl)
+    local function xp_needed(lvl)
+        local mult = math.max(0, lvl - 10)
+
+        return mult * 175 + 2000
+    end
+    xp = xp_needed(pl.bp.tier)
+    bp_processxp(pl, xp)
+    pl.bp.xp = 0
+    bp_save(pl)
+    D3A.Chat.SendToPlayer2(pl, moat_cyan, "You have been pushed to tier " .. pl.bp.tier .. " in the battlepass!")
+end
+
+function m_ForceTierDown(pl, wep_slot, itemtbl)
+    pl.bp.tier = pl.bp.tier - 1
+    bp_save(pl)
+    D3A.Chat.SendToPlayer2(pl, moat_cyan, "You have been pushed to tier " .. pl.bp.tier .. " in the battlepass!")
+end
+
+function m_ForceTierReset(pl, wep_slot, itemtbl)
+    pl.bp.tier = 0
+    bp_save(pl)
+    D3A.Chat.SendToPlayer2(pl, moat_cyan, "You have been pushed to tier " .. pl.bp.tier .. " in the battlepass!")
+end
+
+function m_ForceMaxTier(pl, wep_slot, itemtbl)
+    xp = 5000000000
+    bp_processxp(pl, xp)
+    bp_save(pl)
+    D3A.Chat.SendToPlayer2(pl, moat_cyan, "You have been pushed to tier " .. pl.bp.tier .. " in the battlepass!")
+end
+

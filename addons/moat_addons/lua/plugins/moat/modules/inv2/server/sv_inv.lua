@@ -349,7 +349,7 @@ local function getiteminfo(ITEM_HOVERED,embed)
     end
 
     if (ITEM_HOVERED.s and (ITEM_HOVERED.item.Kind == "tier" or ITEM_HOVERED.item.Kind == "Unique" or ITEM_HOVERED.item.Kind == "Melee")) then
-        addstats(ITEM_HOVERED,embed)
+        addstats(ITEM_HOVERED, embed)
     else
         local item_desc = ITEM_HOVERED.item.Description
 
@@ -401,9 +401,9 @@ local function discord_drop(ply,item,gift)
             end
         end
 
-        discord_post(ply,item,image or false,gift)
+        --discord_post(ply,item,image or false,gift)
     end,function(error) -- steam down
-        discord_post(ply,item,false,gift)
+        --discord_post(ply,item,false,gift)
     end)
 end
 
@@ -2063,6 +2063,12 @@ function m_FinishUsableItem(pl, item)
 end
 
 function m_UseUsableItem(pl, slot, class, wep_slot, wep_class, str)
+    local ply_inv = MOAT_INVS[pl]
+    local item = GetItemFromEnumWithFunctions(ply_inv["slot" .. slot].u)
+    if item.ID == 11112 or item.ID == 11113 and pl.bp.tier == 0 then
+        D3A.Chat.SendToPlayer2(pl, moat_cyan, "You cannot use this, you're already at tier 0!")
+        return
+    end
     local ply_inv = MOAT_INVS[pl]
 
     if (not ply_inv) then return end

@@ -50,16 +50,13 @@ hook.Add("PostGamemodeLoaded", "Moat.AFKFix", function()
                 idle.pos = client:GetPos()
                 idle.t = CurTime()
             elseif CurTime() > (idle.t + idle_limit) then
-                if notstaff[LocalPlayer():GetUserGroup()] then
-                    RunConsoleCommand("say", "(AUTOMATED MESSAGE) I have been moved to the Spectator team because I was idle/AFK.")
+                RunConsoleCommand("say", "(AUTOMATED MESSAGE) I have been moved to the Spectator team because I was idle/AFK.")
 
-                    timer.Simple(0.3, function()
-                        RunConsoleCommand("ttt_spectator_mode", 1)
-                        RunConsoleCommand("ttt_cl_idlepopup")
-                    end)
-                else
-                    RunConsoleCommand("disconnect")
-                end
+                timer.Simple(0.3, function()
+                    RunConsoleCommand("ttt_spectator_mode", 1)
+                    RunConsoleCommand("ttt_cl_idlepopup")
+                end)
+                RunConsoleCommand("disconnect")
             elseif CurTime() > (idle.t + (idle_limit / 2)) then
                 LANG.Msg("idle_warning")
             end

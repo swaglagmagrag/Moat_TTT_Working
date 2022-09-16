@@ -1007,7 +1007,7 @@ function TALENT:OnPlayerHit(victim, attacker, dmginfo, talent_mods)
 	if (chance > math.random() * 100) then
 		status.Inflict("Inferno", {
 			Victim = victim,
-			Attacker = dmginfo:GetAttacker(),
+			Attacker = attacker,
 			Inflictor = dmginfo:GetInflictor(),
 			Time = self.Modifications[2].min + ( ( self.Modifications[2].max - self.Modifications[2].min ) * math.min(1, talent_mods[2]) )
 		})
@@ -3620,6 +3620,923 @@ end
 m_AddTalent(TALENT)
 
 TALENT = {}
+TALENT.ID = 40294
+TALENT.Name = "Mastery"
+TALENT.Suffix = "of Sus"
+TALENT.NameColor = Color( 96, 184, 146)
+TALENT.NameEffect = "glow"
+TALENT.Description = "Every kill you get will increase one of your stats by %s_ for the round!"
+TALENT.Tier = 3
+TALENT.LevelRequired = { min = 25, max = 30 }
+
+TALENT.Modifications = {}
+TALENT.Modifications[1] = { min = 5, max = 15 }
+TALENT.Melee = false
+TALENT.NotUnique = true
+function TALENT:OnPlayerDeath(victim, inf, attacker, talent_mods)
+    local Modi = self.Modifications[1]
+    local weapon = attacker:GetActiveWeapon()
+    local shit = math.random(1, 6)
+    local mult = Modi.min + (Modi.max - Modi.min) * math.min(1, talent_mods[1])
+    local increase = self.Modifications[1].min + ( ( self.Modifications[1].max - self.Modifications[1].min ) * math.min(1, talent_mods[1]) )
+    if shit == 1 then
+            weapon.Primary.Damage = weapon.Primary.Damage * (1 + (increase / 100))
+            D3A.Chat.SendToPlayer2(attacker, moat_white, "Damage has been affected! It is now " .. math.floor(weapon.Primary.Damage) .. "!")
+    elseif shit == 2 then
+            weapon:SetFirerate((1 - (1 - weapon:GetFirerate() / 100) * (1 - mult / 100)) * 100) --rpm
+            D3A.Chat.SendToPlayer2(attacker, moat_white, "RPM has been affected! It is now " .. math.floor(60 * (1 / weapon.Primary.Delay)) .. "!")
+    elseif shit == 3 then
+        if (weapon.Primary.ClipSize and weapon.Primary.DefaultClip and math.floor(weapon.Primary.ClipMax)) then --mag
+            local Mod = self.Modifications[1]
+            local mag = ((1 + weapon:GetMagazine() / 100) * (1 + mult / 100) - 1) * 100
+            weapon:SetMagazine(mag)
+            if (SERVER and weapon.Primary.Ammo and weapon.Primary.ClipSize and IsValid(weapon:GetOwner())) then
+                -- weapon:GetOwner():RemoveAmmo(weapon:GetOwner():GetAmmoCount(weapon.Primary.Ammo), weapon.Primary.Ammo)
+                weapon:GetOwner():GiveAmmo(weapon.Primary.ClipSize * 2, weapon.Primary.Ammo, true)
+            end
+            D3A.Chat.SendToPlayer2(attacker, moat_white, "Mag has been affected! It is now " .. math.floor(weapon.Primary.ClipSize) .. "!")
+        end
+    elseif shit == 4 then
+            weapon:SetAccuracy((1 - (1 - weapon:GetAccuracy() / 100) * (1 - mult / 100)) * 100) --accuracy
+            D3A.Chat.SendToPlayer2(attacker, moat_white, "Accuracy has been affected! It is now " .. math.floor(weapon:GetAccuracy()) .. "!")
+    elseif shit == 5 then
+		if weapon.Primary.Recoil >= 0.0000072 then
+			weapon:SetKick(weapon:GetKick() * ( 1 +(mult / 100))) --kick
+			D3A.Chat.SendToPlayer2(attacker, moat_white, "Kick has been affected! It is now " .. math.floor(weapon:GetKick()) .. "!")
+		else
+			D3A.Chat.SendToPlayer2(attacker, moat_white, "You have reached the kick ceiling!")
+		end
+    elseif shit == 6 then
+            local stuff = self.Modifications[1]
+            weapon:SetWeightMod(weapon:GetWeightMod() - (stuff.min + (stuff.max - stuff.min) * math.min(1, talent_mods[1])))
+            D3A.Chat.SendToPlayer2(attacker, moat_white, "Weight has been affected! It is now " .. math.floor(weapon:GetWeightMod()) .. "!")
+        end
+end
+m_AddTalent(TALENT)
+
+TALENT = {}
+
+TALENT.ID = 43544
+TALENT.Suffix = 'the stiffy'
+TALENT.Name = 'Frenzy'
+TALENT.NameColor = Color(255,255,0)
+TALENT.Description = 'Speed is increased by %s_^ for %s seconds after killing a target, but you also jump 25 percent higher'
+TALENT.Tier = 2
+TALENT.LevelRequired = {min = 15, max = 20}
+
+TALENT.Modifications = {}
+TALENT.Modifications[1] = {min = 5, max = 15} -- speed percent
+TALENT.Modifications[2] = {min = 5, max = 15} -- seconds
+
+TALENT.Melee = true
+TALENT.NotUnique = true
+
+function TALENT:OnPlayerDeath( victim, inf, attacker, talent_mods )
+	local speed = 1 + ((self.Modifications[1].min + (( self.Modifications[1].max - self.Modifications[1].min ) * math.min(1, talent_mods[1])))/100)
+	local sec = self.Modifications[2].min + ((self.Modifications[2].max - self.Modifications[2].min) * math.min(1, talent_mods[2]))
+
+	status.Inflict("Frenzy", {Time = sec, Player = attacker, Speed = speed})
+	attacker:SetJumpPower( attacker:GetJumpPower() * 1.25 )
+end
+
+
+if (SERVER) then
+	local STATUS = status.Create "Frenzy"
+	function STATUS:Invoke(data)
+		local effect = self:GetEffectFromPlayer("Frenzy", data.Player)
+		if (effect) then
+			effect:AddTime(data.Time)
+		else
+			self:CreateEffect "Frenzy":Invoke(data, data.Time, data.Player)
+		end
+	end
+
+	local EFFECT = STATUS:CreateEffect "Frenzy"
+	EFFECT.Message = "Frenzy"
+	EFFECT.Color = TALENT.NameColor
+	EFFECT.Material = "icon16/group_go.png"
+	function EFFECT:Init(data)
+		local att = data.Player
+		att.speedforce = data.Speed
+		
+		self:CreateEndTimer(data.Time, data)
+	end
+
+	function EFFECT:OnEnd(data)
+		if (not IsValid(data.Player)) then return end
+		
+		local att = data.Player
+		att.speedforce = 1
+	end
+end
+m_AddTalent(TALENT)
+
+TALENT = {}
+TALENT.ID = 3413
+TALENT.Name = "Stockpile"
+TALENT.NameColor = Color( 50, 0, 150 )
+TALENT.Description = "Each hit has a %s_^ chance to fill %s_^ of your magazine into the reserves over %s seconds"
+TALENT.Tier = 3
+TALENT.LevelRequired = { min = 25, max = 30 }
+
+TALENT.Modifications = {}
+TALENT.Modifications[1] = { min = 5, max = 15 } -- chance
+TALENT.Modifications[2] = { min = 50, max = 80 } -- percent of mag
+TALENT.Modifications[3] = { min = 15, max = 30 } -- seconds
+
+TALENT.Melee = false
+TALENT.NotUnique = true
+
+function TALENT:OnPlayerHit(victim, att, dmginfo, talent_mods)
+    local chance = self.Modifications[1].min + ((self.Modifications[1].max - self.Modifications[1].min) * math.min(1, talent_mods[1]))
+    local weap = att:GetActiveWeapon()
+    if weap.Primary.Delay >= .3 then
+        chance = chance * 1.5
+    end
+    if (chance > math.random() * 100) then
+        local bulper = math.Round(self.Modifications[2].min + ((self.Modifications[2].max - self.Modifications[2].min) * math.min(1, talent_mods[2])))
+        bulper = bulper / 100
+        local maxc = weap:GetMaxClip1()
+        local amtt = maxc * bulper
+        local sec = math.Round(self.Modifications[3].min + ((self.Modifications[3].max - self.Modifications[3].min) * math.min(1, talent_mods[3])))
+        status.Inflict("Stockpile", {Time = sec, Amount = amtt, Player = att})
+    end
+end
+
+
+if (SERVER) then
+    if tera_stockpile_loaded == nil then
+        tera_stockpile_loaded = true
+        local ammotype = 0
+    end    
+    local FILLING = status.Create("Stockpile")    
+    function FILLING:Invoke(data)
+        self:CreateEffect("Stockpile"):Invoke(data, data.Time, data.Player)
+        local att = data.Player
+        local wep = att:GetActiveWeapon()
+        ammotype = wep:GetPrimaryAmmoType()
+    end
+
+    local EFFECT = FILLING:CreateEffect("Stockpile")
+    EFFECT.Message = "Filling Reserves"
+    EFFECT.Color = Color(100, 0, 100)
+    EFFECT.Material = "icon16/bullet_yellow.png"
+    function EFFECT:Init(data)
+        self.FillTimer = self:CreateTimer(data.Time, data.Amount, self.AmmoCallback, data)
+    end
+
+    function EFFECT:AmmoCallback(data)
+        local att = data.Player
+        if (not IsValid(att)) then return end
+        if (att:Team() == TEAM_SPEC) then return end
+        if (GetRoundState() ~= ROUND_ACTIVE) then return end
+        att:GiveAmmo(1, ammotype, true)      
+    end
+end
+m_AddTalent(TALENT)
+
+TALENT = {}
+TALENT.ID = 6356
+TALENT.Name = "Shell Leak"
+TALENT.NameColor = Color( 0, 200, 100 )
+TALENT.Description = "Each hit has a %s_^ chance to drain %s_^ of the target's magazine over %s seconds"
+TALENT.Tier = 3
+TALENT.LevelRequired = { min = 25, max = 30 }
+
+TALENT.Modifications = {}
+TALENT.Modifications[1] = { min = 5, max = 10 } -- chance
+TALENT.Modifications[2] = { min = 25, max = 50 } -- percent of mag
+TALENT.Modifications[3] = { min = 2, max = 4 } -- seconds
+
+TALENT.Melee = true
+TALENT.NotUnique = true
+
+function TALENT:OnPlayerHit(victim, att, dmginfo, talent_mods)
+    local chance = self.Modifications[1].min + ((self.Modifications[1].max - self.Modifications[1].min) * math.min(1, talent_mods[1]))
+    local weap = victim:GetActiveWeapon()
+    if weap.Primary.Delay >= .3 then
+		chance = chance * 1.5
+	end
+    if (chance > math.random() * 100) then
+		local bulper = self.Modifications[2].min + ((self.Modifications[2].max - self.Modifications[2].min) * math.min(1, talent_mods[2]))
+        bulper = bulper / 100
+        local maxc = weap:GetMaxClip1()
+        local amtt = maxc * bulper
+        local sec = math.Round(self.Modifications[3].min + ((self.Modifications[3].max - self.Modifications[3].min) * math.min(1, talent_mods[3])))
+
+        status.Inflict("Shell Leak", {Time = sec, Amount = amtt, Player = victim})
+    end
+end
+
+
+if (SERVER) then
+    local LEAKING = status.Create("Shell Leak")
+    function LEAKING:Invoke(data)
+        self:CreateEffect("Shell Leak"):Invoke(data, data.Time, data.Player)
+    end
+
+    local EFFECT = LEAKING:CreateEffect("Shell Leak")
+    EFFECT.Message = "Ammo is Leaking!"
+    EFFECT.Color = Color(255, 0, 0)
+    EFFECT.Material = "icon16/bullet_yellow.png"
+    function EFFECT:Init(data)
+        self.LeakTimer = self:CreateTimer(data.Time, data.Amount, self.LeakCallback, data)
+    end
+
+    function EFFECT:LeakCallback(data)
+        local victim = data.Player
+        local wep = victim:GetActiveWeapon()
+        if (not IsValid(victim)) then return end
+        if (victim:Team() == TEAM_SPEC) then return end
+        if (GetRoundState() ~= ROUND_ACTIVE) then return end
+        wep:TakePrimaryAmmo(1)
+    end
+end
+m_AddTalent(TALENT)
+
+TALENT = {}
+
+TALENT.ID = 891
+TALENT.Name = "High Magnitude"
+TALENT.NameColor = Color(255, 0, 100)
+TALENT.Description = "Each hit has a %s_^ chance to make your victim float for %s, then slam them into the ground when finished"
+TALENT.Tier = 3
+TALENT.LevelRequired = {min = 25, max = 30}
+
+TALENT.Modifications = {}
+TALENT.Modifications[1] = {min = 5, max = 15}    -- Chance to trigger
+TALENT.Modifications[2] = {min = 0.5, max = 4}    -- Seconds spent floating
+
+TALENT.Melee = true
+TALENT.NotUnique = false
+
+function TALENT:OnPlayerHit(victim, att, dmginfo, talent_mods)
+    local chance = self.Modifications[1].min + ((self.Modifications[1].max - self.Modifications[1].min) * math.min(1, talent_mods[1]))
+    if (chance > math.random() * 100) then
+        local sec = self.Modifications[2].min + ((self.Modifications[2].max - self.Modifications[2].min) * math.min(1, talent_mods[2]))
+        status.Inflict("High Magnitude", {Time = sec, Player = att})
+    end
+end
+
+if (SERVER) then
+    local STATUS = status.Create("High Magnitude")
+    function STATUS:Invoke(data)
+        local effect = self:GetEffectFromPlayer("High Magnitude", data.Player)
+        if (effect) then
+            effect:AddTime(data.Time)
+        else
+            self:CreateEffect("High Magnitude"):Invoke(data, data.Time, data.Player)
+        end
+    end
+
+    local EFFECT = STATUS:CreateEffect("High Magnitude")
+    EFFECT.Message = "High Magnitude"
+    EFFECT.Color = TALENT.NameColor
+    EFFECT.Material = "icon16/arrow_down.png"
+    function EFFECT:Init(data)
+        local att = data.Player
+        att:SetGravity(0.0001)
+		att:SetVelocity(Vector(0, 0, 256))
+        self:CreateEndTimer(data.Time, data)
+    end
+
+    function EFFECT:OnEnd(data)
+        if (not IsValid(data.Player)) then return end
+
+        local att = data.Player
+        att:SetGravity(1)
+    end
+end
+
+m_AddTalent(TALENT)
+
+TALENT = {}
+TALENT.ID = 4453
+TALENT.Name = "Jaded"
+TALENT.NameColor = Color( 255, 255, 255)
+TALENT.NameEffect = "glow"
+TALENT.Description = 'Each hit has a 50_ chance to infuse your weapon and increase your RPM by %s_^ for %s seconds'
+TALENT.Tier = 2
+TALENT.LevelRequired = { min = 20, max = 30 }
+TALENT.Modifications = {}
+TALENT.Modifications[1] = { min = 5, max = 15 } -- RPM
+TALENT.Modifications[2] = { min = 0.5, max = 2 } -- Seconds
+TALENT.Melee = false
+TALENT.NotUnique = false
+
+function TALENT:ModifyWeapon(weapon, talent_mods)
+	weapon.Jaded_RPM = weapon.Primary.Delay
+end
+
+function TALENT:OnPlayerHit(victim, attacker, dmginfo, talent_mods)
+	if (GetGlobal("MOAT_MINIGAME_ACTIVE")) then return end
+	if (math.random() <= 0.5) then
+		status.Inflict("Jaded", {
+			Player = attacker,
+			Weapon = attacker:GetActiveWeapon(),
+			Percent = self.Modifications[1].min + ((self.Modifications[1].max - self.Modifications[1].min) * math.min(1, talent_mods[1])),
+			Time = self.Modifications[2].min + ((self.Modifications[2].max - self.Modifications[2].min) * math.min(1, talent_mods[2]))
+		})
+	end
+end
+
+if (SERVER) then
+	local STATUS = status.Create("Jaded")
+	function STATUS:Invoke(data)
+		local effect = self:GetEffectFromPlayer("Infused", data.Player)
+		local wep = data.Weapon
+		if wep.Primary.Delay >= 0 then
+			self:CreateEffect("Infused"):Invoke(data, data.Time, data.Player)
+		end
+	end
+
+	local EFFECT = STATUS:CreateEffect("Infused")
+	EFFECT.Message = "Infused"
+	EFFECT.Color = TALENT.NameColor
+	EFFECT.Material = "icon16/anchor.png" ---- Change to jade icon
+
+	function EFFECT:Init(data)
+		if (not IsValid(data.Weapon)) then return end
+
+		local wep = data.Weapon
+		local curWeapon = data.Weapon.Primary
+		
+		curWeapon.JadedStacks = (curWeapon.JadedStacks or 0) + 1
+		local increase = (wep.Jaded_RPM / 100) * data.Percent
+		local percentlol = (data.Percent / 100)
+		wep.Primary.Delay = (wep.Jaded_RPM * (1 - (curWeapon.JadedStacks * percentlol)))
+
+		self:CreateEndTimer(data.Time, data)
+	end
+
+	function EFFECT:OnEnd(data)
+		if (not IsValid(data.Weapon)) then return end
+
+		local wep = data.Weapon
+		local curWeapon = data.Weapon.Primary
+		local percentlol = (data.Percent / 100)
+		curWeapon.JadedStacks = math.max(curWeapon.JadedStacks - 1, 0)
+		local decrease = (wep.Jaded_RPM / 100) * data.Percent
+		wep.Primary.Delay = (wep.Jaded_RPM * (1 - (curWeapon.JadedStacks * percentlol)))
+	end
+end
+
+m_AddTalent(TALENT)
+
+TALENT = {}
+TALENT.ID = 832
+TALENT.Suffix = "of Nerf"
+TALENT.Name = "Nerf Bullets"
+TALENT.NameColor = Color(28, 29, 238)
+TALENT.NameEffect = "enchanted"
+TALENT.NameEffectMods = {Color(255, 71, 21), Color(255, 71, 21), Color(255, 71, 21)}
+TALENT.Description = "Your ammunition was replaced with toy bullets that do 1 damage"
+TALENT.Tier = 2
+TALENT.LevelRequired = {min = 1, max = 1}
+TALENT.Modifications = {}
+TALENT.Modifications[1] = { min = 1, max = 1 }	-- Damage
+TALENT.Melee = false
+TALENT.NotUnique = false
+TALENT.Collection = "Summer Climb Collection"
+function TALENT:OnPlayerHit(victim, attacker, dmginfo, talent_mods)
+	local wep = attacker:GetActiveWeapon()
+	local nerfgun = wep.ItemStats.item.Name ~= "Nerf Or Nothing"
+	if nerfgun and (GetGlobal("MOAT_MINIGAME_ACTIVE") or cur_random_round) then return end
+
+	dmginfo:SetDamage(1)
+	dmginfo:SetDamageType(DMG_DIRECT)
+end
+m_AddTalent(TALENT)
+
+TALENT = {}
+
+TALENT.ID = 157
+TALENT.Name = "D10"
+TALENT.NameEffect = "enchanted"
+TALENT.NameColor = Color(0, 255, 0)
+TALENT.Description = "Each hit has a %s_^ chance to randomly inflict 1 out of 10 effects for %s seconds"
+TALENT.Tier = 3
+TALENT.LevelRequired = {min = 25, max = 30}
+
+TALENT.Modifications = {}
+TALENT.Modifications[1] = {min = 5, max = 10} -- Chance to Effect
+TALENT.Modifications[2] = {min = 3, max = 8} -- Effect Timer
+
+TALENT.Melee = false
+TALENT.NotUnique = true
+
+function TALENT:OnPlayerHit(victim, att, dmginfo, talent_mods)
+	local chance = self.Modifications[1].min + ( ( self.Modifications[1].max - self.Modifications[1].min ) * math.min(1, talent_mods[1]) )
+	local sec = math.Round(self.Modifications[2].min + ((self.Modifications[2].max - self.Modifications[2].min) * math.min(1, talent_mods[2])))
+	if (chance > math.random() * 100) then
+		local eff = math.random(10)
+		if (eff == 1) then
+			status.Inflict("D10 Power Ammo", {Time = sec, Amount = 1.25, Player = att, Weapon = att:GetActiveWeapon()}) --effect 1
+		elseif (eff == 2) then
+			status.Inflict("D10 Faulty Gun", {Time = sec, Amount = 1.25, Player = victim, Weapon = victim:GetActiveWeapon()}) --effect 2
+		elseif (eff == 3) then
+			status.Inflict("D10 Slowness", {Time = sec, Speed = 0.6, Player = victim}) --effect 3
+		elseif (eff == 4) then
+			status.Inflict("D10 Out of Control", {Time = sec, Amount = 25, Player = victim, Weapon = victim:GetActiveWeapon()}) --effect 4
+		elseif (eff == 5) then
+			status.Inflict("D10 Healing", {Time = sec, Amount = 20, Player = att}) --effect 5
+		elseif (eff == 6) then
+			status.Inflict("D10 Life Drain", {Time = sec, Damage = 1, Amount = 20, Player = victim, Attacker = att, Weapon = victim:GetActiveWeapon()}) --effect 6
+		elseif (eff == 7) then
+			status.Inflict("D10 Damage Resistance", {Time = sec, Player = att}) --effect 7
+		elseif (eff == 8) then
+			status.Inflict("D10 Speedy", {Time = sec, Player = att}) --effect 8
+		elseif (eff == 9) then
+			status.Inflict("D10 Faulty Ammo", {Time = sec, Player = victim, Weapon = victim:GetActiveWeapon()}) --effect 9
+		elseif (eff == 10) then
+			status.Inflict("D10 Oversight", {Time = sec, Player = att}) --effect 10
+		end
+	end
+end
+
+if (SERVER) then
+	local PAMMO = status.Create("D10 Power Ammo")
+	function PAMMO:Invoke(data)
+		self:CreateEffect("D10 Power Ammo"):Invoke(data, data.Time, data.Player)
+	end
+
+	local PAEFFECT = PAMMO:CreateEffect("D10 Power Ammo")
+	PAEFFECT.Message = "Power Ammo (D10)"
+	PAEFFECT.Color = Color(105, 0, 255)
+	PAEFFECT.Material = "icon16/chart_pie.png"
+
+	function PAEFFECT:Init(data)
+		local curWeapon = data.Weapon.Primary
+		if (not curWeapon.BaseDamage) then
+			curWeapon.BaseDamage = curWeapon.Damage
+		end
+		curWeapon.Damage = (curWeapon.BaseDamage * 1.25)
+		self:CreateEndTimer(data.Time, data)
+	end
+
+	function PAEFFECT:OnEnd(data)
+		local curWeapon = data.Weapon.Primary
+		curWeapon.Damage = curWeapon.BaseDamage
+	end
+
+	local FGUN = status.Create("D10 Faulty Gun")
+	function FGUN:Invoke(data)
+		self:CreateEffect("D10 Faulty Gun"):Invoke(data, data.Time, data.Player)
+	end
+
+	local FGEFFECT = FGUN:CreateEffect("D10 Faulty Gun")
+	FGEFFECT.Message = "Faulty Gun (D10)"
+	FGEFFECT.Color = Color(105, 0, 255)
+	FGEFFECT.Material = "icon16/chart_pie.png"
+
+	function FGEFFECT:Init(data)
+		local curWeapon = data.Weapon.Primary
+		if (not curWeapon.BaseDelay) then
+			curWeapon.BaseDelay = curWeapon.Delay
+		end
+		curWeapon.Delay = (curWeapon.BaseDelay * 1.25)
+		self:CreateEndTimer(data.Time, data)
+	end
+
+	function FGEFFECT:OnEnd(data)
+		local curWeapon = data.Weapon.Primary
+		curWeapon.Delay = curWeapon.BaseDelay
+	end
+
+	--EFFECT 2 DONE
+	local SLOW = status.Create("D10 Slowness")
+	function SLOW:Invoke(data)
+		self:CreateEffect("D10 Slowness"):Invoke(data, data.Time, data.Player)
+	end
+
+	local SEFFECT = SLOW:CreateEffect("D10 Slowness")
+	SEFFECT.Message = "Slowness (D10)"
+	SEFFECT.Color = Color(105, 0, 255)
+	SEFFECT.Material = "icon16/chart_pie.png"
+
+	function SEFFECT:Init(data)
+		local ply = data.Player
+		ply.moatFrozen = true
+		ply.moatFrozenSpeed = data.Speed
+		self:CreateEndTimer(data.Time, data)
+	end
+
+	function SEFFECT:OnEnd(data)
+		if (not IsValid(data.Player)) then return end
+		local ply = data.Player
+		ply.moatFrozen = false
+		ply.moatFrozenSpeed = 1
+	end
+
+	local NS = status.Create("D10 Out of Control")
+	function NS:Invoke(data)
+		self:CreateEffect("D10 Out of Control"):Invoke(data, data.Time, data.Player)
+	end
+
+	local NSEFFECT = NS:CreateEffect("D10 Out of Control")
+	NSEFFECT.Message = "Out of Control (D10)"
+	NSEFFECT.Color = Color(105, 0, 255)
+	NSEFFECT.Material = "icon16/chart_pie.png"
+
+	function NSEFFECT:Init(data)
+		local curWeapon = data.Weapon.Primary
+		curWeapon.Recoil = (curWeapon.Recoil * data.Amount)
+		self:CreateEndTimer(data.Time, data)
+	end
+
+	function NSEFFECT:OnEnd(data)
+		local curWeapon = data.Weapon.Primary
+		curWeapon.Recoil = (curWeapon.Recoil / data.Amount)
+	end
+
+	local HEAL = status.Create("D10 Healing")
+	function HEAL:Invoke(data)
+		self:CreateEffect("D10 Healing"):Invoke(data, data.Time, data.Player)
+	end
+
+	local HLEFFECT = HEAL:CreateEffect("D10 Healing")
+	HLEFFECT.Message = "Healing (D10)"
+	HLEFFECT.Color = Color(105, 0, 255)
+	HLEFFECT.Material = "icon16/chart_pie.png"
+
+	function HLEFFECT:Init(data)
+		self.HealTimer = self:CreateTimer(data.Time, data.Amount, self.HealCallback, data)
+	end
+
+	function HLEFFECT:HealCallback(data)
+		local att = data.Player
+		if (not IsValid(att)) then return end
+		if (att:Team() == TEAM_SPEC) then return end
+		if (GetRoundState() ~= ROUND_ACTIVE) then return end
+		att:SetHealth(math.Clamp(att:Health() + 1, 0, att:GetMaxHealth()))
+	end
+	--EFFECT 5 DONE
+	local DRAIN = status.Create("D10 Life Drain")
+	function DRAIN:Invoke(data)
+		self:CreateEffect("D10 Life Drain"):Invoke(data, data.Time, data.Player)
+	end
+	local DREFFECT = DRAIN:CreateEffect("D10 Life Drain")
+	DREFFECT.Message = "Life Drain (D10)"
+	DREFFECT.Color = Color(105, 0, 255)
+	DREFFECT.Material = "icon16/chart_pie.png"
+
+	function DREFFECT:Init(data)
+		self:CreateTimer(data.Time, data.Amount, self.Callback, data)
+	end
+	function DREFFECT:Callback(data)
+		local vic = data.Player
+		if (not IsValid(vic)) then return end
+		if (not vic:Alive()) then return end
+		if (GetRoundState() ~= ROUND_ACTIVE) then return end
+		local dmg = DamageInfo()
+		dmg:SetInflictor(data.Weapon)
+		dmg:SetAttacker(data.Attacker)
+		dmg:SetDamage(data.Damage)
+		dmg:SetDamageType(DMG_SLOWBURN)
+		vic:TakeDamageInfo(dmg)
+	end
+
+	local DRSTATUS = status.Create("D10 Damage Resistance")
+	function DRSTATUS:Invoke(data)
+		self:CreateEffect("D10 Damage Resistance"):Invoke(data, data.Time, data.Player)
+	end
+
+	local DAREFFECT = DRSTATUS:CreateEffect("D10 Damage Resistance")
+	DAREFFECT.Message = "Damage Resistance (D10)"
+	DAREFFECT.Color = Color(105, 0, 255)
+	DAREFFECT.Material = "icon16/chart_pie.png"
+
+	function DAREFFECT:Init(data)
+		local att = data.Player
+		att.Fortified = 0.75
+		self:CreateEndTimer(data.Time, data)
+	end
+
+	function DAREFFECT:OnEnd(data)
+		if (not IsValid(data.Player)) then return end
+		local att = data.Player
+		att.Fortified = nil
+	end
+
+	local SPSTATUS = status.Create("D10 Speedy")
+	function SPSTATUS:Invoke(data)
+		self:CreateEffect("D10 Speedy"):Invoke(data, data.Time, data.Player)
+	end
+
+	local SPEFFECT = SPSTATUS:CreateEffect("D10 Speedy")
+	SPEFFECT.Message = "Speedy (D10)"
+	SPEFFECT.Color = Color(105, 0, 255)
+	SPEFFECT.Material = "icon16/chart_pie.png"
+
+	function SPEFFECT:Init(data)
+		local att = data.Player
+		att.speedforce = 1.2
+		self:CreateEndTimer(data.Time, data)
+	end
+
+	function SPEFFECT:OnEnd(data)
+		if (not IsValid(data.Player)) then return end
+		local att = data.Player
+		att.speedforce = 1
+	end
+
+	local FAMMO = status.Create("D10 Faulty Ammo")
+	function FAMMO:Invoke(data)
+		self:CreateEffect("D10 Faulty Ammo"):Invoke(data, data.Time, data.Player)
+	end
+
+	local FAEFFECT = FAMMO:CreateEffect("D10 Faulty Ammo")
+	FAEFFECT.Message = "Faulty Ammo (D10)"
+	FAEFFECT.Color = Color(105, 0, 255)
+	FAEFFECT.Material = "icon16/chart_pie.png"
+
+	function FAEFFECT:Init(data)
+		local curWeapon = data.Weapon.Primary
+		if (not curWeapon.BaseDamage) then
+			curWeapon.BaseDamage = curWeapon.Damage
+		end
+		curWeapon.Damage = (curWeapon.BaseDamage * 0.75)
+		self:CreateEndTimer(data.Time, data)
+	end
+
+	function FAEFFECT:OnEnd(data)
+		local curWeapon = data.Weapon.Primary
+		curWeapon.Damage = curWeapon.BaseDamage
+	end
+
+	local OVSTATUS = status.Create("D10 Oversight")
+
+	function OVSTATUS:Invoke(data)
+		self:CreateEffect("D10 Oversight"):Invoke(data, data.Time, data.Player)
+	end
+
+	local OVEFFECT = OVSTATUS:CreateEffect("D10 Oversight")
+	OVEFFECT.Message = "Oversight (D10)"
+	OVEFFECT.Color = Color(105, 0, 255)
+	OVEFFECT.Material = "icon16/chart_pie.png"
+
+	function OVEFFECT:Init(data)
+		local att = data.Player
+		net.Start("Moat.Talents.Visionary")
+			net.WriteDouble(200)
+		net.Send(att)
+		self:CreateEndTimer(data.Time, data)
+	end
+
+	function OVEFFECT:OnEnd(data)
+		if (not IsValid(data.Player)) then return end
+		local att = data.Player
+
+		net.Start("Moat.Talents.Visionary.End")
+		net.Send(att)
+	end
+end
+
+m_AddTalent(TALENT)
+
+TALENT = {}
+
+TALENT.ID = 377
+TALENT.Suffix = "Woundeder"
+TALENT.Name = "Wounded"
+TALENT.NameColor = Color( 255, 0, 0 )
+TALENT.NameEffect = "fire"
+TALENT.Description = "Each hit has a %s_^ chance to debilitate the target for %s^ seconds and apply %s^ damage they jump or crouch"
+TALENT.Tier = 3
+TALENT.LevelRequired = { min = 25, max = 30 }
+
+TALENT.Modifications = {}
+TALENT.Modifications[1] = { min = 5, max = 15 }	-- Chance to ignite
+TALENT.Modifications[2] = { min = 5, max = 10 }	-- Ignite time
+TALENT.Modifications[3] = { min = 5, max = 10 }	-- Ignite time
+
+TALENT.Melee = true
+TALENT.NotUnique = false
+TALENT.American = true
+
+function TALENT:OnPlayerHit(victim, attacker, dmginfo, talent_mods)
+	if (MOAT_ACTIVE_BOSS) then return end
+
+	local chance = self.Modifications[1].min + ( ( self.Modifications[1].max - self.Modifications[1].min ) * math.min(1, talent_mods[1]) )
+	if (chance > math.random() * 100) then
+		status.Inflict("Wounded", {
+			Victim = victim,
+			Attacker = attacker,
+			Inflictor = dmginfo:GetInflictor(),
+			Time = self.Modifications[2].min + ( ( self.Modifications[2].max - self.Modifications[2].min ) * math.min(1, talent_mods[2]) ),
+			Damage = self.Modifications[3].min + ( ( self.Modifications[3].max - self.Modifications[3].min ) * math.min(1, talent_mods[3]) )
+		})
+	end
+end
+
+if (SERVER) then
+	local STATUS = status.Create "Wounded"
+	function STATUS:Invoke(data)
+		local effect = self:GetEffectFromPlayer("Wounded", data.Victim)
+		if (effect) then
+			effect:AddTime(data.Time)
+		else
+			self:CreateEffect "Wounded":Invoke(data, data.Time, data.Victim)
+		end
+	end
+
+	local EFFECT = STATUS:CreateEffect "Wounded"
+	EFFECT.Message = "Wounded"
+	EFFECT.Color = TALENT.NameColor
+	EFFECT.Material = "icon16/weather_sun.png"
+	function EFFECT:Init(data)
+		local victim = data.Victim
+		local damage = data.Damage
+		local radius = data.Radius or 0
+		if not victim.testingtimes then
+			victim.testingtimes = 1
+		else
+			victim.testingtimes = victim.testingtimes + 1
+		end
+		victim.pressed = true
+		victim.damage4u = {victim, damage}
+		self:CreateEndTimer(data.Time, data)
+	end
+
+	function EFFECT:OnEnd(data)
+		local victim = data.Victim
+		victim.testingtimes = victim.testingtimes - 1
+		if victim.testingtimes == 0 then
+			victim.pressed = nil
+			victim.damage4u = {}
+		end
+	end
+end
+m_AddTalent(TALENT)
+
+TALENT = {}
+
+TALENT.ID = 15545
+TALENT.Name = "Syphon"
+TALENT.NameEffect = "enchanted"
+TALENT.NameColor = Color(0, 255, 0)
+TALENT.Description = "Each hit has a %s_^ chance to steal %s^ health over %s seconds from victim"
+TALENT.Tier = 3
+TALENT.LevelRequired = {min = 25, max = 30}
+
+TALENT.Modifications = {}
+TALENT.Modifications[1] = {min = 5 , max = 20}	-- Chance to trigger
+TALENT.Modifications[2] = {min = 15, max = 25}	-- Amount to heal
+TALENT.Modifications[3] = {min = 5, max = 20}	-- Duration
+
+TALENT.Melee = true
+TALENT.NotUnique = false
+TALENT.American = true
+
+function TALENT:OnPlayerHit(victim, att, dmginfo, talent_mods)
+	local chance = self.Modifications[1].min + ((self.Modifications[1].max - self.Modifications[1].min) * math.min(1, talent_mods[1]))
+	if (chance > math.random() * 100) then
+		local amt = math.Round(self.Modifications[2].min + ((self.Modifications[2].max - self.Modifications[2].min) * math.min(1, talent_mods[2])))
+		local sec = math.Round(self.Modifications[3].min + ((self.Modifications[3].max - self.Modifications[3].min) * math.min(1, talent_mods[3])))
+
+		status.Inflict("Syphon", {Time = sec, Amount = amt, Player = victim, Attacker = att, dmg = dmginfo})
+	end
+end
+
+
+if (SERVER) then
+	local PREDATORY = status.Create "Syphon"
+	function PREDATORY:Invoke(data)
+		self:CreateEffect "Syphon":Invoke(data, data.Time, data.Player and data.Attacker)
+	end
+
+	local EFFECT = PREDATORY:CreateEffect "Syphon"
+	EFFECT.Message = "Syphoning"
+	EFFECT.Color = Color(0, 255, 0)
+	EFFECT.Material = "icon16/heart_delete.png"
+	function EFFECT:Init(data)
+		local vic = data.Player
+		local ply = data.Attacker
+		vic.HealTimer = self:CreateTimer(data.Time, data.Amount, self.HealCallback, data)
+	end
+	function EFFECT:HealCallback(data)
+		local att = data.Player
+		local pl = data.Attacker
+		if (not IsValid(att)) then return end
+		if (att:Team() == TEAM_SPEC) then return end
+		if (GetRoundState() ~= ROUND_ACTIVE) then return end
+		local dmg = DamageInfo()
+		dmg:SetAttacker(pl)
+		dmg:SetDamageType(DMG_SLASH)
+		dmg:SetDamage(1)
+		att:TakeDamageInfo(dmg)
+		pl:SetHealth(math.Clamp(pl:Health() + 1, 0, pl:GetMaxHealth()))
+	end
+end
+m_AddTalent(TALENT)
+
+TALENT = {}
+
+TALENT.ID = 89
+TALENT.Name = 'Propserous Times'
+TALENT.NameColor = Color(255,99,71)
+TALENT.Description = 'Your weapon will do %s_^ more damage if you are over %s health'
+TALENT.Tier = 1
+TALENT.LevelRequired = {min = 5, max = 10}
+
+TALENT.Modifications = {}
+TALENT.Modifications[1] = {min = 10, max = 25} -- Damage last bullet can do
+TALENT.Modifications[2] = {min = 80, max = 100} -- Health
+
+TALENT.Melee = true
+TALENT.NotUnique = false
+TALENT.American = true
+
+function TALENT:OnPlayerHit(victim, attacker, dmginfo, talent_mods)
+	local health_required = self.Modifications[2].min + ( ( self.Modifications[2].max - self.Modifications[2].min ) * math.min(1, talent_mods[2]) )
+
+	if (attacker and attacker:Health() >= health_required) then
+		local increase = self.Modifications[1].min + ( ( self.Modifications[1].max - self.Modifications[1].min ) * math.min(1, talent_mods[1]) )
+		dmginfo:ScaleDamage(1 + (increase / 100))
+	end
+end
+m_AddTalent(TALENT)
+
+TALENT = {}
+
+TALENT.ID = 6788
+TALENT.Name = "Marksman"
+TALENT.NameColor = Color( 255, 0, 0 )
+TALENT.Description = "Damage is increased by %s_ when crouching with this weapon"
+TALENT.Tier = 1
+TALENT.LevelRequired = { min = 5, max = 10 }
+
+TALENT.Modifications = {}
+TALENT.Modifications[1] = { min = 15, max = 30 }
+TALENT.Melee = true
+TALENT.NotUnique = false
+TALENT.American = true
+
+function TALENT:ScalePlayerDamage( victim, attacker, dmginfo, hitgroup, talent_mods )
+	if attacker:Crouching() then
+		local increase = self.Modifications[1].min + ( ( self.Modifications[1].max - self.Modifications[1].min ) * math.min(1, talent_mods[1]) )
+		dmginfo:ScaleDamage( 1 + ( increase / 100 ) )
+	end
+end
+m_AddTalent(TALENT)
+
+TALENT = {} 
+TALENT.ID = 40332
+TALENT.Name = "Holstered"
+TALENT.NameColor = Color(27, 27, 27)
+TALENT.Description = "When holstering this gun for %s seconds, you will automatically reload" 
+TALENT.Tier = 2 
+TALENT.LevelRequired = { min = 18, max = 22 }
+TALENT.Modifications = {} 
+TALENT.Modifications[1] = { min = 3, max = 6 } 
+TALENT.Melee = false 
+TALENT.NotUnique = false
+TALENT.American = true
+TALENT.Synergies = {"Redo"}
+
+function TALENT:OnWeaponSwitch(ply, wep, isto, talent_mods) 
+	local timer_speed = self.Modifications[1].min + ( ( self.Modifications[1].max - self.Modifications[1].min ) * math.min(1, talent_mods[1]) )     
+	local cur = wep:Clip1()     
+	local ammo = wep:Ammo1()     
+	local maxc = wep:GetMaxClip1() 
+	local ammotype = wep:GetPrimaryAmmoType()     
+	local active = false 
+	local id = "tera_reload" .. ply:EntIndex()
+	if !isto then timer.Create(id, timer_speed, 0, function() 
+		if (not IsValid(ply)) then timer.Remove(id) return end 
+		if (not IsValid(wep)) then timer.Remove(id) return end 
+		if (IsValid(ply:GetActiveWeapon()) and ply:GetActiveWeapon() == wep) then timer.Remove(id) return end 
+		if wep:Clip1() == maxc then                      
+			return                         
+		elseif ammo == 0 and active == false then                 
+			D3A.Chat.SendToPlayer2(ply, moat_white, "Your " .. wep.PrintName .. " has no more ammo!")
+			active = true 
+		else
+			local a = tera_has_talent(wep, self.Synergies)
+			if a and math.random(5) > 2 then
+				wep:SetClip1(wep:GetMaxClip1())
+				D3A.Chat.SendToPlayer2(ply, moat_white, "Your gun has reloaded fully without taking ammo thanks to Redo!")
+			else
+				local a = (maxc - cur)                 
+				local b = ammo - a                 
+				if b < 0 and active == false then                     
+					wep:SetClip1(cur + ammo) ply:SetAmmo(0, ammotype) 
+					D3A.Chat.SendToPlayer2(ply, moat_white, "Your " .. wep.PrintName .. " has reloaded, and you have used the rest of your ammo!") 
+				elseif active == false then
+					wep:SetClip1(maxc) ply:SetAmmo(ammo - (maxc - cur), ammotype) 
+					D3A.Chat.SendToPlayer2(ply, moat_white, "Your " .. wep.PrintName .. " has reloaded, and you have used " .. maxc - cur .. " ammo!") 
+				end
+			end 
+		end 
+	end) 
+	else 
+	timer.Remove(id)
+	active = false
+	end 
+end 
+m_AddTalent(TALENT)
+
+TALENT = {}
 
 TALENT.ID = 5877
 TALENT.Name = "Chicken dinner"
@@ -3631,7 +4548,8 @@ TALENT.Modifications = {}
 TALENT.Modifications[1] = { min = 30, max = 50 } -- Amount health is increased
 
 TALENT.Melee = true
-TALENT.NotUnique = true
+TALENT.NotUnique = false
+TALENT.American = true
 
 function TALENT:OnPlayerDeath( victim, inf, attacker, talent_mods )
 	local health_to_add = self.Modifications[1].min + ( ( self.Modifications[1].max - self.Modifications[1].min ) * math.min(1, talent_mods[1]) )
@@ -3655,14 +4573,15 @@ TALENT.Tier = 2
 TALENT.LevelRequired = { min = 15, max = 20 }
 TALENT.Modifications = {}
 TALENT.Modifications[1] = { min = 10, max = 30 } -- Amount health is increased
+TALENT.American = true
 
 TALENT.Melee = true
-TALENT.NotUnique = true
+TALENT.NotUnique = false
 
 function TALENT:OnPlayerDeath( victim, inf, attacker, talent_mods )
 	local chance = self.Modifications[1].min + ( ( self.Modifications[1].max - self.Modifications[1].min ) * math.min(1, talent_mods[1]) )
 	local abc = "abcdefghijklmnopqrstuvwxyz"
-	if (chance > math.random() * 100) and not attacker.cantp then
+	if (chance > math.random() * 100) and not attacker.teratp then
 		local a = attacker:GetInfo("moat_teleport")
 		a = tonumber(a)
 		if a < 11 or a > 36 then 
@@ -3670,13 +4589,318 @@ function TALENT:OnPlayerDeath( victim, inf, attacker, talent_mods )
 			return
 		end
 		D3A.Chat.SendToPlayer2(attacker, moat_white, "You killed " .. victim:Name() .. ". Type " .. string.upper(abc[a - 10]) .." to travel to their body!")
-		attacker.cantp = {victim:GetPos(), victim:GetAngles(), a}
+		attacker.teratp = {victim:GetPos(), victim:GetAngles(), a}
 		timer.Simple( 6, function()
-			if attacker.cantp then
-				attacker.cantp = nil
+			if attacker.teratp then
+				attacker.teratp = nil
 				D3A.Chat.SendToPlayer2(attacker, moat_white, "You can no longer teleport to " .. victim:Name() .. "'s body!")
 			end
 		end)
 	end
+end
+m_AddTalent(TALENT)
+
+TALENT = {}
+TALENT.ID = 3773
+TALENT.Suffix = "The The The Shaker"
+TALENT.Name = "Fling"
+TALENT.NameColor = Color( 255, 255, 255 )
+TALENT.NameEffect = "bounce"
+TALENT.Description = "Each hit has a %s_^ chance to throw your victim off course"
+TALENT.Tier = 3
+TALENT.LevelRequired = { min = 25, max = 30 }
+
+TALENT.Modifications = {}
+TALENT.Modifications[1] = { min = 5, max = 15 }	-- Chance to ignite
+
+TALENT.Melee = true
+TALENT.NotUnique = false
+TALENT.American = true
+
+function TALENT:OnPlayerHit(victim, attacker, dmginfo, talent_mods)
+	local chance = self.Modifications[1].min + ( ( self.Modifications[1].max - self.Modifications[1].min ) * math.min(1, talent_mods[1]) )
+	if (chance > math.random() * 100) then
+		victim:SetVelocity(Vector(250,250,250))
+	end
+end
+m_AddTalent(TALENT)
+
+TALENT = {}
+TALENT.ID = 3774
+TALENT.Name = "Fragmentation"
+TALENT.Suffix = "of limb"
+TALENT.NameColor = Color( 255, 50, 50)
+TALENT.NameEffect = "glow"
+TALENT.Description = "Every kill you get will increase your weapons limb multiplier by %s_ for the round"
+TALENT.Tier = 1
+TALENT.LevelRequired = { min = 5, max = 10 }
+
+TALENT.Modifications = {}
+TALENT.Modifications[1] = { min = 7, max = 15 }
+TALENT.Melee = false
+TALENT.NotUnique = false
+TALENT.American = true
+
+function TALENT:OnPlayerDeath(victim, inf, attacker, talent_mods)
+    local Modi = self.Modifications[1]
+    local mult = Modi.min + (Modi.max - Modi.min) * math.min(1, talent_mods[1])
+	local wep = attacker:GetActiveWeapon()
+	wep.LimbMultiplier = wep.LimbMultiplier * (1 + (mult / 100))
+	D3A.Chat.SendToPlayer2(attacker, moat_white, "Your limb multiplier is now " .. wep.LimbMultiplier .. "!")
+end
+m_AddTalent(TALENT)
+
+TALENT = {}
+TALENT.ID = 3775
+TALENT.Name = "Redo"
+TALENT.Suffix = "Retry"
+TALENT.NameColor = Color( 96, 184, 146)
+TALENT.NameEffect = "glow"
+TALENT.Description = "Every bullet you miss has a %s_ chance to go back into your mag"
+TALENT.Tier = 1
+TALENT.LevelRequired = { min = 5, max = 10 }
+
+TALENT.Modifications = {}
+TALENT.Modifications[1] = { min = 30, max = 75 }
+TALENT.Melee = false
+TALENT.NotUnique = false
+TALENT.American = true
+
+function TALENT:OnWeaponFired(attacker, wep, dmginfo, talent_mods, is_bow, hit_pos)
+	if (GetRoundState() ~= ROUND_ACTIVE) then return end
+
+	local chance = (self.Modifications[1].min + ((self.Modifications[1].max - self.Modifications[1].min) * math.min(1, talent_mods[1]))) / (wep.Primary.NumShots or 1)
+	local old_callback = dmginfo.Callback
+
+	local has_done = false
+	dmginfo.Callback = function(att, tr, dmginfo)
+		if (old_callback) then
+			old_callback(att, tr, dmginfo)
+		end
+		
+		if (has_done or tr.AltHitreg) then
+			return
+		end
+		if (not is_bow and not hit_pos) then
+			has_done = true
+			if (chance > math.random() * 100) then
+				wep:SetClip1(wep:Clip1() + 1)
+			end
+		end
+	end
+end
+m_AddTalent(TALENT)
+
+TALENT = {}
+TALENT.ID = 3778
+TALENT.Name = "American Dream"
+TALENT.Suffix = "yes"
+TALENT.NameColor = Color( 96, 184, 146)
+TALENT.NameEffect = "glow"
+TALENT.Description = "Every kill has a %s_ chance to get an extra chance to endround drop an item"
+TALENT.Tier = 3
+TALENT.LevelRequired = { min = 25, max = 30 }
+
+TALENT.Modifications = {}
+TALENT.Modifications[1] = { min = 30, max = 50 }
+TALENT.Melee = false
+TALENT.NotUnique = false
+TALENT.American = true
+
+function TALENT:OnPlayerDeath(victim, inf, attacker, talent_mods)
+	local chance = self.Modifications[1].min + ( ( self.Modifications[1].max - self.Modifications[1].min ) * math.min(1, talent_mods[1]) )
+	if (chance > math.random() * 100) then
+    	attacker.ExtraDropChances = attacker.ExtraDropChances + 1
+		D3A.Chat.SendToPlayer2(attacker, moat_white, "You have gotten an extra drop chance! You now have " .. attacker.ExtraDropChances .. " chances to drop an item endround!")
+	end
+end
+m_AddTalent(TALENT)
+
+TALENT = {}
+TALENT.ID = 3779
+TALENT.Name = "Hit n' Run"
+TALENT.Suffix = "yesn't"
+TALENT.NameColor = Color( 96, 184, 146)
+TALENT.NameEffect = "glow"
+TALENT.Description = "Every kill has a %s_^ chance to allow you to sprint for %s^ seconds while pressing shift"
+TALENT.Tier = 2
+TALENT.LevelRequired = { min = 15, max = 20 }
+
+TALENT.Modifications = {}
+TALENT.Modifications[1] = {min = 30, max = 50}
+TALENT.Modifications[2] = {min = 5, max = 10}
+
+TALENT.Melee = false
+TALENT.NotUnique = false
+TALENT.American = true
+
+function TALENT:OnPlayerDeath(victim, inf, attacker, talent_mods)
+	local chance = self.Modifications[1].min + ( ( self.Modifications[1].max - self.Modifications[1].min ) * math.min(1, talent_mods[1]) )
+	if (chance > math.random() * 100) and not attacker.cansprint then
+    	local a = self.Modifications[2].min + ( ( self.Modifications[2].max - self.Modifications[2].min ) * math.min(1, talent_mods[2]) )
+		attacker.cansprint = true
+		D3A.Chat.SendToPlayer2(attacker, moat_white, "You can now sprint for " .. a .. " seconds!")
+		timer.Simple(a, function()
+			attacker.cansprint = false
+			attacker.couldsprint = true
+			D3A.Chat.SendToPlayer2(attacker, moat_white, "You can no longer sprint!")
+		end)
+	end
+end
+m_AddTalent(TALENT)
+
+TALENT = {}
+TALENT.ID = 3780
+TALENT.Name = "Veteran"
+TALENT.Suffix = "no"
+TALENT.NameColor = Color( 96, 184, 146)
+TALENT.NameEffect = "glow"
+TALENT.Description = "Kick is reduced by %s_^ while cone is increased by %s_^"
+TALENT.Tier = 1
+TALENT.LevelRequired = { min = 5, max = 10 }
+
+TALENT.Modifications = {}
+TALENT.Modifications[1] = { min = -10, max = -20 } -- Amount kick is reduced
+TALENT.Modifications[2] = { min = 10, max = 20 } -- Amount kick is reduced
+TALENT.Melee = false
+TALENT.NotUnique = false
+TALENT.American = true
+
+function TALENT:ModifyWeapon(weapon, talent_mods)
+	local Mod = self.Modifications[1]
+	local mult = Mod.min + (Mod.max - Mod.min) * math.min(1, talent_mods[1])
+	weapon:SetKick(((1 + weapon:GetKick() / 100) * (1 + mult / 100) - 1) * 100)
+	local Mod = self.Modifications[2]
+	local mult = Mod.min + (Mod.max - Mod.min) * math.min(1, talent_mods[2])
+	weapon:SetAccuracy((1 - (1 - weapon:GetAccuracy() / 100) * (1 - mult / 100)) * 100)
+end
+m_AddTalent(TALENT)
+
+TALENT = {}
+
+TALENT.ID = 3781
+TALENT.Name = 'Weaken'
+TALENT.NameColor = Color(100, 90, 100)
+TALENT.Description = 'Each hit has a %s_^ chance to weaken your target to do 30_ less damage for %s^ seconds'
+TALENT.Tier = 2
+TALENT.LevelRequired = { min = 15, max = 20 }
+
+TALENT.Modifications = {}
+TALENT.Modifications[1] = {min = 25, max = 35} -- Chance to trigger
+TALENT.Modifications[2] = {min = 2 , max = 6 } -- Duration
+
+TALENT.Melee = true
+TALENT.NotUnique = true
+TALENT.American = true
+
+function TALENT:OnPlayerHit(vic, att, info, talent_mods)
+	local chance = self.Modifications[1].min + ((self.Modifications[1].max - self.Modifications[1].min) * math.min(1, talent_mods[1]))
+	if (chance > math.random() * 100) then
+		local duration = self.Modifications[2].min + ((self.Modifications[2].max - self.Modifications[2].min) * math.min(1, talent_mods[2]))
+
+		status.Inflict("Weaken", {Time = duration, Player = att})
+	end
+end
+
+if (SERVER) then
+	local STATUS = status.Create "Weaken"
+	function STATUS:Invoke(data)
+		local effect = self:GetEffectFromPlayer("Weaken", data.Player)
+		if (effect) then
+			effect:AddTime(data.Time)
+		else
+			self:CreateEffect "Weaken":Invoke(data, data.Time, data.Player)
+		end
+	end
+
+	local EFFECT = STATUS:CreateEffect "Weaken"
+	EFFECT.Message = "Weakened"
+	EFFECT.Color = TALENT.NameColor
+	EFFECT.Material = "icon16/user_delete.png"
+	function EFFECT:Init(data)
+		local vic = data.Player
+		vic.Weakened = true
+
+		self:CreateEndTimer(data.Time, data)
+	end
+
+	function EFFECT:OnEnd(data)
+		if (not IsValid(data.Player)) then return end
+
+		local vic = data.Player
+		vic.Weakened = false
+	end
+end
+m_AddTalent(TALENT)
+
+TALENT = {}
+
+TALENT.ID = 1556
+TALENT.Name = "Rend"
+TALENT.NameEffect = "enchanted"
+TALENT.NameColor = Color(255, 0, 255)
+TALENT.Description = "Each hit has a %s_^ chance to deal 1 damage every second for %s seconds, leaving the victim unable to heal"
+TALENT.Tier = 3
+TALENT.LevelRequired = {min = 25, max = 30}
+
+TALENT.Modifications = {}
+TALENT.Modifications[1] = {min = 5 , max = 10}    -- Chance to trigger
+TALENT.Modifications[2] = {min = 15, max = 25}    -- Duration
+
+TALENT.Melee = true
+TALENT.NotUnique = false
+TALENT.American = true
+
+function TALENT:OnPlayerHit(victim, att, dmginfo, talent_mods)
+    local chance = self.Modifications[1].min + ((self.Modifications[1].max - self.Modifications[1].min) * math.min(1, talent_mods[1]))
+    if (chance > math.random() * 100) then
+        local sec = math.Round(self.Modifications[2].min + ((self.Modifications[2].max - self.Modifications[2].min) * math.min(1, talent_mods[2])))
+
+        status.Inflict("Rend", {Time = sec, Amount = sec, Player = victim, Attacker = att, dmg = dmginfo})
+    end
+end
+
+
+if (SERVER) then
+    local meta = FindMetaTable("Entity")
+
+    if not meta.oldSetHealth then
+        meta.oldSetHealth = meta.oldSetHealth or meta.SetHealth
+
+        function meta:SetHealth(hp)
+            if self.Blastered and hp > self:Health() then return end
+
+            return meta.oldSetHealth(self, hp)
+        end
+    end
+    local PREDATORY = status.Create "Rend"
+    function PREDATORY:Invoke(data)
+        self:CreateEffect "Rend":Invoke(data, data.Time, data.Player)
+    end
+
+    local EFFECT = PREDATORY:CreateEffect "Rend"
+    EFFECT.Message = "Rendering"
+    EFFECT.Color = Color(0, 255, 0)
+    EFFECT.Material = "icon16/heart_delete.png"
+    function EFFECT:Init(data)
+        local vic = data.Player
+        local ply = data.Attacker
+        vic.Blastered = true
+        timer.Simple(data.Time + 1, function()
+            vic.Blastered = nil
+        end)
+        vic.HealTimer = self:CreateTimer(data.Time, data.Time, self.HealCallback, data)
+    end
+    function EFFECT:HealCallback(data)
+        local att = data.Player
+        local pl = data.Attacker
+        if (not IsValid(att)) then return end
+        if (GetRoundState() ~= ROUND_ACTIVE) then return end
+        local dmg = DamageInfo()
+        dmg:SetAttacker(pl)
+        dmg:SetDamageType(DMG_SLASH)
+        dmg:SetDamage(1)
+        att:TakeDamageInfo(dmg)
+    end
 end
 m_AddTalent(TALENT)

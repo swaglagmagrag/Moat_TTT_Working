@@ -3342,6 +3342,196 @@ sound.Add({
 	sound = 			"weapons/gunshot_mac10/mac10_boltpull.wav"
 })
 
+sound.Add(
+{
+    name = "Weapon_TMP.Clipout",
+    channel = CHAN_STATIC,
+    volume = 1.0,
+    soundlevel = 80,
+    sound = {"weapons/mp9/mp9_clipout.wav"}
+})
+
+sound.Add(
+{
+    name = "Weapon_TMP.Clipin",
+    channel = CHAN_STATIC,
+    volume = 1.0,
+    soundlevel = 80,
+    sound = {"weapons/mp9/mp9_clipin.wav"}
+})
+
+sound.Add(
+{
+    name = "Weapon_TMP.Deploy",
+    channel = CHAN_STATIC,
+    volume = 1.0,
+    soundlevel = 80,
+    sound = {"weapons/mp9/mp9_deploy.wav"}
+})
+
+sound.Add(
+{
+    name = "Weapon_TMP.Shoot",
+    channel = CHAN_STATIC,
+    volume = 1.0,
+    soundlevel = 80,
+    sound = {"weapons/mp9/mp9_unsil.wav"}
+})
+
+sound.Add(
+{
+    name = "TFA_INS2.Warface_CDXMC_Kraken.Fire",
+    channel = CHAN_STATIC,
+    volume = 1.0,
+    soundlevel = 80,
+    sound = {"weapons/cdxmc_kraken/cdxmc_fp.wav"}
+})
+
+sound.Add(
+{
+    name = "TFA_INS2.Warface_CDXMC_Kraken.BoltRelease",
+    channel = CHAN_STATIC,
+    volume = 1.0,
+    soundlevel = 80,
+    sound = {"weapons/cdxmc_kraken/cdxmc_boltrelease.wav"}
+})
+
+sound.Add(
+{
+    name = "TFA_INS2.Warface_CDXMC_Kraken.Boltback",
+    channel = CHAN_STATIC,
+    volume = 1.0,
+    soundlevel = 80,
+    sound = {"weapons/cdxmc_kraken/cdxmc_boltback.wav"}
+})
+
+sound.Add(
+{
+    name = "TFA_INS2.Warface_CDXMC_Kraken.Magrelease",
+    channel = CHAN_STATIC,
+    volume = 1.0,
+    soundlevel = 80,
+    sound = {"weapons/cdxmc_kraken/cdxmc_magrelease.wav"}
+})
+
+sound.Add(
+{
+    name = "TFA_INS2.Warface_CDXMC_Kraken.Magout",
+    channel = CHAN_STATIC,
+    volume = 1.0,
+    soundlevel = 80,
+    sound = {"weapons/cdxmc_kraken/cdxmc_magout.wav"}
+})
+
+sound.Add(
+{
+    name = "TFA_INS2.Warface_CDXMC_Kraken.Magin",
+    channel = CHAN_STATIC,
+    volume = 1.0,
+    soundlevel = 80,
+    sound = {"weapons/cdxmc_kraken/cdxmc_magin.wav"}
+})
+
+sound.Add(
+{
+    name = "TFA_INS2.Warface_CDXMC_Kraken.Boltforward",
+    channel = CHAN_STATIC,
+    volume = 1.0,
+    soundlevel = 80,
+    sound = {"weapons/cdxmc_kraken/cdxmc_boltup.wav"}
+})
+
+sound.Add(
+{
+    name = "TFA_INS2.Warface_CDXMC_Kraken.BoltLatch",
+    channel = CHAN_STATIC,
+    volume = 1.0,
+    soundlevel = 80,
+    sound = {"weapons/cdxmc_kraken/cdxmc_boltrelease.wav"}
+})
+
+-- Lightning --
+sound.Add( {
+	name = "lighting_hands",
+	channel = CHAN_WEAPON,
+	volume = 1.0,
+	level = 100,
+	pitch = 100,
+	sound = "weapons/starwars/force_lightning1.wav"
+} )
+
+
+sound.Add( {
+	name = "hand_zap",
+	channel = CHAN_WEAPON,
+	volume = 1.0,
+	level = 100,
+	pitch = 100,
+	sound = "weapons/starwars/force_lightning2.wav"
+} )
+sound.Add(
+{
+    name = "TFA_INS2.MP5K.Boltlock",
+    channel = CHAN_STATIC,
+    volume = 1.0,
+    soundlevel = 80,
+    sound = {"weapons/tfa_ins2/mp5k/mp5k_boltlock.wav"}
+})
+
+sound.Add(
+{
+    name = "TFA_INS2.MP5K.Boltrelease",
+    channel = CHAN_STATIC,
+    volume = 1.0,
+    soundlevel = 80,
+    sound = {"weapons/tfa_ins2/mp5k/mp5k_boltrelease.wav"}
+})
+
+sound.Add(
+{
+    name = "TFA_INS2.MP5K.Boltback",
+    channel = CHAN_STATIC,
+    volume = 1.0,
+    soundlevel = 80,
+    sound = {"weapons/tfa_ins2/mp5k/mp5k_boltback.wav"}
+})
+
+sound.Add(
+{
+    name = "TFA_INS2.MP5K.MagRelease",
+    channel = CHAN_STATIC,
+    volume = 1.0,
+    soundlevel = 80,
+    sound = {"weapons/tfa_ins2/mp5k/mp5k_magrelease.wav"}
+})
+
+sound.Add(
+{
+    name = "TFA_INS2.MP5K.Magout",
+    channel = CHAN_STATIC,
+    volume = 1.0,
+    soundlevel = 80,
+    sound = {"weapons/tfa_ins2/mp5k/mp5k_magout.wav"}
+})
+
+sound.Add(
+{
+    name = "TFA_INS2.MP5K.Magin",
+    channel = CHAN_STATIC,
+    volume = 1.0,
+    soundlevel = 80,
+    sound = {"weapons/tfa_ins2/mp5k/mp5k_magin.wav"}
+})
+
+sound.Add(
+{
+    name = "TFA_INS2.MP5K.Shoot",
+    channel = CHAN_STATIC,
+    volume = 1.0,
+    soundlevel = 80,
+    sound = {"weapons/tfa_ins2/mp5k/mp5k_fp.wav"}
+})
+
 -- MP40 --
 fastbl = {}
 fastbl["channel"] = "3"

@@ -46,3 +46,5 @@ function D3A.Unmute(pl)
 	cookie.Set("moat_mute" .. pl:SteamID(), "0")
 	pl:SetMuted(false)
 end
+
+--test

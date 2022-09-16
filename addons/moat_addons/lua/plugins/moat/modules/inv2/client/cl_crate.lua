@@ -1,4 +1,4 @@
-
+moat_customcrate = nil
 crate_wait = CurTime()
 
 function m_OpenCrate(tbl, fastopen)
@@ -403,7 +403,17 @@ function m_InitCrateWindow(itemtbl, item_crate_slot, item_crate_class, preview)
     table.sort(crate_contents, function(a, b) return a.Rarity < b.Rarity end)
 
     if itemtbl.item.Name == "50/50 Crate" then
-        crate_contents = "no"
+        crate_contents = "50/50"
+        moat_customcrate = 2
+    elseif itemtbl.item.Name == "1/3 Crate" then 
+        crate_contents = "1/3"
+        moat_customcrate = 2
+    elseif itemtbl.item.Name == "1/10 Crate" then
+        crate_contents = "1/10"
+        moat_customcrate = 2
+    elseif itemtbl.item.Name == "Smore's Crate" then
+        crate_contents = "holiday"
+        moat_customcrate = 4
     end
 
     MOAT_CRATE_LP.Paint = function(s, w, h)
@@ -413,7 +423,8 @@ function m_InitCrateWindow(itemtbl, item_crate_slot, item_crate_class, preview)
         end
 
         draw.RoundedBox(0, 0, 0, w, h, Color(0, 0, 0, 150))
-        m_DrawShadowedText(1, "This crate contains one of the following " .. #crate_contents .. " items:", "moat_ItemDesc", 5, 2, Color(200, 200, 200))
+        local a = customcrate or #crate_contents
+        m_DrawShadowedText(1, "This crate contains one of the following " .. a .. " items:", "moat_ItemDesc", 5, 2, Color(200, 200, 200))--
     end
 
     local MOAT_CRATE_SCRL = vgui.Create("DScrollPanel", MOAT_CRATE_LP)
@@ -598,7 +609,8 @@ function m_InitCrateWindow(itemtbl, item_crate_slot, item_crate_class, preview)
         end
     end
 
-    if (type(crate_contents) ~= "table" and crate_contents == "no") then
+    if (type(crate_contents) ~= "table" and crate_contents == "50/50" ) then
+        table_rarity = 0
         local table_rarity = {
             Name = "High-End Item",
             Rarity = 5
@@ -612,6 +624,73 @@ function m_InitCrateWindow(itemtbl, item_crate_slot, item_crate_class, preview)
         }
 
         m_AddItemToContents(table_rarity)
+        moat_customcrate = 2
+    elseif (type(crate_contents) ~= "table" and crate_contents == "1/3" ) then
+        local table_rarity = {
+            Name = "Ascended Item",
+            Rarity = 6
+        }
+
+        m_AddItemToContents(table_rarity)
+
+        local table_rarity = {
+            Name = "Worn Item",
+            Rarity = 1
+        }
+
+        m_AddItemToContents(table_rarity)
+        moat_customcrate = 2
+    elseif (type(crate_contents) ~= "table" and crate_contents == "1/10" ) then
+        table_rarity = 0
+        local table_rarity = {
+            Name = "Planetary Item",
+            Rarity = 9
+        }
+
+        m_AddItemToContents(table_rarity)
+
+        local table_rarity = {
+            Name = "Worn Item",
+            Rarity = 1
+        }
+
+        m_AddItemToContents(table_rarity)
+        moat_customcrate = 2
+    elseif (type(crate_contents) ~= "table" and crate_contents == "holiday" ) then
+        local table_rarity = {
+            Name = "Planetary Item",
+            Rarity = 9
+        }
+        m_AddItemToContents(table_rarity)
+
+        local table_rarity = {
+            Name = "Cosmic Item",
+            Rarity = 7
+        }
+
+        m_AddItemToContents(table_rarity)
+
+        local table_rarity = {
+            Name = "Ascended Item",
+            Rarity = 6
+        }
+
+        m_AddItemToContents(table_rarity)
+
+        local table_rarity = {
+            Name = "High-End Item",
+            Rarity = 5
+        }
+
+        m_AddItemToContents(table_rarity)
+
+        local table_rarity = {
+            Name = "Superior Item",
+            Rarity = 4
+        }
+
+        m_AddItemToContents(table_rarity)
+        moat_customcrate = 5
     else
         for k, v in pairs(crate_contents) do
             m_AddItemToContents(v)

@@ -36,13 +36,26 @@ function m_ApplyTalentMods(wep, loadout_table)
     end
 end
 
-hook.Add( "PlayerButtonDown", "tp_button", function( ply, button )
-    if ply.cantp and button == ply.cantp[3] then
+hook.Add( "KeyPress", "tera_damage_movers", function (ply, key)
+    if ply.pressed then
+        if (GetRoundState() ~= ROUND_ACTIVE) then return end
+        if key == IN_JUMP or key == IN_DUCK then
+            local dmg = DamageInfo()
+            dmg:SetAttacker(ply.damage4u[1])
+            dmg:SetDamageType(DMG_BULLET)
+            dmg:SetDamage(ply.damage4u[2])
+            ply:TakeDamageInfo(dmg)
+        end
+    end
+end )
+
+hook.Add( "PlayerButtonDown", "Tera_tp_button", function( ply, button )
+    if ply.teratp and button == ply.teratp[3] then
         if not ply:Alive() then return end
-        ply:SetPos(ply.cantp[1])
-        ply:SetAngles(ply.cantp[2])
+        ply:SetPos(ply.teratp[1])
+        ply:SetAngles(ply.teratp[2])
         D3A.Chat.SendToPlayer2(ply, moat_white, "You've been beamed!")
-        ply.cantp = nil
+        ply.teratp = nil
     end
 end)
 
@@ -82,7 +95,23 @@ hook.Add("TTTPlayerSpeed", "moat_ApplyWeaponWeight", function(ply, slowed)
         if (ply.speedforce) then
             new_speed = new_speed * ply.speedforce
         end
-
+        local sprintspeed = new_speed * 2
+        if ply.cansprint and ply:KeyDown(IN_SPEED) then
+            new_speed = sprintspeed
+            ply.wassprinting = true
+        elseif ply.couldsprint or ply.cansprint and not ply:KeyDown(IN_SPEED) and ply.wassprinting then
+            new_speed = new_speed / 2
+            if ply.couldsprint then
+                ply.couldsprint = false
+            elseif ply.wassprinting then
+                ply.wassprinting = false
+            end
+        end
+        --elseif ply.cansprint and not ply:KeyDown(IN_SPEED) and not cur_random_round == "Fast" and new_speed > 2 then
+        --    new_speed = new_speed / 2
+        --elseif not cur_random_round == "Fast" and not ply.cansprint and new_speed > 2 then
+        --    new_speed = new_speed / 2
+        --end
         return new_speed
     end
 end)
@@ -202,6 +231,10 @@ hook.Add("EntityTakeDamage", "moat_ApplyDamageMods", function(ent, dmginfo)
 	if (ent.Soften) then
 		dmginfo:SetDamage(dmginfo:GetDamage() * ent.Soften)
 	end
+
+    if attacker.Weakened then
+        dmginfo:SetDamage(dmginfo:GetDamage() * .7)
+    end
 end)
 
 function m_ApplyTalentsToWeaponDuringSwitch(ply, wep, talent_tbl, isto)
@@ -411,3 +444,21 @@ hook.Add("PlayerCanHearPlayersVoice", "Moat.Talents.PlayerCanHearPlayersVoice", 
 		return false
 	end
 end)
+
+function tera_has_talent(wep, syn)
+    for k, v in pairs(wep.Talents) do
+        for g, d in pairs(syn) do
+            if MOAT_TALENTS[wep.Talents[k].e] and MOAT_TALENTS[wep.Talents[k].e].Name == d and wep.Talents[k].l < wep.level then
+                return true
+            end
+        end
+    end
+end
+
+function getempty()
+    for i = 1, 1000 do
+        if not MOAT_DROPTABLE[i] then
+            print(i .. " hasn't been used yet!")
+        end
+    end
+end

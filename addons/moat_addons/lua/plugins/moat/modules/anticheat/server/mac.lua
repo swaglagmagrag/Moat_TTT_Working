@@ -2,7 +2,8 @@ util.AddNetworkString "moat.verify"
 
 local hate_list = {
     "nigger",
-    "faggot"
+    "faggot",
+    "tranny"
 }
 
 util.AddNetworkString("moat._.initloading")
@@ -120,8 +121,63 @@ hook.Add("PlayerInitialSpawn","Automatic Hate kicking",function(ply)
     end
 end)
 
+function findslur(ply, txt)
+    for k, v in pairs (hate_list) do
+        if string.find(txt, v) then
+            return v
+        end
+    end
+    return nil
+end
+
+/*function checkoff(ply)
+    local ploff = nil
+    local found = false
+    local plywarns = {}
+    local db = MINVENTORY_MYSQL
+    local q = db:query("SELECT * FROM `player_warns` WHERE (`steam_id` = '" .. ply:SteamID64() .."')")
+    q:start()
+    function q:onSuccess(d)
+        for k, v in pairs(d) do
+            table.insert(plywarns, v.reason)
+        end
+        for k, v in pairs(plywarns) do
+            if string.find(string.lower(v), "hateful conduct" or "slur") then
+                found = true
+            end
+        end
+        if not found then
+            RunConsoleCommand("mga","warn",ply:SteamID(),"Hateful conduct first offense! Slurs will not be tolerated here!")
+        else
+            checkbans(ply)
+        end
+    end
+end
+
+function checkbans(ply)
+    local offs = {
+        "2 Weeks",
+        "4 Weeks"
+    }
+    local db = MINVENTORY_MYSQL
+    local q = db:query("SELECT * FROM `player_bans` WHERE (`steam_id` = '" .. ply:SteamID64() .."')")
+    q:start()
+    function q:onSuccess(d)
+        if #d == 0 then
+            RunConsoleCommand("mga","ban",ply:SteamID(), offs[1], "Hateful conduct second offense! Slurs will not be tolerated here!")
+        else
+            print("Bans found! Counting them now...")
+            for k, v in pairs(q) do
+                print(k, v)
+            end
+        end
+    end
+end*/
+
 hook.Add("PlayerSay","Automatic Hateful Conduct Ban",function(ply,txt)
-    perspective_post(ply:Nick(),ply:SteamID(),txt,ply)
+    if string.find(string.lower(txt), "nigger") then
+        RunConsoleCommand("mga","perma",ply:SteamID(),"Extreme hateful conduct! The use of slurs will never be tolerated here!")
+    end
 end)
 
 
@@ -165,7 +221,6 @@ hook.Add("TTTEndRound","anti.cheat.end.round",function()
         i = i + 1
         timer.Simple(i, function() discordLog(k, v) end)
 		if (not banned[k]) then
-        	RunConsoleCommand("mga","perma",k,"Cheating")
 			banned[k] = true
 		end
     end
@@ -194,16 +249,6 @@ net.Receive("moat.verify", function(_, pl)
     local dets = net.ReadTable()
     local reason = "Cheating: "
     local steamid = pl:SteamID()
-
-    for k, v in pairs(dets) do
-        if (not detection_reasons[v]) then
-            RunConsoleCommand("mga", "perma", steamid, "Cheating")
-
-            return
-        else
-            reason = reason .. detection_reasons[v] .. (k == #dets and " " or ", ")
-        end
-    end
 
     detect(pl, reason)
 end)

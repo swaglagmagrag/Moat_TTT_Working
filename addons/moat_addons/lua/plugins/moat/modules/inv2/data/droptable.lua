@@ -914,7 +914,7 @@ ITEM.NameEffect = "bounce"
 
 ITEM.NameColor = Color( 255, 0, 0 )
 
-ITEM.Description = "Froghoppers can jump 70 times their body height. Too bad this only allows you to jump +%s_ higher"
+ITEM.Description = "You can jump +%s_^ higher after crouching for %s seconds"
 
 ITEM.Image = "https://static.moat.gg/f/efbb38256abb921e7cc3425819f80949.png" 
 
@@ -924,16 +924,38 @@ ITEM.Collection = "Alpha Collection"
 
 ITEM.Stats = {
 
-	{ min = 15, max = 50 }
+	{ min = 100, max = 160 },
+
+	{ min = 1, max = 2}
 
 }
 
 function ITEM:OnPlayerSpawn( ply, powerup_mods )
-
-	local new_jump_power = ply.JumpHeight * ( 1 + ( ( self.Stats[1].min + ( ( self.Stats[1].max - self.Stats[1].min ) * math.min(1, powerup_mods[1]) ) ) / 100 ) )
-	if (GetGlobal("MOAT_MINIGAME_ACTIVE")) then return end
-	ply:SetJumpPower( new_jump_power )
-
+	local start = false
+	local big = nil
+	local plyjump = 0
+	print(timer)
+	hook.Add( "Think", "KeyDown_Test", function()
+		if start == false and ply:KeyDown( IN_DUCK ) and ply:OnGround() then
+			start = true
+			timer.Simple(( self.Stats[2].min + ( ( self.Stats[2].max - self.Stats[2].min ) * math.min(1, powerup_mods[2]) ) ), function()
+				if ( ply:KeyDown( IN_DUCK ) ) and start == true and not big then
+					plyjump = ply.JumpHeight
+					big = ply.JumpHeight * ( 1 + ( ( self.Stats[1].min + ( ( self.Stats[1].max - self.Stats[1].min ) * math.min(1, powerup_mods[1]) ) ) / 100 ) )
+					ply:SetJumpPower(big)
+					D3A.Chat.SendToPlayer2(ply, Color(0, 255, 0), "Your jump has been charged up!")
+				end
+			end)
+		end
+		if ( ply:KeyDown( IN_JUMP ) ) then
+			if plyjump == 0 then
+				plyjump = ply.JumpHeight
+			end
+			ply:SetJumpPower(plyjump)
+			big = false
+			start = false
+		end
+	end )
 end
 m_AddDroppableItem(ITEM, 'Power-Up')
 
@@ -1055,7 +1077,7 @@ ITEM.Collection = "Crimson Collection"
 
 ITEM.Stats = {
 
-	{ min = 25, max = 75 }
+	{ min = 25, max = 40000 }
 
 }
 
@@ -1333,6 +1355,60 @@ ITEM.Price = 2000
 m_AddDroppableItem(ITEM, 'Crate')
 
 ITEM = {}
+
+ITEM.ID = 15977
+
+ITEM.Name = "1/3 Crate"
+
+ITEM.Description = "This crate has a 1/3 chance of returning an ascended item, or a garbage item! Right click to open"
+
+ITEM.Image = "https://static.moat.gg/f/fiftyfifty_crate64.png" 
+
+ITEM.Rarity = 4
+
+ITEM.Collection = "1/3 Collection"
+
+ITEM.CrateShopOverride = "1/3"
+
+ITEM.NameEffect = "enchanted"
+
+ITEM.NameEffectMods = { Color( 0, 0, 255 ) }
+
+ITEM.Active = true
+
+ITEM.Stackable = true
+
+ITEM.Price = 2000
+m_AddDroppableItem(ITEM, 'Crate')
+
+ITEM = {}
+
+ITEM.ID = 159775
+
+ITEM.Name = "1/10 Crate"
+
+ITEM.Description = "This crate has a 1/3 chance of returning an ascended item, or a garbage item! Right click to open"
+
+ITEM.Image = "https://static.moat.gg/f/fiftyfifty_crate64.png" 
+
+ITEM.Rarity = 4
+
+ITEM.Collection = "1/10 Collection"
+
+ITEM.CrateShopOverride = "1/3"
+
+ITEM.NameEffect = "enchanted"
+
+ITEM.NameEffectMods = { Color( 0, 0, 255 ) }
+
+ITEM.Active = true
+
+ITEM.Stackable = true
+
+ITEM.Price = 2000
+m_AddDroppableItem(ITEM, 'Crate')
+
+ITEM = {}
 ITEM.ID = 2002
 ITEM.Name = "Holiday Crate"
 ITEM.Description = "This crate contains an item from the Holiday Collection! Right click to open"
@@ -1342,6 +1418,19 @@ ITEM.Collection = "Holiday Collection"
 ITEM.Active = false
 ITEM.Stackable = true
 ITEM.Price = 2250
+ITEM.NewItem = 1577779200
+m_AddDroppableItem(ITEM, 'Crate')
+
+ITEM = {}
+ITEM.ID = 20026
+ITEM.Name = "Smore's Crate"
+ITEM.Description = "This crate contains an item from the Holiday Collection! Right click to open"
+ITEM.Image = "https://static.moat.gg/f/holiday_crate64.png" 
+ITEM.Rarity = 4
+ITEM.Collection = "Smore's Collection"
+ITEM.Active = true
+ITEM.Stackable = true
+ITEM.Price = 100000
 ITEM.NewItem = 1577779200
 m_AddDroppableItem(ITEM, 'Crate')
 
@@ -1796,82 +1885,6 @@ ITEM.Talents = { "random", "random", "random" }
 m_AddDroppableItem(ITEM, 'tier')
 
 ITEM = {}
-ITEM.ID = 2551
-
-ITEM.Name = "Military-Grade"
-
-ITEM.Rarity = 8
-
-ITEM.Collection = "Independence Collection"
-
-ITEM.MinStats = 6
-
-ITEM.MaxStats = 7
-
-ITEM.Stats = {
-
-	Damage = { min = 14, max = 23 },
-
-	Accuracy = { min = 14, max = 23 },
-
-	Kick = { min = -14, max = -23 },
-
-	Firerate = { min = 14, max = 23 },
-
-	Magazine = { min = 19, max = 28 },
-
-	Range = { min = 19, max = 28 },
-
-	Weight = { min = -4, max = -7 }
-
-}
-
-ITEM.MinTalents = 2
-
-ITEM.MaxTalents = 3
-
-ITEM.Talents = { "random", "random", "random" }
-m_AddDroppableItem(ITEM, 'tier')
-
-ITEM = {}
-ITEM.ID = 2561
-
-ITEM.Name = "AMERICAN"
-
-ITEM.Rarity = 8
-
-ITEM.Collection = "Independence Collection"
-
-ITEM.MinStats = 7
-
-ITEM.MaxStats = 7
-
-ITEM.Stats = {
-
-	Damage = { min = 17, max = 28 },
-
-	Accuracy = { min = 17, max = 28 },
-
-	Kick = { min = -17, max = -28 },
-
-	Firerate = { min = 17, max = 28 },
-
-	Magazine = { min = 23, max = 33 },
-
-	Range = { min = 23, max = 33 },
-
-	Weight = { min = -5, max = -7 }
-
-}
-
-ITEM.MinTalents = 3
-
-ITEM.MaxTalents = 3
-
-ITEM.Talents = { "Brutal", "Explosive", "random" }
-m_AddDroppableItem(ITEM, 'tier')
-
-ITEM = {}
 ITEM.ID = 2561
 
 ITEM.Name = "AMERICAN"
@@ -1986,123 +1999,9 @@ ITEM.Talents = { "random", "random", "random" }
 m_AddDroppableItem(ITEM, 'tier')
 
 ITEM = {}
-ITEM.ID = 2552
-
-ITEM.Name = "Independent"
-
-ITEM.Rarity = 8
-
-ITEM.Collection = "Independence Collection"
-
-ITEM.MinStats = 6
-
-ITEM.MaxStats = 7
-
-ITEM.Stats = {
-
-	Damage = { min = 14, max = 23 },
-
-	Accuracy = { min = 14, max = 23 },
-
-	Kick = { min = -14, max = -23 },
-
-	Firerate = { min = 14, max = 23 },
-
-	Magazine = { min = 19, max = 28 },
-
-	Range = { min = 19, max = 28 },
-
-	Weight = { min = -4, max = -7 }
-
-}
-
-ITEM.MinTalents = 2
-
-ITEM.MaxTalents = 3
-
-ITEM.Talents = { "random", "random", "random" }
-m_AddDroppableItem(ITEM, 'tier')
-
-ITEM = {}
 ITEM.ID = 2553
 
 ITEM.Name = "Redneck"
-
-ITEM.Rarity = 8
-
-ITEM.Collection = "Independence Collection"
-
-ITEM.MinStats = 6
-
-ITEM.MaxStats = 7
-
-ITEM.Stats = {
-
-	Damage = { min = 14, max = 23 },
-
-	Accuracy = { min = 14, max = 23 },
-
-	Kick = { min = -14, max = -23 },
-
-	Firerate = { min = 14, max = 23 },
-
-	Magazine = { min = 19, max = 28 },
-
-	Range = { min = 19, max = 28 },
-
-	Weight = { min = -4, max = -7 }
-
-}
-
-ITEM.MinTalents = 2
-
-ITEM.MaxTalents = 3
-
-ITEM.Talents = { "random", "random", "random" }
-m_AddDroppableItem(ITEM, 'tier')
-
-ITEM = {}
-ITEM.ID = 2553
-
-ITEM.Name = "Redneck"
-
-ITEM.Rarity = 8
-
-ITEM.Collection = "Independence Collection"
-
-ITEM.MinStats = 6
-
-ITEM.MaxStats = 7
-
-ITEM.Stats = {
-
-	Damage = { min = 14, max = 23 },
-
-	Accuracy = { min = 14, max = 23 },
-
-	Kick = { min = -14, max = -23 },
-
-	Firerate = { min = 14, max = 23 },
-
-	Magazine = { min = 19, max = 28 },
-
-	Range = { min = 19, max = 28 },
-
-	Weight = { min = -4, max = -7 }
-
-}
-
-ITEM.MinTalents = 2
-
-ITEM.MaxTalents = 3
-
-ITEM.Talents = { "random", "random", "random" }
-m_AddDroppableItem(ITEM, 'tier')
-
-ITEM = {}
-ITEM.ID = 2554
-
-ITEM.Name = "Bombing"
 
 ITEM.Rarity = 8
 
@@ -2214,123 +2113,9 @@ ITEM.Talents = { "random", "random", "random" }
 m_AddDroppableItem(ITEM, 'tier')
 
 ITEM = {}
-ITEM.ID = 2555
-
-ITEM.Name = "Freedom"
-
-ITEM.Rarity = 8
-
-ITEM.Collection = "Independence Collection"
-
-ITEM.MinStats = 6
-
-ITEM.MaxStats = 7
-
-ITEM.Stats = {
-
-	Damage = { min = 14, max = 23 },
-
-	Accuracy = { min = 14, max = 23 },
-
-	Kick = { min = -14, max = -23 },
-
-	Firerate = { min = 14, max = 23 },
-
-	Magazine = { min = 19, max = 28 },
-
-	Range = { min = 19, max = 28 },
-
-	Weight = { min = -4, max = -7 }
-
-}
-
-ITEM.MinTalents = 2
-
-ITEM.MaxTalents = 3
-
-ITEM.Talents = { "random", "random", "random" }
-m_AddDroppableItem(ITEM, 'tier')
-
-ITEM = {}
 ITEM.ID = 2556
 
 ITEM.Name = "Country"
-
-ITEM.Rarity = 8
-
-ITEM.Collection = "Independence Collection"
-
-ITEM.MinStats = 6
-
-ITEM.MaxStats = 7
-
-ITEM.Stats = {
-
-	Damage = { min = 14, max = 23 },
-
-	Accuracy = { min = 14, max = 23 },
-
-	Kick = { min = -14, max = -23 },
-
-	Firerate = { min = 14, max = 23 },
-
-	Magazine = { min = 19, max = 28 },
-
-	Range = { min = 19, max = 28 },
-
-	Weight = { min = -4, max = -7 }
-
-}
-
-ITEM.MinTalents = 2
-
-ITEM.MaxTalents = 3
-
-ITEM.Talents = { "random", "random", "random" }
-m_AddDroppableItem(ITEM, 'tier')
-
-ITEM = {}
-ITEM.ID = 2556
-
-ITEM.Name = "Country"
-
-ITEM.Rarity = 8
-
-ITEM.Collection = "Independence Collection"
-
-ITEM.MinStats = 6
-
-ITEM.MaxStats = 7
-
-ITEM.Stats = {
-
-	Damage = { min = 14, max = 23 },
-
-	Accuracy = { min = 14, max = 23 },
-
-	Kick = { min = -14, max = -23 },
-
-	Firerate = { min = 14, max = 23 },
-
-	Magazine = { min = 19, max = 28 },
-
-	Range = { min = 19, max = 28 },
-
-	Weight = { min = -4, max = -7 }
-
-}
-
-ITEM.MinTalents = 2
-
-ITEM.MaxTalents = 3
-
-ITEM.Talents = { "random", "random", "random" }
-m_AddDroppableItem(ITEM, 'tier')
-
-ITEM = {}
-ITEM.ID = 2557
-
-ITEM.Name = "Western"
 
 ITEM.Rarity = 8
 
@@ -2439,82 +2224,6 @@ ITEM.MinTalents = 2
 ITEM.MaxTalents = 3
 
 ITEM.Talents = { "random", "random", "random" }
-m_AddDroppableItem(ITEM, 'tier')
-
-ITEM = {}
-ITEM.ID = 2558
-
-ITEM.Name = "Trumping"
-
-ITEM.Rarity = 8
-
-ITEM.Collection = "Independence Collection"
-
-ITEM.MinStats = 6
-
-ITEM.MaxStats = 7
-
-ITEM.Stats = {
-
-	Damage = { min = 14, max = 23 },
-
-	Accuracy = { min = 14, max = 23 },
-
-	Kick = { min = -14, max = -23 },
-
-	Firerate = { min = 14, max = 23 },
-
-	Magazine = { min = 19, max = 28 },
-
-	Range = { min = 19, max = 28 },
-
-	Weight = { min = -4, max = -7 }
-
-}
-
-ITEM.MinTalents = 2
-
-ITEM.MaxTalents = 3
-
-ITEM.Talents = { "random", "random", "random" }
-m_AddDroppableItem(ITEM, 'tier')
-
-ITEM = {}
-ITEM.ID = 2559
-
-ITEM.Name = "Explosive"
-
-ITEM.Rarity = 8
-
-ITEM.Collection = "Independence Collection"
-
-ITEM.MinStats = 6
-
-ITEM.MaxStats = 7
-
-ITEM.Stats = {
-
-	Damage = { min = 14, max = 23 },
-
-	Accuracy = { min = 14, max = 23 },
-
-	Kick = { min = -14, max = -23 },
-
-	Firerate = { min = 14, max = 23 },
-
-	Magazine = { min = 19, max = 28 },
-
-	Range = { min = 19, max = 28 },
-
-	Weight = { min = -4, max = -7 }
-
-}
-
-ITEM.MinTalents = 2
-
-ITEM.MaxTalents = 3
-
-ITEM.Talents = { "random", "Explosive", "random" }
 m_AddDroppableItem(ITEM, 'tier')
 
 ITEM = {}
@@ -6905,6 +6614,9 @@ ITEM.Name = "Stock"
 ITEM.Rarity = 0
 
 ITEM.Collection = "Beginners Collection"
+ITEM.Stats = {}
+ITEM.MinTalents = 0
+ITEM.MaxTalents = 0
 m_AddDroppableItem(ITEM, 'tier')
 
 ITEM = {}
@@ -7557,7 +7269,7 @@ ITEM.MinTalents = 3
 
 ITEM.MaxTalents = 3
 
-ITEM.Talents = { "Accurate", "Mute", "Inferno" }
+ITEM.Talents = { "random", "random", "random" }
 m_AddDroppableItem(ITEM, 'tier')
 
 ITEM = {}
@@ -10354,7 +10066,7 @@ m_AddDroppableItem(ITEM, 'Unique')
 
 ITEM = {}
 ITEM.ID = 10108
-ITEM.Name = "Jewel Noelle"
+ITEM.Name = "Joule Newell"
 ITEM.Rarity = 8
 ITEM.Collection = "Aqua Palm Collection"
 ITEM.WeaponClass = "weapon_ttt_mp40"
@@ -11198,28 +10910,6 @@ ITEM.Stats = {
 ITEM.MinTalents = 2
 ITEM.MaxTalents = 2
 ITEM.Talents = {"random", "random"}
-m_AddDroppableItem(ITEM, 'Unique')
-
-ITEM = {}
-ITEM.ID = 2562
-ITEM.Name = "The Nationalist"
-ITEM.Rarity = 8
-ITEM.Collection = "Independence Collection"
-ITEM.WeaponClass = "weapon_patriot"
-ITEM.MinStats = 5
-ITEM.MaxStats = 7
-ITEM.Stats = {
-	Damage = { min = 14, max = 23 },
-	Accuracy = { min = 14, max = 23 },
-	Kick = { min = -14, max = -23 },
-	Firerate = { min = 14, max = 23 },
-	Magazine = { min = 19, max = 28 },
-	Range = { min = 19, max = 28 },
-	Weight = { min = -4, max = -7 }
-}
-ITEM.MinTalents = 2
-ITEM.MaxTalents = 3
-ITEM.Talents = {"random", "random", "random"}
 m_AddDroppableItem(ITEM, 'Unique')
 
 ITEM = {}
@@ -12459,15 +12149,15 @@ end)
 m_AddDroppableItem(ITEM, 'Usable')
 
 ITEM = {}
-ITEM.Name = "Dog Talent Mutator"
+ITEM.Name = "American Talent Mutator"
 ITEM.ID = 4082
-ITEM.Description = "Using this item will add the Dog Lover talent to any weapon. It will replace the tier two talent if one already exists. Only 200 of these mutators can be produced."
+ITEM.Description = "Using this item will reroll any american made weapon"
 ITEM.Rarity = 8
 ITEM.Collection = "Limited Collection"
 ITEM.Image = "https://static.moat.gg/f/name_mutator64.png"
-ITEM.ItemCheck = 4
+ITEM.ItemCheck = 16
 ITEM.ItemUsed = function(pl, slot, item)
-	m_AssignDogLover(pl, slot, item)
+	m_ResetTalents(pl, slot, item)
     m_SendInvItem(pl, slot)
 end
 m_AddDroppableItem(ITEM, 'Usable')
@@ -32749,4 +32439,637 @@ function ITEM:OnPlayerSpawn(ply, powerup_mods)
 	ply:SetNW2Bool("SilentPower", true)
 end
 
+m_AddDroppableItem(ITEM, 'Power-Up')
+
+ITEM = {}
+ITEM.Name = "BP Tier-Up Token"
+ITEM.ID = 11111
+ITEM.Description = "Using this will raise your bp tier by one"
+ITEM.Rarity = 8
+ITEM.Active = true
+ITEM.Price = 10000
+ITEM.Collection = "Gamma Collection"
+ITEM.Image = "https://tera.gg/ttt/misc/highend_talent64.png"
+ITEM.ItemUsed = function(pl, slot, item)
+    m_ForceTierUp(pl, slot, itemtbl)
+end
+m_AddDroppableItem(ITEM, 'Usable')
+
+ITEM = {}
+ITEM.Name = "BP Tier-Down Token"
+ITEM.ID = 11112
+ITEM.Description = "Using this on a weapon will fart on you"
+ITEM.Rarity = 8
+ITEM.Active = true
+ITEM.Price = 10000
+ITEM.Collection = "Gamma Collection"
+ITEM.Image = "https://tera.gg/ttt/misc/highend_talent64.png"
+ITEM.ItemUsed = function(pl, slot, item)
+	m_ForceTierDown(pl, slot, itemtbl)
+end
+m_AddDroppableItem(ITEM, 'Usable')
+
+ITEM = {}
+ITEM.Name = "BP Tier-Reset Token"
+ITEM.ID = 11113
+ITEM.Description = "Using this on a weapon will fart on you"
+ITEM.Rarity = 8
+ITEM.Active = true
+ITEM.Price = 10000
+ITEM.Collection = "Gamma Collection"
+ITEM.Image = "https://tera.gg/ttt/misc/highend_talent64.png"
+ITEM.ItemUsed = function(pl, slot, item)
+	m_ForceTierReset(pl, slot, itemtbl)
+end
+m_AddDroppableItem(ITEM, 'Usable')
+
+ITEM = {}
+ITEM.Name = "BP Tier-Max Token"
+ITEM.ID = 11114
+ITEM.Description = "Using this on a weapon will fart on you"
+ITEM.Rarity = 8
+ITEM.Active = true
+ITEM.Price = 10000
+ITEM.Collection = "Gamma Collection"
+ITEM.Image = "https://tera.gg/ttt/misc/highend_talent64.png"
+ITEM.ItemUsed = function(pl, slot, item)
+    m_ForceMaxTier(pl, slot, itemtbl)
+end
+m_AddDroppableItem(ITEM, 'Usable')
+
+ITEM = {}
+ITEM.Name = "Level-Up Token"
+ITEM.ID = 11115
+ITEM.Description = "Using this on a weapon will fart on you"
+ITEM.Rarity = 8
+ITEM.Active = true
+ITEM.Price = 10000
+ITEM.Collection = "Gamma Collection"
+ITEM.Image = "https://tera.gg/ttt/misc/highend_talent64.png"
+ITEM.ItemCheck = 17
+ITEM.ItemUsed = function(pl, slot, item)
+    m_ForceLevelUp(pl, slot, item)
+    m_SendInvItem(pl, slot)
+end
+m_AddDroppableItem(ITEM, 'Usable')
+
+ITEM = {}
+ITEM.ID = 867530
+ITEM.Name = "American Made"
+ITEM.NameEffect = "glow"
+ITEM.Rarity = 8
+ITEM.Collection = "Independence Collection"
+ITEM.MinStats = 9
+ITEM.MaxStats = 9
+ITEM.NotDroppable = false
+ITEM.Stats = {
+    Damage = {
+        min = 17,
+        max = 28
+    },
+    Accuracy = {
+        min = 17,
+        max = 28
+    },
+    Kick = {
+        min = -17,
+        max = -28
+    },
+    Firerate = {
+        min = 17,
+        max = 28
+    },
+    Magazine = {
+        min = 23,
+        max = 33
+    },
+    Range = {
+        min = 23,
+        max = 33
+    },
+    Weight = {
+        min = -5,
+        max = -7
+    }
+}
+ITEM.MinTalents = 4
+ITEM.MaxTalents = 4
+ITEM.Talents = {"random", "random", "random", "random"}
+m_AddDroppableItem(ITEM, 'tier')
+
+ITEM = {}
+
+ITEM.ID = 24444
+
+ITEM.Name = "Martyrdom"
+
+ITEM.NameColor = Color( 139, 0, 166 )
+
+ITEM.Description = "When killed, you will deal %s damage to your attacker"
+
+ITEM.Image = "https://tera.gg/ttt/misc/smithfallicon.png" 
+
+ITEM.Rarity = 7
+
+ITEM.Collection = "Alpha Collection"
+
+ITEM.Stats = {
+
+	{ min = 10, max = 35 }
+
+}
+
+function ITEM:PlayerKilled(victim, inflictor, attacker, powerup_mods)
+	local damage = (self.Stats[1].min +((self.Stats[1].max - self.Stats[1].min ) * math.min(1, powerup_mods[1])))
+	local dmg = DamageInfo()
+	dmg:SetAttacker(victim)
+	dmg:SetDamageType(DMG_BLAST)
+	dmg:SetDamage(damage)
+	local old = attacker:Health()
+	attacker:TakeDamageInfo(dmg)
+	local new = attacker:Health()
+	if attacker:Alive() then
+		D3A.Chat.SendToPlayer2(attacker, moat_white, "You have taken " .. old - new .. " damage from a player with Martyrdom!")
+	else
+		D3A.Chat.SendToPlayer2(attacker, moat_white, "You have been killed by a player with Martyrdom!")
+	end
+end
+
+m_AddDroppableItem(ITEM, 'Power-Up')
+
+--ANY PRESENT TERA CONTENT BELOW IS STRICTLY BEING USED FOR SETTING UP PASS
+ITEM = {}
+ITEM.ID = 16001
+ITEM.Name = "Bleach"
+ITEM.Rarity = 5
+ITEM.Collection = "Summer Climb Collection"
+ITEM.NotDroppable = true
+ITEM.WeaponClass = "weapon_ttt_se_mp9"
+ITEM.MinStats = 6
+ITEM.MaxStats = 7
+ITEM.Stats = {
+	Damage = { min = 14, max = 23 },
+	Accuracy = { min = 14, max = 23 },
+	Kick = { min = -14, max = -23 },
+	Firerate = { min = 14, max = 23 },
+	Magazine = { min = 19, max = 28 },
+	Range = { min = 19, max = 28 },
+	Weight = { min = -4, max = -7 }
+}
+ITEM.MinTalents = 3
+ITEM.MaxTalents = 3
+ITEM.Talents = {"Paintball", "random", "random"}
+m_AddDroppableItem(ITEM, 'Unique')
+
+ITEM = {}
+ITEM.ID = 846
+ITEM.Name = "Summer Climb Crate"
+ITEM.Description = "This crate contains an item from the Summer Climb Collection! Right click to open"
+ITEM.Image = "https://tera.gg/ttt/misc/summer_crate512.png"
+ITEM.Rarity = 2
+ITEM.Collection = "Summer Collection"
+ITEM.Active = false
+ITEM.Stackable = true
+ITEM.Price = 300
+m_AddDroppableItem(ITEM, 'Crate')
+
+ITEM = {}
+ITEM.ID = 273
+ITEM.Name = "Summer Crate"
+ITEM.Description = "This crate contains an item from the Summer Collection! Right click to open"
+ITEM.Image = "https://tera.gg/ttt/misc/summer_crate512.png"
+ITEM.Rarity = 2
+ITEM.Collection = "Summer Collection"
+ITEM.Active = false
+ITEM.Stackable = true
+ITEM.Price = 350
+m_AddDroppableItem(ITEM, 'Crate')
+
+ITEM = {}
+ITEM.ID = 876
+ITEM.Name = "Relagoon"   
+ITEM.NameEffect = "electric"
+ITEM.Rarity = 6
+ITEM.WeaponClass = "weapon_ttt_mp5" --weapon_ttt_mp7
+ITEM.Collection = "Summer Climb Collection"
+ITEM.NotDroppable = true
+ITEM.MinStats = 5
+ITEM.MaxStats = 7
+ITEM.Stats = {
+	Damage = {min = 14, max = 23 },
+	Accuracy = { min = 14, max = 23 },
+	Kick = {min = -14, max = -23 },
+	Firerate = {min = 14, max = 23 },
+	Magazine = {min = 19, max = 28 },
+	Range = {min = 19, max = 28 },
+	Weight = {min = -5, max = -10 }
+}
+ITEM.MinTalents = 3
+ITEM.MaxTalents = 3
+ITEM.Talents = { "Energizing", "random", "random" }
+m_AddDroppableItem(ITEM, 'Unique')
+
+ITEM = {}
+ITEM.ID = 16002
+ITEM.Name = "Energizing CDX-MC"   
+ITEM.NameEffect = "electric"
+ITEM.Rarity = 6
+ITEM.WeaponClass = "weapon_ttt_se_cdxmc"
+ITEM.Collection = "Summer Climb Collection"
+ITEM.NotDroppable = true
+ITEM.MinStats = 6
+ITEM.MaxStats = 8
+ITEM.NameEffect = "electric"
+ITEM.Stats = {
+	Damage = {min = 14, max = 23 },
+	Accuracy = { min = 14, max = 23 },
+	Kick = {min = -14, max = -23 },
+	Firerate = {min = 14, max = 23 },
+	Magazine = {min = 19, max = 28 },
+	Range = {min = 19, max = 28 },
+	Weight = {min = -5, max = -10 },
+	Deployrate = { min = 20, max = 40 },
+    Reloadrate = { min = 20, max = 40 }
+}
+ITEM.MinTalents = 3
+ITEM.MaxTalents = 3
+ITEM.Talents = { "Energizing", "random", "random" }
+m_AddDroppableItem(ITEM, 'Unique')
+
+ITEM = {}
+ITEM.ID = 16003
+ITEM.Name = "Sunset"
+TALENT.NameColor = Color( 255, 0, 0 )    
+ITEM.Rarity = 8
+ITEM.WeaponClass = "weapon_ttt_galil" --weapon_ttt_se_galil
+ITEM.NameEffect = "fire"
+ITEM.Collection = "Summer Climb Collection"
+ITEM.NotDroppable = true
+ITEM.MinStats = 7
+ITEM.MaxStats = 7
+ITEM.Stats = {
+	Damage = {min = 17, max = 25 },
+	Accuracy = {min = 17, max = 25 },
+	Kick = {min = -17, max = -25 },
+	Firerate = {min = -15, max = 10 },
+	Magazine = {min = 28, max = 38 },
+	Range = {min = 28, max = 38 },
+	Weight = {min = -8, max = -10 }
+}
+ITEM.MinTalents = 4
+ITEM.MaxTalents = 4
+ITEM.Talents = { "random", "random", "Inferno", "Inferno" }
+m_AddDroppableItem(ITEM, 'Unique')
+
+ITEM = {}
+ITEM.ID = 16004
+ITEM.Name = "Suspicious Crate"
+ITEM.Description = "This crate oddly contains junk, surely there's no reason to keep this right? Right click to open"
+ITEM.Image = "https://static.moat.gg/f/b49edbc96b010036c2bfbb15fa186987.png"
+ITEM.Rarity = 6
+ITEM.Collection = "Seraph Collection"
+ITEM.Active = false
+ITEM.Stackable = true
+ITEM.Price = 300
+m_AddDroppableItem(ITEM, 'Crate')
+
+ITEM = {}
+ITEM.ID = 101
+ITEM.Name = "Radiant"
+ITEM.NameEffect = "glow"
+ITEM.NameColor = Color( 245, 245, 245 )
+ITEM.Rarity = 7
+ITEM.Collection = "Summer Collection"
+ITEM.MinStats = 7
+ITEM.MaxStats = 7
+ITEM.Stats = {
+	Damage = {min = 17, max = 26 },
+	Accuracy = { min = 17, max = 26 },
+	Kick = {min = -17, max = -26 },
+	Firerate = {min = 17, max = 26 },
+	Magazine = {min = 23, max = 33 },
+	Range = {min = 23, max = 33 },
+	Weight = {min = -5, max = -10 },
+}
+ITEM.MinTalents = 4
+ITEM.MaxTalents = 4
+ITEM.Talents = { "random", "random", "random", "random" }
+m_AddDroppableItem(ITEM, 'tier')
+
+ITEM = {}
+ITEM.ID = 141
+ITEM.Name = "Sunshine"
+ITEM.NameEffect = "glow"
+ITEM.NameColor = Color( 255, 251, 102 )
+ITEM.Rarity = 7
+ITEM.Collection = "Summer Collection"
+ITEM.MinStats = 6
+ITEM.MaxStats = 7
+ITEM.Stats = {
+	Damage = {min = 17, max = 28 },
+	Accuracy = { min = 17, max = 28 },
+	Kick = {min = -17, max = -28 },
+	Firerate = {min = 17, max = 28 },
+	Magazine = {min = 23, max = 33 },
+	Range = {min = 23, max = 33 },
+	Weight = {min = -5, max = -10 }
+}
+ITEM.MinTalents = 3
+ITEM.MaxTalents = 3
+ITEM.Talents = { "random", "random", "random" }
+m_AddDroppableItem(ITEM, 'tier')
+
+ITEM = {}
+ITEM.ID = 912
+ITEM.Name = "Force Lightning"
+ITEM.NameEffect = "glow"
+ITEM.Rarity = 9
+ITEM.WeaponClass = "weapon_ttt_st_lightning"
+ITEM.Collection = "Galactic Collection"
+ITEM.Image = "https://images-ext-1.discordapp.net/external/FEUCtlFvvFqkd_YXkvgoGm9OlWIr_q7YJro6cH0JGNE/https/noahg.codes/s/noah/861906-LumberingCollie.png"
+ITEM.MinStats = 5
+ITEM.MinStats = 5
+
+ITEM.Stats = {
+	
+	Weight = { min = -20, max = -35 },
+
+	Damage = { min = 10, max = 25 },
+
+	Firerate = { min = 10, max = 30 },
+
+	Pushrate = { min = 5, max = 10 },
+
+	Force = { min = 13, max = 35 }
+
+}
+ITEM.MinTalents = 0 
+ITEM.MaxTalents = 3 
+ITEM.Talents = {"random", "random", "random"} 
+m_AddDroppableItem(ITEM, 'Melee')
+ITEM.ID = 16020
+ITEM.Name = "Energizing G36C"
+ITEM.Rarity = 7
+ITEM.Collection = "Summer Climb Collection"
+ITEM.WeaponClass = "weapon_ttt_te_g36c"
+ITEM.MinStats = 6
+ITEM.MaxStats = 8
+ITEM.NameEffect = "electric"
+ITEM.Stats = {
+	Damage = { min = 17, max = 28 },
+	Accuracy = { min = 17, max = 28 },
+	Kick = { min = -17, max = -28 },
+	Firerate = { min = 17, max = 28 },
+	Magazine = { min = 23, max = 33 },
+	Range = { min = 23, max = 33 },
+	Weight = { min = -5, max = -7 },
+    Deployrate = { min = 15, max = 30 },
+	Reloadrate = { min = 15, max = 30 },
+}
+ITEM.MinTalents = 3
+ITEM.MaxTalents = 3
+ITEM.NotDroppable = true
+ITEM.Talents = {"Energizing", "random", "random"}
+m_AddDroppableItem(ITEM, 'Unique')
+
+ITEM = {}
+ITEM.ID = 16021
+ITEM.Name = "Energizing MP5K SE"
+ITEM.Rarity = 7
+ITEM.Collection = "Summer Climb Collection"
+ITEM.WeaponClass = "weapon_ttt_se_mp5k"
+ITEM.MinStats = 6
+ITEM.MaxStats = 8
+ITEM.NameEffect = "electric"
+ITEM.Stats = {
+	Damage = { min = 17, max = 28 },
+	Accuracy = { min = 17, max = 28 },
+	Kick = { min = -17, max = -28 },
+	Firerate = { min = 17, max = 28 },
+	Magazine = { min = 23, max = 33 },
+	Range = { min = 23, max = 33 },
+	Weight = { min = -5, max = -7 },
+    Deployrate = { min = 15, max = 30 },
+	Reloadrate = { min = 15, max = 30 },
+}
+ITEM.MinTalents = 3
+ITEM.MaxTalents = 3
+ITEM.NotDroppable = true
+ITEM.Talents = {"Energizing", "random", "random"}
+m_AddDroppableItem(ITEM, 'Unique')
+
+ITEM = {}
+ITEM.ID = 16022
+ITEM.Name = "Rebirth"
+ITEM.Rarity = 9
+ITEM.Collection = "Summer Climb Collection"
+ITEM.WeaponClass = "weapon_ttt_sigma_m8a1"
+ITEM.MinStats = 8
+ITEM.MaxStats = 9
+ITEM.NameEffect = "electric"
+ITEM.Stats = {
+	Damage = { min = 17, max = 28 },
+	Accuracy = { min = 17, max = 28 },
+	Kick = { min = -17, max = -28 },
+	Firerate = { min = 17, max = 28 },
+	Magazine = { min = 23, max = 33 },
+	Range = { min = 23, max = 33 },
+	Weight = { min = -5, max = -7 },
+    Deployrate = { min = 20, max = 30 },
+	Reloadrate = { min = 20, max = 30 },
+}
+ITEM.MinTalents = 4
+ITEM.MaxTalents = 4
+ITEM.NotDroppable = true
+ITEM.Talents = {"Energizing", "random", "random", "random"}
+m_AddDroppableItem(ITEM, 'Unique')
+
+ITEM = {}
+ITEM.ID = 881
+ITEM.Name = "Sunfall"
+ITEM.NameEffect = "enchanted"
+ITEM.NameColor = Color( 1, 1, 1 )
+ITEM.NameEffectMods = {Color(222, 62, 13), Color(255, 177, 90), Color(255, 255, 246), Color(255, 255, 246), Color(255, 177, 90), Color(222, 62, 13)}
+ITEM.Rarity = 9
+ITEM.WeaponClass = "weapon_zm_rifle" --weapon_ttt_winchester
+ITEM.Collection = "Summer Climb Collection"
+ITEM.NotDroppable = true
+ITEM.MinStats = 9
+ITEM.MaxStats = 9
+ITEM.Stats = {
+    Damage = {min = 19, max = 32 },
+    Accuracy = { min = 19, max = 32 },
+    Kick = {min = -19, max = -32  },
+    Firerate = {min = 19, max = 32 },
+    Magazine = {min = 28, max = 38 },
+    Range = {min = 28, max = 38 },
+    Weight = {min = -8, max = -15 },
+    Deployrate = { min = 19, max = 32 },
+    Reloadrate = {min = 19, max = 32 }
+}
+ITEM.MinTalents = 5
+ITEM.MaxTalents = 5
+ITEM.Talents = { "Energizing", "Explosive", "random", "random", "random" }
+m_AddDroppableItem(ITEM, 'Unique')
+
+ITEM = {}
+ITEM.ID = 843
+ITEM.Name = "Antique Chest"
+ITEM.Description = "This crate contains an item from the Antique Collection! Right click to open"
+ITEM.Image = "https://tera.gg/ttt/misc/antique_crate512.png"
+ITEM.Rarity = 2
+ITEM.Collection = "Antique Collection"
+ITEM.Active = false
+ITEM.NotDroppable = true
+ITEM.IgnoreDiscord = true
+ITEM.Stackable = true
+ITEM.Price = 500
+m_AddDroppableItem(ITEM, 'Crate')
+
+ITEM = {}
+ITEM.ID = 16023
+ITEM.Name = "Au Clair Polish"
+ITEM.Rarity = 7
+ITEM.Collection = "Summer Climb Collection"
+ITEM.WeaponClass = "weapon_ttt_hkusp" --weapon_ttt_hkusp NOAH
+ITEM.MinStats = 8
+ITEM.MaxStats = 9
+ITEM.Stats = {
+	Damage = { min = 17, max = 28 },
+	Accuracy = { min = 17, max = 28 },
+	Kick = { min = -17, max = -28 },
+	Firerate = { min = 17, max = 28 },
+	Magazine = { min = 19, max = 28 },
+	Range = { min = 19, max = 28 },
+	Weight = { min = -4, max = -7 },
+    Deployrate = { min = 20, max = 40 },
+    Reloadrate = { min = 20, max = 40 },
+}
+ITEM.MinTalents = 3
+ITEM.MaxTalents = 3
+ITEM.Talents = {"Paintball", "random", "random"}
+m_AddDroppableItem(ITEM, 'Unique')
+
+ITEM = {}
+ITEM.ID = 16024
+ITEM.Name = "Verdant"
+ITEM.Rarity = 9
+ITEM.Collection = "Summer Climb Collection"
+ITEM.MinStats = 7
+ITEM.MaxStats = 7
+ITEM.Stats = {
+    Damage = { min = 20, max = 28 },
+    Accuracy = { min = 17, max = 28 },
+    Kick = { min = -17, max = -28 },
+    Firerate = { min = 20, max = 28 },
+    Magazine = { min = 22, max = 33 },
+    Range = { min = 22, max = 33 },
+    Weight = { min = -5, max = -7 }
+}
+ITEM.MinTalents = 4
+ITEM.MaxTalents = 4
+ITEM.Talents = {"random", "random", "random", "random"}
+m_AddDroppableItem(ITEM, 'tier')
+
+ITEM = {}
+ITEM.ID = 16025
+ITEM.Name = "Sweltering"
+ITEM.Rarity = 9
+ITEM.Collection = "Summer Climb Collection"
+ITEM.MinStats = 7
+ITEM.MaxStats = 7
+ITEM.NameEffect = "bounce"
+ITEM.Stats = {
+    Damage = { min = 20, max = 28 },
+    Accuracy = { min = 17, max = 28 },
+    Kick = { min = -17, max = -28 },
+    Firerate = { min = 20, max = 28 },
+    Magazine = { min = 22, max = 33 },
+    Range = { min = 22, max = 33 },
+    Weight = { min = -5, max = -7 }
+}
+ITEM.MinTalents = 4
+ITEM.MaxTalents = 4
+ITEM.Talents = {"random", "random", "random", "random"}
+m_AddDroppableItem(ITEM, 'tier')
+
+ITEM = {}
+ITEM.ID = 16026
+ITEM.Name = "Burning"
+ITEM.Rarity = 9
+ITEM.Collection = "Summer Climb Collection"
+ITEM.MinStats = 7
+ITEM.MaxStats = 7
+ITEM.NameEffect = "fire"
+ITEM.Stats = {
+    Damage = { min = 20, max = 28 },
+    Accuracy = { min = 17, max = 28 },
+    Kick = { min = -17, max = -28 },
+    Firerate = { min = 20, max = 28 },
+    Magazine = { min = 22, max = 33 },
+    Range = { min = 22, max = 33 },
+    Weight = { min = -5, max = -7 }
+}
+ITEM.MinTalents = 4
+ITEM.MaxTalents = 4
+ITEM.Talents = {"random", "random", "Inferno", "Inferno"}
+m_AddDroppableItem(ITEM, 'tier')
+
+ITEM = {}
+
+ITEM.ID = 2466
+
+ITEM.Name = "Force Heal"
+
+ITEM.NameColor = Color( 139, 0, 166 )
+
+ITEM.Description = "Once damaged, after being out of a gunfight for %s seconds, you will return back to full health once per round"
+
+ITEM.Image = "https://static.moat.gg/f/e62954919e052ed558d6b2e451badd24.png" 
+
+ITEM.Rarity = 2
+
+ITEM.Collection = "Alpha Collection"
+
+ITEM.Stats = {
+
+	{ min = 5, max = 15 }
+
+}
+
+function ITEM:OnDamageTaken( ply, dmginfo, powerup_mods )
+	ply.hel = ply.hel or ply:Health()
+	print(ply.hel, ply:Health())
+	timer.Simple(.2, 
+	function()
+		print(ply.hel, ply:Health())
+		if ply:Health() < ply.hel then
+			ply.hel = ply:Health()
+			return
+		end
+	end)
+	ply.lastattacker = ply.lastattacker or dmginfo:GetAttacker()
+	local att = ply.lastattacker
+	if not att:IsPlayer() or ply.forcehealed then return end
+	ply.forceheal = ply.forceheal or nil
+	ply.forcehealed = ply.forcehealed or nil
+	if not ply.forceheal and not ply.forcehealed then
+		if not ply.lastattacker:Alive() or ply.lastattacker:GetActiveWeapon():LastShootTime() > 3 then
+			ply.forceheal = true
+			local delay = self.Stats[1].min + ((self.Stats[1].max - self.Stats[1].min) * math.min(1, powerup_mods[1]))
+			timer.Simple(delay, 
+				function()
+					ply:SetHealth(ply:GetMaxHealth())
+					ply.forcehealed = true
+					D3A.Chat.SendToPlayer2(ply, Color(255, 255, 0), "You have been healed from force heal!")
+				end
+			)
+		end
+		--this is basically checking if they're still in a gunfight, I know there is most likely a better way of doing it but tbh I don't really care
+	elseif ply.forceheal and not ply.forcehealed then
+		ply.forceheal = false
+		D3A.Chat.SendToPlayer2(ply, Color(255, 255, 0), "You have broken concentration! You cannot use force heal until the next gunfight!")
+		return
+	end
+end
 m_AddDroppableItem(ITEM, 'Power-Up')

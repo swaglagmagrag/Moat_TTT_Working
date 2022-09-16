@@ -111,6 +111,8 @@ local gradient_u = Material("vgui/gradient-u")
 local gradient_d = Material("vgui/gradient-d")
 local gradient_r = Material("vgui/gradient-r")
 moat_inv_cooldown = 0
+TERA_MASS_DECON_RARS = {[0] = 0, [1] = 0, [2] = 0, [3] = 0, [4] = 0, [5] = 0, [6] = 0, [7] = 0, [8] = 0, [9] = 0}
+TERA_MASS_DECON_AMOUNT = {0, 0}
 
 function m_isUsingInv(inv)
 	if (inv) then
@@ -1110,6 +1112,7 @@ function m_ClearInventory()
 	for i = 1, 10 do
 		m_Loadout[i] = {decon = false}
 	end
+    removemass()
 end
 
 function m_GetESlots()
@@ -1256,8 +1259,19 @@ M_INV_SLOT = M_INV_SLOT or {}
 M_LOAD_SLOT = M_LOAD_SLOT or {}
 M_TRADE_SLOT = M_TRADE_SLOT or {}
 -- {{"Loadout", 90}, {"Shop", 90}, {"Trading", 90}, {"Gamble", 90}, {"Dailies", 90}, {"Settings", 90}, {"Event", 90}, {"Store", 90}}
-local catw = math.floor(MOAT_INV_BG_W/9)
-MOAT_INV_CATS = {{"Loadout", catw}, {"Player", catw}, {"Trading", catw}, {"Shop", catw}, {"Gamble", catw}, {"Dailies", catw}, {"Settings", catw}, {"Event", catw}, {"Store", catw}}
+local catw = math.floor(MOAT_INV_BG_W/10)
+MOAT_INV_CATS = {
+    {"Loadout", catw},
+    {"Player", catw},
+    {"Trading", catw},
+    {"Shop", catw},
+    {"Gamble", catw},
+    {"Dailies", catw},
+    {"Settings", catw},
+    {"Event", catw},
+    {"Battle Pass", catw},
+    {"Store", catw}
+}
 function m_PaintVBar(sbar)
 
     local MT = MOAT_THEME.Themes
@@ -1379,6 +1393,8 @@ function m_OpenInventory(ply2, utrade)
         end
 	end
 
+    removemass()
+
     MOAT_ITEMS_DECON_MARKED = 0
     MOAT_DECONSTRUCT_ITEMS_START = 0
     MOAT_DECONSTRUCT_ITEMS_END = 0
@@ -1463,6 +1479,7 @@ function m_OpenInventory(ply2, utrade)
         	net.WriteBool(false)
         net.SendToServer()
     end, OnClose = function()
+        removemass()
         net.Start "moat_OpenInventory"
         	net.WriteBool(false)
         net.SendToServer()
@@ -2907,17 +2924,18 @@ function m_OpenInventory(ply2, utrade)
 
 				if (key == MOUSE_LEFT and input.IsKeyDown(KEY_LCONTROL) and m_Inventory[num].c) then
 					if (m_Inventory[num].l and m_Inventory[num].l == 1) then return end
-					if (m_Inventory[num].item and m_Inventory[num].item.Rarity and m_Inventory[num].item.Rarity > 5) then return end
 					
 					moat_RemoveEditPositionPanel()
 
 					if (m_Inventory[num].decon) then
 						m_Inventory[num].decon = false
 						MOAT_ITEMS_DECON_MARKED = math.Clamp(MOAT_ITEMS_DECON_MARKED - 1, 0, 1000)
+                        remrars(m_Inventory[num])
 					else
 						m_Inventory[num].decon = true
 						MOAT_ITEMS_DECON_MARKED = math.Clamp(MOAT_ITEMS_DECON_MARKED + 1, 0, 1000)
 						m_DrawDeconButton(MOAT_INV_BG)
+                        getrars(m_Inventory[num])
 					end
 
 					if (input.IsKeyDown(KEY_LSHIFT)) then
@@ -3253,6 +3271,7 @@ function m_OpenInventory(ply2, utrade)
 				v.decon = false
 			end
 		end
+        removemass()
 
 		MOAT_ITEMS_DECON_MARKED = 0
 
@@ -3264,12 +3283,12 @@ function m_OpenInventory(ply2, utrade)
             MOAT_GAMBLE_BG:AlphaTo(0, anim_time, 0, callback)
         end
 
-        -- if (cat == 5) then
-        --     local x, y = MOAT_INV_BG:GetPos()
-        --     m_CreateBattlePanel(x + 5, y + 30, MOAT_INV_BG_W - 10, MOAT_INV_BG_H - 35)
-        -- else
-        --     m_RemoveBattlePanel()
-        -- end
+        if (cat == 9) then
+            local x, y = MOAT_INV_BG:GetPos()
+            m_CreateBattlePanel(x + 5, y + 30, MOAT_INV_BG_W - 10, MOAT_INV_BG_H - 35)
+        else
+            m_RemoveBattlePanel()
+        end
 
 		if (cat == 6) then
 			m_BountyPanel()
@@ -4735,6 +4754,7 @@ function m_CreateItemMenu(num, ldt)
                 for i = 1, #m_Inventory do
                     m_Inventory[i].decon = false
                 end
+                removemass()
                 MOAT_ITEMS_DECON_MARKED = 0
 
                 moat_RemoveEditPositionPanel()
@@ -4762,6 +4782,305 @@ function m_CreateItemMenu(num, ldt)
         net.SendToServer()
         sfx.Cut()
     end):SetIcon("icon16/lock" .. lock_image .. ".png")
+
+    --MASTERY SKIN DROPDOWN
+    local curply = LocalPlayer()
+    if (itemtbl.item.Kind == "tier" or itemtbl.item.Kind == "Unique" and not ldt) then
+        local WeaponModel = weapons.Get(itemtbl.w).ViewModel
+        --locals for all the submenus, fuck you noah
+        local M_INV_MENU3, M_INV_MENU3P = M_INV_MENU:AddSubMenu("Mastery Skins")
+        M_INV_MENU3P:SetIcon("icon16/medal_gold_3.png")
+        local M_INV_MENURK, M_INV_MENURKP = M_INV_MENU3:AddSubMenu("Rightful Kills")
+        M_INV_MENURKP:SetIcon("icon16/tick.png")
+        local M_INV_MENUHS, M_INV_MENUHSP = M_INV_MENU3:AddSubMenu("Headshot Kills")
+        M_INV_MENUHSP:SetIcon("icon16/award_star_gold_3.png")
+        local M_INV_MENUCK, M_INV_MENUCKP = M_INV_MENU3:AddSubMenu("Crouch Kills")
+        M_INV_MENUCKP:SetIcon("icon16/arrow_down.png")
+        local M_INV_MENUAK, M_INV_MENUAKP = M_INV_MENU3:AddSubMenu("Airborne Kills")
+        M_INV_MENUAKP:SetIcon("icon16/arrow_up.png")
+        local M_INV_MENUHK, M_INV_MENUHKP = M_INV_MENU3:AddSubMenu("Healthy Kills")
+        M_INV_MENUHKP:SetIcon("icon16/heart.png")
+        local M_INV_MENULK, M_INV_MENULKP = M_INV_MENU3:AddSubMenu("Limb Kills")
+        M_INV_MENULKP:SetIcon("icon16/arrow_out.png")
+
+        --functions for the skin previews
+        local rightfulkills1 = M_INV_MENURK:AddOption("100 Kills", function() sfx.Click2() end)
+        rightfulkills1:SetIcon("icon16/shading.png")
+        function rightfulkills1:DoClick()
+            chat.AddText(Material("icon16/lock.png"), Color( 255, 255, 255 ), "You have not unlocked this skin yet!" )
+        end
+        function rightfulkills1:DoRightClick()
+            moat_view_paint_preview(WeaponModel, true, tint, paint, 6117)
+            M_INV_MENU:Remove()
+        end
+        local rightfulkills2 = M_INV_MENURK:AddOption("200 Kills", function() sfx.Click2() end)
+        rightfulkills2:SetIcon("icon16/shading.png")
+        function rightfulkills2:DoClick()
+            chat.AddText(Material("icon16/lock.png"), Color( 255, 255, 255 ), "You have not unlocked this skin yet!" )
+        end
+        function rightfulkills2:DoRightClick()
+            moat_view_paint_preview(WeaponModel, true, tint, paint, 6117)
+            M_INV_MENU:Remove()
+        end
+        local rightfulkills3 = M_INV_MENURK:AddOption("300 Kills", function() sfx.Click2() end)
+        rightfulkills3:SetIcon("icon16/shading.png")
+        function rightfulkills3:DoClick()
+            chat.AddText(Material("icon16/lock.png"), Color( 255, 255, 255 ), "You have not unlocked this skin yet!" )
+        end
+        function rightfulkills3:DoRightClick()
+            moat_view_paint_preview(WeaponModel, true, tint, paint, 6117)
+            M_INV_MENU:Remove()
+        end
+        local rightfulkills4 = M_INV_MENURK:AddOption("400 Kills", function() sfx.Click2() end)
+        rightfulkills4:SetIcon("icon16/shading.png")
+        function rightfulkills4:DoClick()
+            chat.AddText(Material("icon16/lock.png"), Color( 255, 255, 255 ), "You have not unlocked this skin yet!" )
+        end
+        function rightfulkills4:DoRightClick()
+            moat_view_paint_preview(WeaponModel, true, tint, paint, 6117)
+            M_INV_MENU:Remove()
+        end
+        local rightfulkills5 = M_INV_MENURK:AddOption("500 Kills", function() sfx.Click2() end)
+        rightfulkills5:SetIcon("icon16/shading.png")
+        function rightfulkills5:DoClick()
+            chat.AddText(Material("icon16/lock.png"), Color( 255, 255, 255 ), "You have not unlocked this skin yet!" )
+        end
+        function rightfulkills5:DoRightClick()
+            moat_view_paint_preview(WeaponModel, true, tint, paint, 6117)
+            M_INV_MENU:Remove()
+        end
+
+        local headshots1 = M_INV_MENUHS:AddOption("80 Kills", function() sfx.Click2() end)
+        headshots1:SetIcon("icon16/shading.png")
+        function headshots1:DoClick()
+            chat.AddText(Material("icon16/lock.png"), Color( 255, 255, 255 ), "You have not unlocked this skin yet!" )
+        end
+        function headshots1:DoRightClick()
+            moat_view_paint_preview(WeaponModel, true, tint, paint, 6117)
+            M_INV_MENU:Remove()
+        end
+        local headshots2 = M_INV_MENUHS:AddOption("160 Kills", function() sfx.Click2() end)
+        headshots2:SetIcon("icon16/shading.png")
+        function headshots2:DoClick()
+            chat.AddText(Material("icon16/lock.png"), Color( 255, 255, 255 ), "You have not unlocked this skin yet!" )
+        end
+        function headshots2:DoRightClick()
+            moat_view_paint_preview(WeaponModel, true, tint, paint, 6117)
+            M_INV_MENU:Remove()
+        end
+        local headshots3 = M_INV_MENUHS:AddOption("240 Kills", function() sfx.Click2() end)
+        headshots3:SetIcon("icon16/shading.png")
+        function headshots3:DoClick()
+            chat.AddText(Material("icon16/lock.png"), Color( 255, 255, 255 ), "You have not unlocked this skin yet!" )
+        end
+        function headshots3:DoRightClick()
+            moat_view_paint_preview(WeaponModel, true, tint, paint, 6117)
+            M_INV_MENU:Remove()
+        end
+        local headshots4 = M_INV_MENUHS:AddOption("320 Kills", function() sfx.Click2() end)
+        headshots4:SetIcon("icon16/shading.png")
+        function headshots4:DoClick()
+            chat.AddText(Material("icon16/lock.png"), Color( 255, 255, 255 ), "You have not unlocked this skin yet!" )
+        end
+        function headshots4:DoRightClick()
+            moat_view_paint_preview(WeaponModel, true, tint, paint, 6117)
+            M_INV_MENU:Remove()
+        end
+        local headshots5 = M_INV_MENUHS:AddOption("400 Kills", function() sfx.Click2() end)
+        headshots5:SetIcon("icon16/shading.png")
+        function headshots5:DoClick()
+            chat.AddText(Material("icon16/lock.png"), Color( 255, 255, 255 ), "You have not unlocked this skin yet!" )
+        end
+        function headshots5:DoRightClick()
+            moat_view_paint_preview(WeaponModel, true, tint, paint, 6117)
+            M_INV_MENU:Remove()
+        end
+
+        local crouch1 = M_INV_MENUCK:AddOption("60 Kills", function() sfx.Click2() end)
+        crouch1:SetIcon("icon16/shading.png")
+        function crouch1:DoClick()
+            chat.AddText(Material("icon16/lock.png"), Color( 255, 255, 255 ), "You have not unlocked this skin yet!" )
+        end
+        function crouch1:DoRightClick()
+            moat_view_paint_preview(WeaponModel, true, tint, paint, 6117)
+            M_INV_MENU:Remove()
+        end
+        local crouch2 = M_INV_MENUCK:AddOption("120 Kills", function() sfx.Click2() end)
+        crouch2:SetIcon("icon16/shading.png")
+        function crouch2:DoClick()
+            chat.AddText(Material("icon16/lock.png"), Color( 255, 255, 255 ), "You have not unlocked this skin yet!" )
+        end
+        function crouch2:DoRightClick()
+            moat_view_paint_preview(WeaponModel, true, tint, paint, 6117)
+            M_INV_MENU:Remove()
+        end
+        local crouch3 = M_INV_MENUCK:AddOption("180 Kills", function() sfx.Click2() end)
+        crouch3:SetIcon("icon16/shading.png")
+        function crouch3:DoClick()
+            chat.AddText(Material("icon16/lock.png"), Color( 255, 255, 255 ), "You have not unlocked this skin yet!" )
+        end
+        function crouch3:DoRightClick()
+            moat_view_paint_preview(WeaponModel, true, tint, paint, 6117)
+            M_INV_MENU:Remove()
+        end
+        local crouch4 = M_INV_MENUCK:AddOption("240 Kills", function() sfx.Click2() end)
+        crouch4:SetIcon("icon16/shading.png")
+        function crouch4:DoClick()
+            chat.AddText(Material("icon16/lock.png"), Color( 255, 255, 255 ), "You have not unlocked this skin yet!" )
+        end
+        function crouch4:DoRightClick()
+            moat_view_paint_preview(WeaponModel, true, tint, paint, 6117)
+            M_INV_MENU:Remove()
+        end
+        local crouch5 = M_INV_MENUCK:AddOption("300 Kills", function() sfx.Click2() end)
+        crouch5:SetIcon("icon16/shading.png")
+        function crouch5:DoClick()
+            chat.AddText(Material("icon16/lock.png"), Color( 255, 255, 255 ), "You have not unlocked this skin yet!" )
+        end
+        function crouch5:DoRightClick()
+            moat_view_paint_preview(WeaponModel, true, tint, paint, 6117)
+            M_INV_MENU:Remove()
+        end
+
+        local air1 = M_INV_MENUAK:AddOption("40 Kills", function() sfx.Click2() end)
+        air1:SetIcon("icon16/shading.png")
+        function air1:DoClick()
+            chat.AddText(Material("icon16/lock.png"), Color( 255, 255, 255 ), "You have not unlocked this skin yet!" )
+        end
+        function air1:DoRightClick()
+            moat_view_paint_preview(WeaponModel, true, tint, paint, 6117)
+            M_INV_MENU:Remove()
+        end
+        local air2 = M_INV_MENUAK:AddOption("80 Kills", function() sfx.Click2() end)
+        air2:SetIcon("icon16/shading.png")
+        function air2:DoClick()
+            chat.AddText(Material("icon16/lock.png"), Color( 255, 255, 255 ), "You have not unlocked this skin yet!" )
+        end
+        function air2:DoRightClick()
+            moat_view_paint_preview(WeaponModel, true, tint, paint, 6117)
+            M_INV_MENU:Remove()
+        end
+        local air3 = M_INV_MENUAK:AddOption("120 Kills", function() sfx.Click2() end)
+        air3:SetIcon("icon16/shading.png")
+        function air3:DoClick()
+            chat.AddText(Material("icon16/lock.png"), Color( 255, 255, 255 ), "You have not unlocked this skin yet!" )
+        end
+        function air3:DoRightClick()
+            moat_view_paint_preview(WeaponModel, true, tint, paint, 6117)
+            M_INV_MENU:Remove()
+        end
+        local air4 = M_INV_MENUAK:AddOption("160 Kills", function() sfx.Click2() end)
+        air4:SetIcon("icon16/shading.png")
+        function air4:DoClick()
+            chat.AddText(Material("icon16/lock.png"), Color( 255, 255, 255 ), "You have not unlocked this skin yet!" )
+        end
+        function air4:DoRightClick()
+            moat_view_paint_preview(WeaponModel, true, tint, paint, 6117)
+            M_INV_MENU:Remove()
+        end
+        local air5 = M_INV_MENUAK:AddOption("200 Kills", function() sfx.Click2() end)
+        air5:SetIcon("icon16/shading.png")
+        function air5:DoClick()
+            chat.AddText(Material("icon16/lock.png"), Color( 255, 255, 255 ), "You have not unlocked this skin yet!" )
+        end
+        function air5:DoRightClick()
+            moat_view_paint_preview(WeaponModel, true, tint, paint, 6117)
+            M_INV_MENU:Remove()
+        end
+
+        local healthy1 = M_INV_MENUHK:AddOption("30 Kills", function() sfx.Click2() end)
+        healthy1:SetIcon("icon16/shading.png")
+        function healthy1:DoClick()
+            chat.AddText(Material("icon16/lock.png"), Color( 255, 255, 255 ), "You have not unlocked this skin yet!" )
+        end
+        function healthy1:DoRightClick()
+            moat_view_paint_preview(WeaponModel, true, tint, paint, 6117)
+            M_INV_MENU:Remove()
+        end
+        local healthy2 = M_INV_MENUHK:AddOption("60 Kills", function() sfx.Click2() end)
+        healthy2:SetIcon("icon16/shading.png")
+        function healthy2:DoClick()
+            chat.AddText(Material("icon16/lock.png"), Color( 255, 255, 255 ), "You have not unlocked this skin yet!" )
+        end
+        function healthy2:DoRightClick()
+            moat_view_paint_preview(WeaponModel, true, tint, paint, 6117)
+            M_INV_MENU:Remove()
+        end
+        local healthy3 = M_INV_MENUHK:AddOption("90 Kills", function() sfx.Click2() end)
+        healthy3:SetIcon("icon16/shading.png")
+        function healthy3:DoClick()
+            chat.AddText(Material("icon16/lock.png"), Color( 255, 255, 255 ), "You have not unlocked this skin yet!" )
+        end
+        function healthy3:DoRightClick()
+            moat_view_paint_preview(WeaponModel, true, tint, paint, 6117)
+            M_INV_MENU:Remove()
+        end
+        local healthy4 = M_INV_MENUHK:AddOption("120 Kills", function() sfx.Click2() end)
+        healthy4:SetIcon("icon16/shading.png")
+        function healthy4:DoClick()
+            chat.AddText(Material("icon16/lock.png"), Color( 255, 255, 255 ), "You have not unlocked this skin yet!" )
+        end
+        function healthy4:DoRightClick()
+            moat_view_paint_preview(WeaponModel, true, tint, paint, 6117)
+            M_INV_MENU:Remove()
+        end
+        local healthy5 = M_INV_MENUHK:AddOption("150 Kills", function() sfx.Click2() end)
+        healthy5:SetIcon("icon16/shading.png")
+        function healthy5:DoClick()
+            chat.AddText(Material("icon16/lock.png"), Color( 255, 255, 255 ), "You have not unlocked this skin yet!" )
+        end
+        function healthy5:DoRightClick()
+            moat_view_paint_preview(WeaponModel, true, tint, paint, 6117)
+            M_INV_MENU:Remove()
+        end
+
+        local limb1 = M_INV_MENULK:AddOption("20 Kills", function() sfx.Click2() end)
+        limb1:SetIcon("icon16/shading.png")
+        function limb1:DoClick()
+            chat.AddText(Material("icon16/lock.png"), Color( 255, 255, 255 ), "You have not unlocked this skin yet!" )
+        end
+        function limb1:DoRightClick()
+            moat_view_paint_preview(WeaponModel, true, tint, paint, 6117)
+            M_INV_MENU:Remove()
+        end
+        local limb2 = M_INV_MENULK:AddOption("40 Kills", function() sfx.Click2() end)
+        limb2:SetIcon("icon16/shading.png")
+        function limb2:DoClick()
+            chat.AddText(Material("icon16/lock.png"), Color( 255, 255, 255 ), "You have not unlocked this skin yet!" )
+        end
+        function limb2:DoRightClick()
+            moat_view_paint_preview(WeaponModel, true, tint, paint, 6117)
+            M_INV_MENU:Remove()
+        end
+        local limb3 = M_INV_MENULK:AddOption("60 Kills", function() sfx.Click2() end)
+        limb3:SetIcon("icon16/shading.png")
+        function limb3:DoClick()
+            chat.AddText(Material("icon16/lock.png"), Color( 255, 255, 255 ), "You have not unlocked this skin yet!" )
+        end
+        function limb3:DoRightClick()
+            moat_view_paint_preview(WeaponModel, true, tint, paint, 6117)
+            M_INV_MENU:Remove()
+        end
+        local limb4 = M_INV_MENULK:AddOption("80 Kills", function() sfx.Click2() end)
+        limb4:SetIcon("icon16/shading.png")
+        function limb4:DoClick()
+            chat.AddText(Material("icon16/lock.png"), Color( 255, 255, 255 ), "You have not unlocked this skin yet!" )
+        end
+        function limb4:DoRightClick()
+            moat_view_paint_preview(WeaponModel, true, tint, paint, 6117)
+            M_INV_MENU:Remove()
+        end
+        local limb5 = M_INV_MENULK:AddOption("100 Kills", function() sfx.Click2() end)
+        limb5:SetIcon("icon16/shading.png")
+        function limb5:DoClick()
+            chat.AddText(Material("icon16/lock.png"), Color( 255, 255, 255 ), "You have not unlocked this skin yet!" )
+        end
+        function limb5:DoRightClick()
+            moat_view_paint_preview(WeaponModel, true, tint, paint, 6117)
+            M_INV_MENU:Remove()
+        end
+    end
+    --END OF MASTERY SKIN DROPDOWN
 
     local M_INV_MENU2, M_INV_MENU2P = M_INV_MENU:AddSubMenu "More Options" 
     M_INV_MENU2P:SetIcon "icon16/cog.png"
@@ -4999,10 +5318,6 @@ function m_CreateItemMenu(num, ldt)
             dec_rate = dec_rate * deoncstruct_speed
         elseif (ConVarExists("moat_deconstruct_speed") and GetConVar("moat_deconstruct_speed"):GetInt() == 1) then
             dec_rate = 6.5
-        end
-
-        if (item_rarity > 5) then
-            dec_rate = 1.3
         end
 
         pnl.Think = function(s)
@@ -6669,7 +6984,7 @@ function m_DrawDeconButton()
 
     MOAT_INV_MASS_DECON = vgui.Create("DButton", MOAT_INV_BG)
     MOAT_INV_MASS_DECON:SetPos(MOAT_INV_BG_W - 364 - 5, MOAT_INV_BG_H)
-    MOAT_INV_MASS_DECON:SetSize(364, 35)
+    MOAT_INV_MASS_DECON:SetSize(364, 60)
     MOAT_INV_MASS_DECON:SetText("")
 	sfx.SoundEffects(MOAT_INV_MASS_DECON)
     local hover_coloral = 1
@@ -6684,12 +6999,24 @@ function m_DrawDeconButton()
         surface_SetMaterial(gradient_d)
         surface_DrawTexturedRect(1, 1, w - 2, h - 2)
         local the_s = ""
+        local add = "("  .. TERA_MASS_DECON_AMOUNT[1] .. " - " .. TERA_MASS_DECON_AMOUNT[2] .. ")"
+        local add2 = ""
+        local amt = 0
         if (MOAT_ITEMS_DECON_MARKED > 1) then
             the_s = "s"
         end
-        m_DrawShadowedText(1, "Deconstruct " .. MOAT_ITEMS_DECON_MARKED .. " Marked Item" .. the_s, "Trebuchet24", w / 2, h / 2, Color(255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+        if MOAT_ITEMS_DECON_MARKED > 9 or TERA_MASS_DECON_AMOUNT[2] > 9999 then
+            add2 = "("  .. TERA_MASS_DECON_AMOUNT[1] .. " - " .. TERA_MASS_DECON_AMOUNT[2] .. ")"
+            add = ""
+            amt = 20
+        else
+            add = "("  .. TERA_MASS_DECON_AMOUNT[1] .. " - " .. TERA_MASS_DECON_AMOUNT[2] .. ")"
+            add2 = ""
+            amt = 11
+        end
+        m_DrawShadowedText(.2, add2, "Trebuchet24", w / 2, (h / 2), Color(255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+        m_DrawShadowedText(1, "Deconstruct " .. MOAT_ITEMS_DECON_MARKED .. " Marked Item" .. the_s .. " " .. add, "Trebuchet24", w / 2, (h / 2) - amt, Color(255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
     end
-
     local btn_hovered = 1
     local btn_color_a = false
 
@@ -6704,7 +7031,6 @@ function m_DrawDeconButton()
         if (not s:IsHovered()) then
             btn_hovered = 0
             btn_color_a = false
-
             if (hover_coloral > 0) then
                 hover_coloral = Lerp(2 * FrameTime(), hover_coloral, 0)
             end
@@ -6744,7 +7070,7 @@ function m_DrawDeconButton()
 
 		net.Start "MOAT_REM_INV_ITEMS"
 		net.WriteUInt(items_decon, 16)
-
+        
 		local items_sent = 0
         for i = 1, #m_Inventory do
             if (m_Inventory[i] and m_Inventory[i].decon) then
@@ -6762,6 +7088,8 @@ function m_DrawDeconButton()
                 m_Inventory[i].decon = false
             end
         end
+
+        removemass()
 
 		net.SendToServer()
 
@@ -6799,3 +7127,38 @@ hook("InitPostEntity", function()
 		handled_send = CurTime()
 	end
 end)
+
+function getrars(item)
+    local multiplier = getmult()
+    local i = item.item.Rarity
+    TERA_MASS_DECON_RARS[i] =  TERA_MASS_DECON_RARS[i] + 1
+    local dec_min, dec_max = math.Round(rarity_names[i][3].min), math.Round(rarity_names[i][3].max)
+    TERA_MASS_DECON_AMOUNT[1] = TERA_MASS_DECON_AMOUNT[1] + (dec_min * multiplier)
+    TERA_MASS_DECON_AMOUNT[2] = TERA_MASS_DECON_AMOUNT[2] + (dec_max * multiplier)
+end
+
+function remrars(item)
+    local multiplier = getmult()
+    local i = item.item.Rarity
+    TERA_MASS_DECON_RARS[i] =  TERA_MASS_DECON_RARS[i] - 1
+    local dec_min, dec_max = math.Round(rarity_names[i][3].min), math.Round(rarity_names[i][3].max)
+    TERA_MASS_DECON_AMOUNT[1] = TERA_MASS_DECON_AMOUNT[1] - (dec_min * multiplier)
+    TERA_MASS_DECON_AMOUNT[2] = TERA_MASS_DECON_AMOUNT[2] - (dec_max * multiplier)
+end
+
+function removemass()
+    TERA_MASS_DECON_RARS = {[0] = 0, [1] = 0, [2] = 0, [3] = 0, [4] = 0, [5] = 0, [6] = 0, [7] = 0, [8] = 0, [9] = 0}
+    TERA_MASS_DECON_AMOUNT[1], TERA_MASS_DECON_AMOUNT[2] = 0, 0
+end
+
+function getmult()
+    local multiplier = 1
+    --if (string.find(string.lower(LocalPlayer():Nick()), "tera.gg")) then
+	--	multiplier = multiplier + .25
+	--end
+
+    if (table.HasValue(MOAT_VIP, LocalPlayer():GetUserGroup())) then
+		multiplier = multiplier + .5
+    end
+    return multiplier
+end

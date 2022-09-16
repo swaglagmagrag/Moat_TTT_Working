@@ -36,6 +36,8 @@ ENT.AllowPropspec = true
 
 ENT.CanPickup	  = true
 
+ENT.Heal = 35
+
 
 
 function ENT:Initialize()
@@ -74,9 +76,14 @@ function ENT:UseOverride(activator)
 
 			local health = activator:Health()
 
-			if health <= 125 then
+			if health + activator.Heal < activator:GetMaxHealth() then
+				activator:SetHealth(health + activator.Heal)
 
-				activator:SetHealth(health + 35)
+				activator:EmitSound("mtg_nom.wav")
+
+				self.Entity:Remove()
+			elseif health + activator.Heal > activator:GetMaxHealth() then
+				activator:SetHealth(activator:GetMaxHealth())
 
 				activator:EmitSound("mtg_nom.wav")
 
