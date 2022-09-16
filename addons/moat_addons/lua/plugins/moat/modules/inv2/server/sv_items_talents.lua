@@ -36,7 +36,7 @@ function m_ApplyTalentMods(wep, loadout_table)
     end
 end
 
-hook.Add( "KeyPress", "tera_damage_movers", function (ply, key)
+hook.Add( "KeyPress", "damage_movers", function (ply, key)
     if ply.pressed then
         if (GetRoundState() ~= ROUND_ACTIVE) then return end
         if key == IN_JUMP or key == IN_DUCK then
@@ -49,7 +49,7 @@ hook.Add( "KeyPress", "tera_damage_movers", function (ply, key)
     end
 end )
 
-hook.Add( "PlayerButtonDown", "Tera_tp_button", function( ply, button )
+hook.Add( "PlayerButtonDown", "tp_button", function( ply, button )
     if ply.teratp and button == ply.teratp[3] then
         if not ply:Alive() then return end
         ply:SetPos(ply.teratp[1])
@@ -445,7 +445,7 @@ hook.Add("PlayerCanHearPlayersVoice", "Moat.Talents.PlayerCanHearPlayersVoice", 
 	end
 end)
 
-function tera_has_talent(wep, syn)
+function has_talent(wep, syn)
     for k, v in pairs(wep.Talents) do
         for g, d in pairs(syn) do
             if MOAT_TALENTS[wep.Talents[k].e] and MOAT_TALENTS[wep.Talents[k].e].Name == d and wep.Talents[k].l < wep.level then

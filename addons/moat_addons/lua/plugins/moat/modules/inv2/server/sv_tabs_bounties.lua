@@ -427,7 +427,7 @@ function _contracts()
 	]])
     q:start()
     local q = db:query([[
-		CREATE TABLE IF NOT EXISTS tera_mastery_skins (
+		CREATE TABLE IF NOT EXISTS mastery_skins (
 		`steamid` bigint unsigned not null unique,
 		`name` varchar(32) not null,
 		`complete` int unsigned NOT NULL,

@@ -3765,8 +3765,8 @@ end
 
 
 if (SERVER) then
-    if tera_stockpile_loaded == nil then
-        tera_stockpile_loaded = true
+    if stockpile_loaded == nil then
+        stockpile_loaded = true
         local ammotype = 0
     end    
     local FILLING = status.Create("Stockpile")    
@@ -4501,7 +4501,7 @@ function TALENT:OnWeaponSwitch(ply, wep, isto, talent_mods)
 	local maxc = wep:GetMaxClip1() 
 	local ammotype = wep:GetPrimaryAmmoType()     
 	local active = false 
-	local id = "tera_reload" .. ply:EntIndex()
+	local id = "reload" .. ply:EntIndex()
 	if !isto then timer.Create(id, timer_speed, 0, function() 
 		if (not IsValid(ply)) then timer.Remove(id) return end 
 		if (not IsValid(wep)) then timer.Remove(id) return end 
@@ -4512,7 +4512,7 @@ function TALENT:OnWeaponSwitch(ply, wep, isto, talent_mods)
 			D3A.Chat.SendToPlayer2(ply, moat_white, "Your " .. wep.PrintName .. " has no more ammo!")
 			active = true 
 		else
-			local a = tera_has_talent(wep, self.Synergies)
+			local a = has_talent(wep, self.Synergies)
 			if a and math.random(5) > 2 then
 				wep:SetClip1(wep:GetMaxClip1())
 				D3A.Chat.SendToPlayer2(ply, moat_white, "Your gun has reloaded fully without taking ammo thanks to Redo!")

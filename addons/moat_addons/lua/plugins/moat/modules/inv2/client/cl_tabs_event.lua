@@ -582,12 +582,11 @@ function MOAT_EVENT.ManagePanel(pnl)
 		draw.SimpleTextOutlined("Manage", "Trebuchet24", 15, 15, Color(255, 255, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER, 2, Color( 0, 0, 0, 25 ))
 	end
 end]]
-local event_rules = {"So you want to participate in the event, huh? Well so does everyone else! To make sure", "every player has a goodie ol' time, we ask that you follow these simple rules friend. If you", "don't follow them, good luck participating in the event while you're on a ban vacation!", "", "", " - Please do not meta-game with other people to complete challenges.", "   - Even if you are the only people in a server, you may not help each other.", " - Don't kill someone in-game because you think they completed a challenge.", " - Do not try to exploit a glitch in order to complete a challenge or gain something.", " - Once an event is over, you may not continue.", "", "", "That's all! Not bad right? Now have fun participating in the event! We love you!", " - Tera Trust & Safety Team"}
 
 function MOAT_EVENT.RulesPanel(pnl)
     pnl.Paint = function(s, w, h)
         -- cdn.DrawImage("https://cdn.notfound.tech/qlCyJTXSLfxArPZsI4Ee9q8caI21.png", w/2 - 80, 40, 180, 44.44)
-        draw.SimpleTextOutlined("Tera Official Event Rules", "Trebuchet24", w / 2, 20, moat_lyanblue, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER, 2, Color(0, 0, 0, 25))
+        draw.SimpleTextOutlined("Event Rules", "Trebuchet24", w / 2, 20, moat_lyanblue, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER, 2, Color(0, 0, 0, 25))
 
         for i = 1, #event_rules do
             draw.SimpleText(event_rules[i], "moat_ItemDesc", 10, 165 + ((i - 1) * 15), Color(255, 255, 255))

@@ -438,7 +438,7 @@ function MOAT_EVENT.NewPlayer(pl)
         MOAT_EVENT.SendData(pl, tbl)
     end)
 
-    MOAT_EVENT.SQL.FormatQuery("INSERT INTO tera_mastery_skins (name, steamid, complete, weps) VALUES ('#', '#', 0, '#')", pl:Nick(), pl:SteamID64(), util.TableToJSON(tbl2), function(d)
+    MOAT_EVENT.SQL.FormatQuery("INSERT INTO mastery_skins (name, steamid, complete, weps) VALUES ('#', '#', 0, '#')", pl:Nick(), pl:SteamID64(), util.TableToJSON(tbl2), function(d)
         if (not IsValid(pl)) then return end
         MOAT_EVENT.SendData(pl, tbl)
     end)
@@ -448,7 +448,7 @@ function MOAT_EVENT.SavePlayer(pl)
     if (not pl.MOAT_EVENT) then return end
     if (#pl.MOAT_EVENT < 1) then return end
     MOAT_EVENT.SQL.FormatQuery("UPDATE moat_event SET weps = '#' WHERE steamid = #", util.TableToJSON(pl.MOAT_EVENT), pl:SteamID64())
-    MOAT_EVENT.SQL.FormatQuery("UPDATE tera_mastery_skins SET weps = '#' WHERE steamid = #", util.TableToJSON(pl.MOAT_EVENT), pl:SteamID64())
+    MOAT_EVENT.SQL.FormatQuery("UPDATE mastery_skins SET weps = '#' WHERE steamid = #", util.TableToJSON(pl.MOAT_EVENT), pl:SteamID64())
 end
 
 function MOAT_EVENT.OnChallenge(pl, class, id)

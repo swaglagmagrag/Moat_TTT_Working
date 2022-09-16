@@ -1,6 +1,6 @@
 local bounties_y = 120
 
-tera_pinned = {}
+pinned = {}
 
 local HSVColor = HSVToColor(1, 1, 255)
 

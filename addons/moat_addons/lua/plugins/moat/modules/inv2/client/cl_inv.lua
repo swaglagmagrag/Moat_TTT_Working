@@ -111,8 +111,8 @@ local gradient_u = Material("vgui/gradient-u")
 local gradient_d = Material("vgui/gradient-d")
 local gradient_r = Material("vgui/gradient-r")
 moat_inv_cooldown = 0
-TERA_MASS_DECON_RARS = {[0] = 0, [1] = 0, [2] = 0, [3] = 0, [4] = 0, [5] = 0, [6] = 0, [7] = 0, [8] = 0, [9] = 0}
-TERA_MASS_DECON_AMOUNT = {0, 0}
+MASS_DECON_RARS = {[0] = 0, [1] = 0, [2] = 0, [3] = 0, [4] = 0, [5] = 0, [6] = 0, [7] = 0, [8] = 0, [9] = 0}
+MASS_DECON_AMOUNT = {0, 0}
 
 function m_isUsingInv(inv)
 	if (inv) then
@@ -6999,18 +6999,18 @@ function m_DrawDeconButton()
         surface_SetMaterial(gradient_d)
         surface_DrawTexturedRect(1, 1, w - 2, h - 2)
         local the_s = ""
-        local add = "("  .. TERA_MASS_DECON_AMOUNT[1] .. " - " .. TERA_MASS_DECON_AMOUNT[2] .. ")"
+        local add = "("  .. MASS_DECON_AMOUNT[1] .. " - " .. MASS_DECON_AMOUNT[2] .. ")"
         local add2 = ""
         local amt = 0
         if (MOAT_ITEMS_DECON_MARKED > 1) then
             the_s = "s"
         end
-        if MOAT_ITEMS_DECON_MARKED > 9 or TERA_MASS_DECON_AMOUNT[2] > 9999 then
-            add2 = "("  .. TERA_MASS_DECON_AMOUNT[1] .. " - " .. TERA_MASS_DECON_AMOUNT[2] .. ")"
+        if MOAT_ITEMS_DECON_MARKED > 9 or MASS_DECON_AMOUNT[2] > 9999 then
+            add2 = "("  .. MASS_DECON_AMOUNT[1] .. " - " .. MASS_DECON_AMOUNT[2] .. ")"
             add = ""
             amt = 20
         else
-            add = "("  .. TERA_MASS_DECON_AMOUNT[1] .. " - " .. TERA_MASS_DECON_AMOUNT[2] .. ")"
+            add = "("  .. MASS_DECON_AMOUNT[1] .. " - " .. MASS_DECON_AMOUNT[2] .. ")"
             add2 = ""
             amt = 11
         end
@@ -7131,24 +7131,24 @@ end)
 function getrars(item)
     local multiplier = getmult()
     local i = item.item.Rarity
-    TERA_MASS_DECON_RARS[i] =  TERA_MASS_DECON_RARS[i] + 1
+    MASS_DECON_RARS[i] =  MASS_DECON_RARS[i] + 1
     local dec_min, dec_max = math.Round(rarity_names[i][3].min), math.Round(rarity_names[i][3].max)
-    TERA_MASS_DECON_AMOUNT[1] = TERA_MASS_DECON_AMOUNT[1] + (dec_min * multiplier)
-    TERA_MASS_DECON_AMOUNT[2] = TERA_MASS_DECON_AMOUNT[2] + (dec_max * multiplier)
+    MASS_DECON_AMOUNT[1] = MASS_DECON_AMOUNT[1] + (dec_min * multiplier)
+    MASS_DECON_AMOUNT[2] = MASS_DECON_AMOUNT[2] + (dec_max * multiplier)
 end
 
 function remrars(item)
     local multiplier = getmult()
     local i = item.item.Rarity
-    TERA_MASS_DECON_RARS[i] =  TERA_MASS_DECON_RARS[i] - 1
+    MASS_DECON_RARS[i] =  MASS_DECON_RARS[i] - 1
     local dec_min, dec_max = math.Round(rarity_names[i][3].min), math.Round(rarity_names[i][3].max)
-    TERA_MASS_DECON_AMOUNT[1] = TERA_MASS_DECON_AMOUNT[1] - (dec_min * multiplier)
-    TERA_MASS_DECON_AMOUNT[2] = TERA_MASS_DECON_AMOUNT[2] - (dec_max * multiplier)
+    MASS_DECON_AMOUNT[1] = MASS_DECON_AMOUNT[1] - (dec_min * multiplier)
+    MASS_DECON_AMOUNT[2] = MASS_DECON_AMOUNT[2] - (dec_max * multiplier)
 end
 
 function removemass()
-    TERA_MASS_DECON_RARS = {[0] = 0, [1] = 0, [2] = 0, [3] = 0, [4] = 0, [5] = 0, [6] = 0, [7] = 0, [8] = 0, [9] = 0}
-    TERA_MASS_DECON_AMOUNT[1], TERA_MASS_DECON_AMOUNT[2] = 0, 0
+    MASS_DECON_RARS = {[0] = 0, [1] = 0, [2] = 0, [3] = 0, [4] = 0, [5] = 0, [6] = 0, [7] = 0, [8] = 0, [9] = 0}
+    MASS_DECON_AMOUNT[1], MASS_DECON_AMOUNT[2] = 0, 0
 end
 
 function getmult()
