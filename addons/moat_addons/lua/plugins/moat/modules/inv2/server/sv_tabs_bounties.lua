@@ -56,7 +56,7 @@ function contract_increase(ply, am)
     -- what
 end
 
-function fixbounties()
+function createsql()
     local db = MINVENTORY_MYSQL
     local q = db:query("DROP PROCEDURE IF EXISTS createUserInfo; CREATE PROCEDURE createUserInfo(in stid text, in stname text charset utf8mb4, in ipaddr text, in ostime bigint) BEGIN set @Count = (SELECT COUNT(*) AS Cnt FROM player WHERE `SteamID`=stid); if (@Count = 0) then insert into player (`SteamID`, `SteamName`, `FirstJoined`, `Vars`) VALUES (stid, stname, ostime, null); insert into player_iplog (`SteamID`, `Address`, `LastSeen`) VALUES(stid, ipaddr, -1); select 1 as Created; else select 0 as Created; end if; END;")
     q:start()
