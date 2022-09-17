@@ -295,8 +295,8 @@ hook.Add("HUDPaint", "moat.test.LTNT", function()
     draw.SimpleTextOutlined(left, "TNT.Small", (w/2) - (38), h - txh - 94, col, TEXT_ALIGN_RIGHT,TEXT_ALIGN_TOP, 1, Color(0,0,0))
 
 
-    cdn.DrawImage("https://static.moat.gg/f/jnlPyDmSerPSksH3gfvhDGl4wZRF.png", (w/2) - (32), h - txh - 124, 64, 64)
-    cdn.DrawImage("https://static.moat.gg/f/MaUmSSziOxewOLgyvLQ967CEEt4k.png", (w/2) - (32), 0, 64, 64)
+    cdn.DrawImage("jnlPyDmSerPSksH3gfvhDGl4wZRF.png", (w/2) - (32), h - txh - 124, 64, 64)
+    cdn.DrawImage("MaUmSSziOxewOLgyvLQ967CEEt4k.png", (w/2) - (32), 0, 64, 64)
 end)
 
 

@@ -60,7 +60,7 @@ end
 local stats_spawn = GetConVar("moat_showstats_spawn")
 local stats_spawn_old = false
 net.Receive("lava_Begin",function()
-	LavaTexture = cdn.Image("https://static.moat.gg/f/YOTZd8TJzmcaKD70AJ0laY73nZpw.jpg", function(img) LavaTexture = img end, "noclamp")
+	LavaTexture = cdn.Image("YOTZd8TJzmcaKD70AJ0laY73nZpw.jpg", function(img) LavaTexture = img end, "noclamp")
 
     SmoothLevel = Entity(0):GetModelRenderBounds().z
     MOAT_LAVA = {
@@ -569,7 +569,7 @@ hook.Add("PostDrawTranslucentRenderables", "DrawLava", function(a, b)
 
 	render.Clip(ClipTab, function()
 		if (not LavaTexture) then
-			LavaTexture = cdn.Image("https://static.moat.gg/f/YOTZd8TJzmcaKD70AJ0laY73nZpw.jpg", function(img)
+			LavaTexture = cdn.Image("YOTZd8TJzmcaKD70AJ0laY73nZpw.jpg", function(img)
 				LavaTexture = img
 			end, "noclamp")
 			return

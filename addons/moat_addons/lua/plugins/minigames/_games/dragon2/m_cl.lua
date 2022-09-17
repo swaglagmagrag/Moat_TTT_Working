@@ -104,7 +104,7 @@ end
 
 local function moat_InitDrawBossHealth()
 	hook.Add("HUDPaint", "moat_DrawBossHealth", moat_DrawBossHealth)
-	cdn.PlayURL("https://static.moat.gg/ttt/dragon.mp3", .8, function() end, "stream")
+	cdn.PlayURL("/dragon.mp3", .8, function() end, "stream")
 end
 
 local moat_BossWarningLabel = "INCOMING BOSS ROUND!!!"

@@ -15,7 +15,7 @@ if (CLIENT) then
 end
 
 local sounds = {
-    "https://static.moat.gg/ttt/summer/laser1.mp3",
+    "/summer/laser1.mp3",
 }
 
 function EFFECT:Init(data)

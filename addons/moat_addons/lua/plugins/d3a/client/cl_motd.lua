@@ -106,7 +106,7 @@ function MOTD.Open(secs, invalid, changes, new_changes)
     c:Dock(LEFT)
     c:SetWide(250)
     c.Paint = function(s, w, h)
-        cdn.DrawImage("https://static.moat.gg/f/JoVQapGqtskHBJkPCLbEaoIOosuF.png", 35, 35, 256, 256)
+        cdn.DrawImage("JoVQapGqtskHBJkPCLbEaoIOosuF.png", 35, 35, 256, 256)
     end
     MOTD.w = vgui.Create("DHTML", p)
     MOTD.w:DockMargin(0, 10, 10, 10)
@@ -193,7 +193,7 @@ function MOTD.Open(secs, invalid, changes, new_changes)
 
 			if (i == 4 and new_changes) then
 				DisableClipping(true)
-					cdn.SmoothImageRotated("https://static.moat.gg/ttt/new.png", w-16, -16, 32, 32, nil, math.sin(CurTime())*15,true)
+					cdn.SmoothImageRotated("/new.png", w-16, -16, 32, 32, nil, math.sin(CurTime())*15,true)
 				DisableClipping(false)
 			end
         end

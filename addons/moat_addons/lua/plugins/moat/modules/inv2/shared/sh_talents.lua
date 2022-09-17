@@ -450,7 +450,7 @@ else
 		table.insert(FriedPlayers, {Player = pl, Time = CurTime() + t, Start = now})
 		FriedPlayers.Count = FriedPlayers.Count + 1
 
-		cdn.PlayURL("https://static.moat.gg/f/deepfried.mp3", 0, function(s)
+		cdn.PlayURL("deepfried.mp3", 0, function(s)
 			for k, v in ipairs(FriedPlayers) do
 				if (v.Start == now) then FriedPlayers[k].Sound = s end
 			end

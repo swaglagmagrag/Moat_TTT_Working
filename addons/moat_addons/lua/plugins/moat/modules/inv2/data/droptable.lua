@@ -38,7 +38,7 @@ ITEM.ID = 207
 
 ITEM.Name = "A Baton"
 
-ITEM.Image = "https://static.moat.gg/f/ff9f07c2181f584aefc6f8312a27e417.png" 
+ITEM.Image = "ff9f07c2181f584aefc6f8312a27e417.png" 
 
 ITEM.WeaponClass = "weapon_ttt_baton"
 
@@ -73,7 +73,7 @@ ITEM.ID = 2007
 
 ITEM.Name = "American Baton"
 
-ITEM.Image = "https://static.moat.gg/f/ff9f07c2181f584aefc6f8312a27e417.png" 
+ITEM.Image = "ff9f07c2181f584aefc6f8312a27e417.png" 
 
 ITEM.WeaponClass = "weapon_ttt_baton"
 
@@ -156,7 +156,7 @@ ITEM.ID = 208
 
 ITEM.Name = "A Chair"
 
-ITEM.Image = "https://static.moat.gg/f/ec565c8080853a8074da82047026fdbb.png" 
+ITEM.Image = "ec565c8080853a8074da82047026fdbb.png" 
 
 ITEM.WeaponClass = "weapon_ttt_chair"
 
@@ -310,7 +310,7 @@ ITEM.WeaponClass = "weapon_ttt_fists"
 
 ITEM.Rarity = 3
 
-ITEM.Image = "https://static.moat.gg/f/96f183e138d991a720cdebb89f1fd137.png"
+ITEM.Image = "96f183e138d991a720cdebb89f1fd137.png"
 
 ITEM.Collection = "Spring Collection"
 
@@ -779,7 +779,7 @@ ITEM.NameColor = Color( 255, 102, 0 )
 
 ITEM.Description = "Begin the round with +%s_ more ammo in your reserves"
 
-ITEM.Image = "https://static.moat.gg/f/62a7db51574ae4a341e61c4174866816.png" 
+ITEM.Image = "62a7db51574ae4a341e61c4174866816.png" 
 
 ITEM.Rarity = 4
 
@@ -814,7 +814,7 @@ ITEM.NameColor = Color( 139, 0, 166 )
 
 ITEM.Description = "Fall damage is reduced by %s_ when using this power-up"
 
-ITEM.Image = "https://static.moat.gg/f/e62954919e052ed558d6b2e451badd24.png" 
+ITEM.Image = "e62954919e052ed558d6b2e451badd24.png" 
 
 ITEM.Rarity = 2
 
@@ -849,7 +849,7 @@ ITEM.NameColor = Color( 255, 255, 0 )
 
 ITEM.Description = "Start with %s extra credits as a detective/traitor when using this power-up"
 
-ITEM.Image = "https://static.moat.gg/f/78738ccf67e834f86317059b2dd06caf.png"
+ITEM.Image = "78738ccf67e834f86317059b2dd06caf.png"
 
 ITEM.Rarity = 4
 
@@ -881,7 +881,7 @@ ITEM.NameColor = Color( 255, 60, 0 )
 
 ITEM.Description = "Fire and explosion damage is reduced by %s_ when using this power-up"
 
-ITEM.Image = "https://static.moat.gg/f/7d05b151a4f6536508979e4edc065afd.png" 
+ITEM.Image = "7d05b151a4f6536508979e4edc065afd.png" 
 
 ITEM.Rarity = 3
 
@@ -916,7 +916,7 @@ ITEM.NameColor = Color( 255, 0, 0 )
 
 ITEM.Description = "You can jump +%s_^ higher after crouching for %s seconds"
 
-ITEM.Image = "https://static.moat.gg/f/efbb38256abb921e7cc3425819f80949.png" 
+ITEM.Image = "efbb38256abb921e7cc3425819f80949.png" 
 
 ITEM.Rarity = 2
 
@@ -969,7 +969,7 @@ ITEM.NameColor = Color(0, 255, 255)
 
 ITEM.Description = "Headshot damage is reduced by %s_ when using this power-up"
 
-ITEM.Image = "https://static.moat.gg/f/ddaebffd6d2f4cdf354479e029426159.png" 
+ITEM.Image = "ddaebffd6d2f4cdf354479e029426159.png" 
 
 ITEM.Rarity = 6
 
@@ -1032,7 +1032,7 @@ ITEM.NameColor = Color( 85, 85, 255 )
 
 ITEM.Description = "Movement speed is increased by +%s_ when using this power-up"
 
-ITEM.Image = "https://static.moat.gg/f/3860e90ff93a1fb663421ddf92fbbffa.png" 
+ITEM.Image = "3860e90ff93a1fb663421ddf92fbbffa.png" 
 
 ITEM.Rarity = 3
 
@@ -1069,7 +1069,7 @@ ITEM.NameColor = Color( 255, 0, 255 )
 
 ITEM.Description = "Gain %s_ more weapon XP after a rightfull kill when using this power-up"
 
-ITEM.Image = "https://static.moat.gg/f/1114672223ae94d7d0ea360abf9924e0.png" 
+ITEM.Image = "1114672223ae94d7d0ea360abf9924e0.png" 
 
 ITEM.Rarity = 5
 
@@ -1098,7 +1098,7 @@ ITEM.Name = "Alpha Crate"
 
 ITEM.Description = "This crate contains an item from the Alpha Collection! Right click to open"
 
-ITEM.Image = "https://static.moat.gg/f/b49edbc96b010036c2bfbb15fa186987.png"
+ITEM.Image = "b49edbc96b010036c2bfbb15fa186987.png"
 
 ITEM.Rarity = 2
 
@@ -1119,7 +1119,7 @@ ITEM.Name = "Beta Crate"
 
 ITEM.Description = "This crate contains an item from the Beta Collection! Right click to open"
 
-ITEM.Image = "https://static.moat.gg/f/4110e1152fb08b79d71114627012391a.png" 
+ITEM.Image = "4110e1152fb08b79d71114627012391a.png" 
 
 ITEM.Rarity = 2
 
@@ -1136,7 +1136,7 @@ ITEM = {}
 ITEM.ID = 3999
 ITEM.Name = "Box of Chocolates"
 ITEM.Description = "This box contains an item from the Valentine Collection! Right click to open"
-ITEM.Image = "https://static.moat.gg/f/boxofchocolates.png"
+ITEM.Image = "boxofchocolates.png"
 ITEM.Rarity = 3
 ITEM.NameColor = Color(255, 0, 255)
 ITEM.Collection = "Valentine Collection"
@@ -1157,7 +1157,7 @@ ITEM.Name = "Cosmetic Crate"
 
 ITEM.Description = "This crate contains an item from the Cosmetic Collection! Right click to open"
 
-ITEM.Image = "https://static.moat.gg/f/ccec866eabde09c133a3f6301d558179.png"
+ITEM.Image = "ccec866eabde09c133a3f6301d558179.png"
 
 ITEM.Rarity = 3
 
@@ -1174,7 +1174,7 @@ ITEM = {}
 ITEM.ID = 7332
 ITEM.Name = "Paper Tiqers Crate"
 ITEM.Description = "This crate contains a skin from the Paper Tiqers Collection! Right click to open"
-ITEM.Image = "https://static.moat.gg/ttt/uwu/pluto/icon_crate.png"
+ITEM.Image = "/uwu/pluto/icon_crate.png"
 ITEM.Rarity = 4
 ITEM.Collection = "Paper Tiqers Collection"
 ITEM.Active = true
@@ -1191,7 +1191,7 @@ ITEM.Name = "Crimson Crate"
 
 ITEM.Description = "This crate contains an item from the Crimson Collection! Right click to open"
 
-ITEM.Image = "https://static.moat.gg/f/5ce300e78199481c28d09aebae2e0701.png"
+ITEM.Image = "5ce300e78199481c28d09aebae2e0701.png"
 
 ITEM.Rarity = 2
 
@@ -1208,7 +1208,7 @@ ITEM = {}
 ITEM.ID = 8999
 ITEM.Name = "Easter Basket"
 ITEM.Description = "This basket contains a rare item from the Easter Collection! Right click to open"
-ITEM.Image = "https://static.moat.gg/f/easter_basket64.png"
+ITEM.Image = "easter_basket64.png"
 ITEM.Rarity = 8
 ITEM.Collection = "Easter Collection"
 ITEM.Active = false
@@ -1223,7 +1223,7 @@ ITEM = {}
 ITEM.ID = 8998
 ITEM.Name = "Easter 2019 Basket"
 ITEM.Description = "This basket contains a rare item from the Easter Collection! Right click to open"
-ITEM.Image = "https://static.moat.gg/f/easter_basket64.png"
+ITEM.Image = "easter_basket64.png"
 ITEM.Rarity = 8
 ITEM.Collection = "Easter Collection"
 ITEM.Contains = {"Egg Hunt Collection", "Easter Collection"}
@@ -1248,7 +1248,7 @@ ITEM = {}
 ITEM.ID = 8997
 ITEM.Name = "Golden Easter Basket"
 ITEM.Description = "This basket contains a rare item from the Easter Collection! Right click to open"
-ITEM.Image = "https://static.moat.gg/f/easter_basket64.png"
+ITEM.Image = "easter_basket64.png"
 ITEM.Rarity = 8
 ITEM.Collection = "Golden Easter Collection"
 ITEM.Contains = {"Easter Collection"}
@@ -1271,7 +1271,7 @@ ITEM = {}
 ITEM.ID = 3995
 ITEM.Name = "Easter 2020 Basket"
 ITEM.Description = "This basket contains a rare item from the Easter Collection! Right click to open"
-ITEM.Image = "https://static.moat.gg/f/easter_basket64.png"
+ITEM.Image = "easter_basket64.png"
 ITEM.Rarity = 8
 ITEM.Collection = "Easter Collection"
 ITEM.Contains = {"Egg Hunt Collection", "Easter Collection"}
@@ -1296,7 +1296,7 @@ ITEM = {}
 ITEM.ID = 851
 ITEM.Name = "Easter Egg"
 ITEM.Description = "This egg contains a rare item from the Egg Hunt Collection! Right click to open"
-ITEM.Image = "https://static.moat.gg/f/easter_egg64.png" 
+ITEM.Image = "easter_egg64.png" 
 ITEM.Rarity = 8
 ITEM.Collection = "Egg Hunt Collection"
 ITEM.Active = false
@@ -1314,7 +1314,7 @@ ITEM.Name = "Effect Crate"
 
 ITEM.Description = "This crate contains an item from the Effect Collection! Right click to open"
 
-ITEM.Image = "https://static.moat.gg/f/effect_crate64.png" 
+ITEM.Image = "effect_crate64.png" 
 
 ITEM.Rarity = 5
 
@@ -1335,7 +1335,7 @@ ITEM.Name = "50/50 Crate"
 
 ITEM.Description = "This crate has a 50/50 chance of returning a terrible item, or a great item! Right click to open"
 
-ITEM.Image = "https://static.moat.gg/f/fiftyfifty_crate64.png" 
+ITEM.Image = "fiftyfifty_crate64.png" 
 
 ITEM.Rarity = 4
 
@@ -1362,7 +1362,7 @@ ITEM.Name = "1/3 Crate"
 
 ITEM.Description = "This crate has a 1/3 chance of returning an ascended item, or a garbage item! Right click to open"
 
-ITEM.Image = "https://static.moat.gg/f/fiftyfifty_crate64.png" 
+ITEM.Image = "fiftyfifty_crate64.png" 
 
 ITEM.Rarity = 4
 
@@ -1389,7 +1389,7 @@ ITEM.Name = "1/10 Crate"
 
 ITEM.Description = "This crate has a 1/3 chance of returning an ascended item, or a garbage item! Right click to open"
 
-ITEM.Image = "https://static.moat.gg/f/fiftyfifty_crate64.png" 
+ITEM.Image = "fiftyfifty_crate64.png" 
 
 ITEM.Rarity = 4
 
@@ -1412,7 +1412,7 @@ ITEM = {}
 ITEM.ID = 2002
 ITEM.Name = "Holiday Crate"
 ITEM.Description = "This crate contains an item from the Holiday Collection! Right click to open"
-ITEM.Image = "https://static.moat.gg/f/holiday_crate64.png" 
+ITEM.Image = "holiday_crate64.png" 
 ITEM.Rarity = 4
 ITEM.Collection = "Holiday Collection"
 ITEM.Active = false
@@ -1425,7 +1425,7 @@ ITEM = {}
 ITEM.ID = 20026
 ITEM.Name = "Smore's Crate"
 ITEM.Description = "This crate contains an item from the Holiday Collection! Right click to open"
-ITEM.Image = "https://static.moat.gg/f/holiday_crate64.png" 
+ITEM.Image = "holiday_crate64.png" 
 ITEM.Rarity = 4
 ITEM.Collection = "Smore's Collection"
 ITEM.Active = true
@@ -1438,7 +1438,7 @@ ITEM = {}
 ITEM.ID = 8151
 ITEM.Name = "Hype Crate"
 ITEM.Description = "This crate contains an item from the Hype Collection! Right click to open"
-ITEM.Image = "https://static.moat.gg/f/bfdaa65ad7342e8fe539f0b2305e3d62.png"
+ITEM.Image = "bfdaa65ad7342e8fe539f0b2305e3d62.png"
 ITEM.Rarity = 3
 ITEM.Collection = "Hype Collection"
 ITEM.Active = true
@@ -1457,7 +1457,7 @@ ITEM.NameEffectMods = {Color(255, 0, 0)}
 
 ITEM.Description = "This crate contains an item from the Independence Collection! Right click to open"
 
-ITEM.Image = "https://static.moat.gg/f/usa_crate64.png"
+ITEM.Image = "usa_crate64.png"
 
 ITEM.Rarity = 8
 
@@ -1480,7 +1480,7 @@ ITEM.Name = "Melee Crate"
 
 ITEM.Description = "This crate contains an item from the Melee Collection! Right click to open"
 
-ITEM.Image = "https://static.moat.gg/f/melee_crate64.png" 
+ITEM.Image = "melee_crate64.png" 
 
 ITEM.Rarity = 2
 
@@ -1498,7 +1498,7 @@ ITEM = {}
 ITEM.ID = 9990
 ITEM.Name = "Omega Crate"
 ITEM.Description = "This crate contains an item from the Omega Collection! Right click to open"
-ITEM.Image = "https://static.moat.gg/ttt/crate_icon_omega128.png"
+ITEM.Image = "/crate_icon_omega128.png"
 ITEM.Rarity = 4
 ITEM.Collection = "Omega Collection"
 ITEM.Active = false
@@ -1516,7 +1516,7 @@ ITEM.Name = "Model Crate"
 
 ITEM.Description = "This crate contains an item from the Model Collection! Right click to open"
 
-ITEM.Image = "https://static.moat.gg/f/model_crate64.png" 
+ITEM.Image = "model_crate64.png" 
 
 ITEM.Rarity = 3
 
@@ -1533,7 +1533,7 @@ ITEM = {}
 ITEM.ID = 6000
 ITEM.Name = "Paint Crate"
 ITEM.Description = "This crate contains an item from the Paint Collection! Right click to open"
-ITEM.Image = "https://static.moat.gg/ttt/paint_crate.png"
+ITEM.Image = "/paint_crate.png"
 ITEM.Rarity = 3
 ITEM.Collection = "Paint Collection"
 ITEM.Active = true
@@ -1545,7 +1545,7 @@ ITEM = {}
 ITEM.ID = 2001
 ITEM.Name = "Pumpkin Crate"
 ITEM.Description = "This crate contains an item from the Pumpkin Collection! Right click to open"
-ITEM.Image = "https://static.moat.gg/f/pumpkin64.png" 
+ITEM.Image = "pumpkin64.png" 
 ITEM.Rarity = 8
 ITEM.Collection = "Pumpkin Collection"
 ITEM.Active = false
@@ -1561,7 +1561,7 @@ ITEM.Name = "Spring Crate"
 
 ITEM.Description = "This crate contains an item from the Spring Collection! Right click to open"
 
-ITEM.Image = "https://static.moat.gg/f/spring_crate64.png" 
+ITEM.Image = "spring_crate64.png" 
 
 ITEM.Rarity = 2
 
@@ -1578,7 +1578,7 @@ ITEM = {}
 ITEM.ID = 1051
 ITEM.Name = "Titan Crate"
 ITEM.Description = "This crate contains an item from the Titan Collection! Right click to open"
-ITEM.Image = "https://static.moat.gg/f/titan_crate64.png"
+ITEM.Image = "titan_crate64.png"
 ITEM.Rarity = 4
 ITEM.Collection = "Titan Collection"
 ITEM.Active = true
@@ -1594,7 +1594,7 @@ ITEM.Name = "Urban Style Crate"
 
 ITEM.Description = "This crate contains an item from the Urban Style Collection! Right click to open"
 
-ITEM.Image = "https://static.moat.gg/f/urban_crate64.png" 
+ITEM.Image = "urban_crate64.png" 
 
 ITEM.Rarity = 3
 
@@ -1611,7 +1611,7 @@ ITEM = {}
 ITEM.ID = 3394
 ITEM.Name = "Cinco De Mayo"
 ITEM.Description = "This box contains an item from the Cinco De Mayo Collection! Right click to open"
-ITEM.Image = "https://static.moat.gg/ttt/icon_crate_cincodemayo.png"
+ITEM.Image = "/icon_crate_cincodemayo.png"
 ITEM.Rarity = 3
 ITEM.NameEffect = "enchanted"
 ITEM.NameColor = Color(255, 45, 45)
@@ -1634,7 +1634,7 @@ ITEM.Name = "Aqua Palm Crate"
 
 ITEM.Description = "This crate contains an item from the Aqua Palm Collection! Right click to open"
 
-ITEM.Image = "https://static.moat.gg/ttt/aqua_palm_crate_icon.png" 
+ITEM.Image = "/aqua_palm_crate_icon.png" 
 
 ITEM.Rarity = 2
 
@@ -12056,7 +12056,7 @@ ITEM.Active = false
 ITEM.NewItem = 1575878400
 ITEM.Price = 80000
 ITEM.Collection = "Gamma Collection"
-ITEM.Image = "https://static.moat.gg/f/6ebf091ece6172a692c640204464d839.png"
+ITEM.Image = "6ebf091ece6172a692c640204464d839.png"
 ITEM.ItemCheck = 7
 ITEM.ItemUsed = function(pl, slot, item)
 	m_ResetStats(pl, slot, item)
@@ -12073,7 +12073,7 @@ ITEM.Active = false
 ITEM.NewItem = 1575878400
 ITEM.Price = 80000
 ITEM.Collection = "Gamma Collection"
-ITEM.Image = "https://static.moat.gg/f/ascended_talent64.png"
+ITEM.Image = "ascended_talent64.png"
 ITEM.ItemCheck = 3
 ITEM.ItemUsed = function(pl, slot, item)
 	m_ResetTalents(pl, slot, item)
@@ -12090,7 +12090,7 @@ ITEM.Active = false
 ITEM.NewItem = 1575878400
 ITEM.Price = 350000
 ITEM.Collection = "Gamma Collection"
-ITEM.Image = "https://static.moat.gg/f/cosmic_stat64.png"
+ITEM.Image = "cosmic_stat64.png"
 ITEM.ItemCheck = 6
 ITEM.ItemUsed = function(pl, slot, item)
 	m_ResetStats(pl, slot, item)
@@ -12107,7 +12107,7 @@ ITEM.Active = false
 ITEM.NewItem = 1575878400
 ITEM.Price = 350000
 ITEM.Collection = "Gamma Collection"
-ITEM.Image = "https://static.moat.gg/f/cosmic_talent64.png"
+ITEM.Image = "cosmic_talent64.png"
 ITEM.ItemCheck = 2
 ITEM.ItemUsed = function(pl, slot, item)
 	m_ResetTalents(pl, slot, item)
@@ -12126,7 +12126,7 @@ ITEM.Price = 50000
 ITEM.ShopDesc = "Become a Detective on the next round!\n(Purchasing will give you a one-time Detective Token usable)"
 
 ITEM.Collection = "Supreme Collection"
-ITEM.Image = "https://static.moat.gg/ttt/detective_token.png"
+ITEM.Image = "/detective_token.png"
 
 ROLE_TOKEN_PLAYERS = ROLE_TOKEN_PLAYERS or {}
 
@@ -12154,7 +12154,7 @@ ITEM.ID = 4082
 ITEM.Description = "Using this item will reroll any american made weapon"
 ITEM.Rarity = 8
 ITEM.Collection = "Limited Collection"
-ITEM.Image = "https://static.moat.gg/f/name_mutator64.png"
+ITEM.Image = "name_mutator64.png"
 ITEM.ItemCheck = 16
 ITEM.ItemUsed = function(pl, slot, item)
 	m_ResetTalents(pl, slot, item)
@@ -12169,7 +12169,7 @@ ITEM.Description = "I wonder what's inside?"
 ITEM.Rarity = 0
 ITEM.Active = false
 ITEM.Collection = "Gift Collection"
-ITEM.Image = "https://static.moat.gg/f/present.png"
+ITEM.Image = "present.png"
 ITEM.Preview = false
 ITEM.CrateShopOverride = "Gift"
 ITEM.ItemUsed = function(pl, slot, item)
@@ -12191,7 +12191,7 @@ ITEM.Rarity = 0
 ITEM.Active = true
 ITEM.Price = 5000
 ITEM.Collection = "Gift Collection"
-ITEM.Image = "https://static.moat.gg/f/present-empty.png"
+ITEM.Image = "present-empty.png"
 ITEM.ItemCheck = 13
 ITEM.Preview = false
 ITEM.CrateShopOverride = "Gift"
@@ -12210,7 +12210,7 @@ ITEM.Active = false
 ITEM.NewItem = 1577779200
 ITEM.Price = 50000
 ITEM.Collection = "Santa's Collection"
-ITEM.Image = "https://static.moat.gg/f/gift_usable64.png"
+ITEM.Image = "gift_usable64.png"
 ITEM.ItemUsed = function(pl, slot, item)
 	for k, v in pairs(player.GetAll()) do
 		v:m_DropInventoryItem("Holiday Crate")
@@ -12227,7 +12227,7 @@ ITEM.Active = false
 ITEM.NewItem = 1575878400
 ITEM.Price = 10000
 ITEM.Collection = "Gamma Collection"
-ITEM.Image = "https://static.moat.gg/f/highend_stat64.png"
+ITEM.Image = "highend_stat64.png"
 ITEM.ItemCheck = 8
 ITEM.ItemUsed = function(pl, slot, item)
 	m_ResetStats(pl, slot, item)
@@ -12244,7 +12244,7 @@ ITEM.Active = false
 ITEM.NewItem = 1575878400
 ITEM.Price = 10000
 ITEM.Collection = "Gamma Collection"
-ITEM.Image = "https://static.moat.gg/f/highend_talent64.png"
+ITEM.Image = "highend_talent64.png"
 ITEM.ItemCheck = 4
 ITEM.ItemUsed = function(pl, slot, item)
 	m_ResetTalents(pl, slot, item)
@@ -12261,7 +12261,7 @@ ITEM.Active = false
 ITEM.NewItem = 1575878400
 ITEM.Price = 50000
 ITEM.Collection = "Supreme Collection"
-ITEM.Image = "https://static.moat.gg/ttt/apache_token.png"
+ITEM.Image = "/apache_token.png"
 ITEM.SafetyCheck = 15
 ITEM.ItemUsed = function(pl, slot, item, str)
 	MSE.Events.CanStart(pl, "Apache Round", {"self"})
@@ -12277,7 +12277,7 @@ ITEM.Active = false
 ITEM.NewItem = 1575878400
 ITEM.Price = 50000
 ITEM.Collection = "Supreme Collection"
-ITEM.Image = "https://static.moat.gg/ttt/stalker_token.png"
+ITEM.Image = "/stalker_token.png"
 ITEM.SafetyCheck = 15
 ITEM.ItemUsed = function(pl, slot, item, str)
 	MSE.Events.CanStart(pl, "Stalker Round", {"self"})
@@ -12293,7 +12293,7 @@ ITEM.Active = false
 ITEM.NewItem = 1575878400
 ITEM.Price = 50000
 ITEM.Collection = "Supreme Collection"
-ITEM.Image = "https://static.moat.gg/ttt/tdm_token.png"
+ITEM.Image = "/tdm_token.png"
 ITEM.SafetyCheck = 15
 ITEM.ItemUsed = function(pl, slot, item, str)
 	MSE.Events.CanStart(pl, "Team Deathmatch", {"self"})
@@ -12309,7 +12309,7 @@ ITEM.Active = false
 ITEM.NewItem = 1575878400
 ITEM.Price = 50000
 ITEM.Collection = "Supreme Collection"
-ITEM.Image = "https://static.moat.gg/ttt/tnt_token.png"
+ITEM.Image = "/tnt_token.png"
 ITEM.SafetyCheck = 15
 ITEM.ItemUsed = function(pl, slot, item, str)
 	MSE.Events.CanStart(pl, "TNT-Tag Round", {"self"})
@@ -12325,7 +12325,7 @@ ITEM.Active = false
 ITEM.NewItem = 1575878400
 ITEM.Price = 50000
 ITEM.Collection = "Supreme Collection"
-ITEM.Image = "https://static.moat.gg/ttt/zombie_token.png"
+ITEM.Image = "/zombie_token.png"
 ITEM.SafetyCheck = 15
 ITEM.ItemUsed = function(pl, slot, item, str)
 	MSE.Events.CanStart(pl, "Contagion Round", {"self"})
@@ -12341,7 +12341,7 @@ ITEM.Active = false
 ITEM.NewItem = 1575878400
 ITEM.Price = 50000
 ITEM.Collection = "Supreme Collection"
-ITEM.Image = "https://static.moat.gg/ttt/boss_token.png"
+ITEM.Image = "/boss_token.png"
 ITEM.SafetyCheck = 15
 ITEM.ItemUsed = function(pl, slot, item, str)
 	MSE.Events.CanStart(pl, "Deathclaw Round", {"self"})
@@ -12357,7 +12357,7 @@ ITEM.Active = false
 ITEM.NewItem = 1575878400
 ITEM.Price = 50000
 ITEM.Collection = "Supreme Collection"
-ITEM.Image = "https://static.moat.gg/ttt/cock_token.png"
+ITEM.Image = "/cock_token.png"
 ITEM.SafetyCheck = 15
 ITEM.ItemUsed = function(pl, slot, item, str)
 	MSE.Events.CanStart(pl, "Apache Round", {"self"})
@@ -12373,7 +12373,7 @@ ITEM.Active = false
 ITEM.NewItem = 1575878400
 ITEM.Price = 50000
 ITEM.Collection = "Supreme Collection"
-ITEM.Image = "https://static.moat.gg/ttt/dragon_token.png"
+ITEM.Image = "/dragon_token.png"
 ITEM.SafetyCheck = 15
 ITEM.ItemUsed = function(pl, slot, item, str)
 	MSE.Events.CanStart(pl, "Dragon Round", {"self"})
@@ -12389,7 +12389,7 @@ ITEM.Active = false
 ITEM.NewItem = 1575878400
 ITEM.Price = 50000
 ITEM.Collection = "Supreme Collection"
-ITEM.Image = "https://static.moat.gg/ttt/ffa_token.png"
+ITEM.Image = "/ffa_token.png"
 ITEM.SafetyCheck = 15
 ITEM.ItemUsed = function(pl, slot, item, str)
 	MSE.Events.CanStart(pl, "FFA Round", {"self"})
@@ -12405,7 +12405,7 @@ ITEM.Active = false
 ITEM.NewItem = 1575878400
 ITEM.Price = 50000
 ITEM.Collection = "Supreme Collection"
-ITEM.Image = "https://static.moat.gg/ttt/knife_token.png"
+ITEM.Image = "/knife_token.png"
 ITEM.SafetyCheck = 15
 ITEM.ItemUsed = function(pl, slot, item, str)
 	MSE.Events.CanStart(pl, "Gun Game", {"self"})
@@ -12421,7 +12421,7 @@ ITEM.Active = false
 ITEM.NewItem = 1575878400
 ITEM.Price = 50000
 ITEM.Collection = "Supreme Collection"
-ITEM.Image = "https://static.moat.gg/ttt/lava_token.png"
+ITEM.Image = "/lava_token.png"
 ITEM.SafetyCheck = 15
 ITEM.ItemUsed = function(pl, slot, item, str)
 	MSE.Events.CanStart(pl, "The Floor is Lava", {"self"})
@@ -12437,7 +12437,7 @@ ITEM.Active = false
 ITEM.NewItem = 1575878400
 ITEM.Price = 50000
 ITEM.Collection = "Supreme Collection"
-ITEM.Image = "https://static.moat.gg/ttt/one_token.png"
+ITEM.Image = "/one_token.png"
 ITEM.SafetyCheck = 15
 ITEM.ItemUsed = function(pl, slot, item, str)
 	MSE.Events.CanStart(pl, "One in the Chamber", {"self"})
@@ -12453,7 +12453,7 @@ ITEM.Active = false
 ITEM.NewItem = 1575878400
 ITEM.Price = 50000
 ITEM.Collection = "Supreme Collection"
-ITEM.Image = "https://static.moat.gg/ttt/seek_token.png"
+ITEM.Image = "/seek_token.png"
 ITEM.SafetyCheck = 15
 ITEM.ItemUsed = function(pl, slot, item, str)
 	MSE.Events.CanStart(pl, "Prop Hunt", {"self"})
@@ -12468,7 +12468,7 @@ ITEM.Rarity = 8
 ITEM.Active = false
 ITEM.Price = 100
 ITEM.Collection = "Egg Hunt Collection"
-ITEM.Image = "https://static.moat.gg/f/easter_eggold64.png"
+ITEM.Image = "easter_eggold64.png"
 ITEM.ItemUsed = function(pl, slot, item)
 	pl:m_DropInventoryItem("Easter Egg")
 end
@@ -12482,7 +12482,7 @@ ITEM.Rarity = 8
 ITEM.Active = false
 ITEM.Price = 100
 ITEM.Collection = "Egg Hunt Collection"
-ITEM.Image = "https://static.moat.gg/f/easter_eggold64.png"
+ITEM.Image = "easter_eggold64.png"
 ITEM.ItemUsed = function(pl, slot, item)
 	pl:m_DropInventoryItem("Easter Egg")
 end
@@ -12496,7 +12496,7 @@ ITEM.Rarity = 8
 ITEM.Active = false
 ITEM.Price = 100
 ITEM.Collection = "Egg Hunt Collection"
-ITEM.Image = "https://static.moat.gg/f/easter_eggold64.png"
+ITEM.Image = "easter_eggold64.png"
 ITEM.ItemUsed = function(pl, slot, item)
 	pl:m_DropInventoryItem("Easter Egg")
 end
@@ -12512,7 +12512,7 @@ ITEM.NewItem = 1575878400
 ITEM.Price = 50000
 ITEM.Collection = "Gamma Collection"
 ITEM.CrateShopOverride = "Name Mutator"
-ITEM.Image = "https://static.moat.gg/ttt/2499888427.png"
+ITEM.Image = "/2499888427.png"
 ITEM.ItemCheck = 1
 ITEM.ItemUsed = function(pl, slot, item, str)
 	str = sql.SQLStr(str, true)
@@ -12534,7 +12534,7 @@ ITEM.Active = false
 ITEM.NewItem = 1575878400
 ITEM.Price = 600000
 ITEM.Collection = "Gamma Collection"
-ITEM.Image = "https://static.moat.gg/f/planetary_stat64.png"
+ITEM.Image = "planetary_stat64.png"
 ITEM.ItemCheck = 9
 ITEM.ItemUsed = function(pl, slot, item)
 	m_ResetStats(pl, slot, item)
@@ -12551,7 +12551,7 @@ ITEM.Active = false
 ITEM.NewItem = 1575878400
 ITEM.Price = 600000
 ITEM.Collection = "Gamma Collection"
-ITEM.Image = "https://static.moat.gg/f/planetary_talent64.png"
+ITEM.Image = "planetary_talent64.png"
 ITEM.ItemCheck = 5
 ITEM.ItemUsed = function(pl, slot, item)
 	m_ResetTalents(pl, slot, item)
@@ -12570,7 +12570,7 @@ ITEM.Price = 75000
 ITEM.ShopDesc = "Become a Traitor on the next round!"
 
 ITEM.Collection = "Supreme Collection"
-ITEM.Image = "https://static.moat.gg/ttt/traitor_token.png"
+ITEM.Image = "/traitor_token.png"
 
 ROLE_TOKEN_PLAYERS = ROLE_TOKEN_PLAYERS or {}
 
@@ -12598,7 +12598,7 @@ ITEM.Name = "VIP Token"
 ITEM.Description = "Using this will grant VIP rank benefits permanently!"
 ITEM.Rarity = 8
 ITEM.Collection = "Meta Collection"
-ITEM.Image = "https://static.moat.gg/ttt/vip_token.png"
+ITEM.Image = "/vip_token.png"
 ITEM.Active = false
 
 -- Will only be able to be bought with SC, not done yet. Just pushing votekick meme
@@ -12616,7 +12616,7 @@ ITEM.Name = "Vape Event Token"
 ITEM.Description = "Using this will drop every player on the server a Random Vape Item!"
 ITEM.Rarity = 8
 ITEM.Collection = "Meta Collection"
-ITEM.Image = "https://static.moat.gg/ttt/vape_event128.png"
+ITEM.Image = "/vape_event128.png"
 ITEM.Active = false
 
 ITEM.ItemUsed = function(pl, slot, item)
@@ -12642,7 +12642,7 @@ ITEM.Name = "Dola Event Token"
 ITEM.Description = "Using this will drop every player on the server the Dola Effect Item!"
 ITEM.Rarity = 8
 ITEM.Collection = "Meta Collection"
-ITEM.Image = "https://static.moat.gg/ttt/dola_drop_event.png"
+ITEM.Image = "/dola_drop_event.png"
 ITEM.Active = false
 
 ITEM.ItemUsed = function(pl, slot, item)
@@ -12759,7 +12759,7 @@ ITEM.Name = "A Random Vape"
 ITEM.ID = 969
 ITEM.Description = "Shouldn't be in inventory"
 ITEM.Rarity = 8
-ITEM.Image = "https://static.moat.gg/f/18af240dd3af16fb834cf9e1e5372a6d.png"
+ITEM.Image = "18af240dd3af16fb834cf9e1e5372a6d.png"
 ITEM.Collection = "Shouldn't be in inventory"
 ITEM.WeaponClass = "weapon_ttt_unarmed"
 
@@ -12803,7 +12803,7 @@ ITEM.Name = "Agree Taunt"
 ITEM.ID = 710
 ITEM.Description = "I concur doctor"
 ITEM.Rarity = 2
-ITEM.Image = "https://static.moat.gg/f/16945b3954d42dceea858fb9a7eaf1ca.png"
+ITEM.Image = "16945b3954d42dceea858fb9a7eaf1ca.png"
 ITEM.Collection = "Spring Collection"
 ITEM.WeaponClass = "weapon_ttt_taunt_agree"
 m_AddDroppableItem(ITEM, 'Special')
@@ -12813,7 +12813,7 @@ ITEM.Name = "Call For Taunt"
 ITEM.ID = 711
 ITEM.Description = "Come over here please"
 ITEM.Rarity = 3
-ITEM.Image = "https://static.moat.gg/f/16945b3954d42dceea858fb9a7eaf1ca.png"
+ITEM.Image = "16945b3954d42dceea858fb9a7eaf1ca.png"
 ITEM.Collection = "Spring Collection"
 ITEM.WeaponClass = "weapon_ttt_taunt_beacon"
 m_AddDroppableItem(ITEM, 'Special')
@@ -12823,7 +12823,7 @@ ITEM.Name = "Bow Taunt"
 ITEM.ID = 712
 ITEM.Description = "Thank you very much, I know I'm awesome"
 ITEM.Rarity = 3
-ITEM.Image = "https://static.moat.gg/f/16945b3954d42dceea858fb9a7eaf1ca.png"
+ITEM.Image = "16945b3954d42dceea858fb9a7eaf1ca.png"
 ITEM.Collection = "Spring Collection"
 ITEM.WeaponClass = "weapon_ttt_taunt_bow"
 m_AddDroppableItem(ITEM, 'Special')
@@ -12833,7 +12833,7 @@ ITEM.Name = "Cheer Taunt"
 ITEM.ID = 713
 ITEM.Description = "WOOOOO"
 ITEM.Rarity = 4
-ITEM.Image = "https://static.moat.gg/f/16945b3954d42dceea858fb9a7eaf1ca.png"
+ITEM.Image = "16945b3954d42dceea858fb9a7eaf1ca.png"
 ITEM.Collection = "Spring Collection"
 ITEM.WeaponClass = "weapon_ttt_taunt_cheer"
 m_AddDroppableItem(ITEM, 'Special')
@@ -12843,7 +12843,7 @@ ITEM.Name = "Dab Taunt"
 ITEM.ID = 714
 ITEM.Description = "Hit em with it"
 ITEM.Rarity = 7
-ITEM.Image = "https://static.moat.gg/f/16945b3954d42dceea858fb9a7eaf1ca.png"
+ITEM.Image = "16945b3954d42dceea858fb9a7eaf1ca.png"
 ITEM.Collection = "Spring Collection"
 ITEM.WeaponClass = "weapon_ttt_taunt_dab"
 m_AddDroppableItem(ITEM, 'Special')
@@ -12853,7 +12853,7 @@ ITEM.Name = "Disagree Taunt"
 ITEM.ID = 715
 ITEM.Description = "I don't think so"
 ITEM.Rarity = 2
-ITEM.Image = "https://static.moat.gg/f/16945b3954d42dceea858fb9a7eaf1ca.png"
+ITEM.Image = "16945b3954d42dceea858fb9a7eaf1ca.png"
 ITEM.Collection = "Spring Collection"
 ITEM.WeaponClass = "weapon_ttt_taunt_disagree"
 m_AddDroppableItem(ITEM, 'Special')
@@ -12863,7 +12863,7 @@ ITEM.Name = "Flail Taunt"
 ITEM.ID = 716
 ITEM.Description = "Asdfghjkl;'"
 ITEM.Rarity = 5
-ITEM.Image = "https://static.moat.gg/f/16945b3954d42dceea858fb9a7eaf1ca.png"
+ITEM.Image = "16945b3954d42dceea858fb9a7eaf1ca.png"
 ITEM.Collection = "Spring Collection"
 ITEM.WeaponClass = "weapon_ttt_taunt_flail"
 m_AddDroppableItem(ITEM, 'Special')
@@ -12873,7 +12873,7 @@ ITEM.Name = "Hands Up Taunt"
 ITEM.ID = 717
 ITEM.Description = "Please don't shoot me"
 ITEM.Rarity = 4
-ITEM.Image = "https://static.moat.gg/f/16945b3954d42dceea858fb9a7eaf1ca.png"
+ITEM.Image = "16945b3954d42dceea858fb9a7eaf1ca.png"
 ITEM.Collection = "Spring Collection"
 ITEM.WeaponClass = "weapon_ttt_taunt_hands"
 m_AddDroppableItem(ITEM, 'Special')
@@ -12883,7 +12883,7 @@ ITEM.Name = "Laugh Taunt"
 ITEM.ID = 718
 ITEM.Description = "haHA"
 ITEM.Rarity = 5
-ITEM.Image = "https://static.moat.gg/f/16945b3954d42dceea858fb9a7eaf1ca.png"
+ITEM.Image = "16945b3954d42dceea858fb9a7eaf1ca.png"
 ITEM.Collection = "Spring Collection"
 ITEM.WeaponClass = "weapon_ttt_taunt_laugh"
 m_AddDroppableItem(ITEM, 'Special')
@@ -12893,7 +12893,7 @@ ITEM.Name = "Play Dead Taunt"
 ITEM.ID = 719
 ITEM.Description = "Too bad you don't get a treat for this one diggity dog"
 ITEM.Rarity = 6
-ITEM.Image = "https://static.moat.gg/f/16945b3954d42dceea858fb9a7eaf1ca.png"
+ITEM.Image = "16945b3954d42dceea858fb9a7eaf1ca.png"
 ITEM.Collection = "Spring Collection"
 ITEM.WeaponClass = "weapon_ttt_taunt_lay"
 m_AddDroppableItem(ITEM, 'Special')
@@ -12903,7 +12903,7 @@ ITEM.Name = "Robot Taunt"
 ITEM.ID = 720
 ITEM.Description = "Beep boop beep bop beep"
 ITEM.Rarity = 6
-ITEM.Image = "https://static.moat.gg/f/16945b3954d42dceea858fb9a7eaf1ca.png"
+ITEM.Image = "16945b3954d42dceea858fb9a7eaf1ca.png"
 ITEM.Collection = "Spring Collection"
 ITEM.WeaponClass = "weapon_ttt_taunt_robot"
 m_AddDroppableItem(ITEM, 'Special')
@@ -12913,7 +12913,7 @@ ITEM.Name = "Salute Taunt"
 ITEM.ID = 721
 ITEM.Description = "Press F to pay respects"
 ITEM.Rarity = 3
-ITEM.Image = "https://static.moat.gg/f/16945b3954d42dceea858fb9a7eaf1ca.png"
+ITEM.Image = "16945b3954d42dceea858fb9a7eaf1ca.png"
 ITEM.Collection = "Spring Collection"
 ITEM.WeaponClass = "weapon_ttt_taunt_salute"
 m_AddDroppableItem(ITEM, 'Special')
@@ -12923,7 +12923,7 @@ ITEM.Name = "Sexy Taunt"
 ITEM.ID = 722
 ITEM.Description = "Work that big booty of yours you sexy thang"
 ITEM.Rarity = 7
-ITEM.Image = "https://static.moat.gg/f/16945b3954d42dceea858fb9a7eaf1ca.png"
+ITEM.Image = "16945b3954d42dceea858fb9a7eaf1ca.png"
 ITEM.Collection = "Spring Collection"
 ITEM.WeaponClass = "weapon_ttt_taunt_sexy"
 m_AddDroppableItem(ITEM, 'Special')
@@ -12933,7 +12933,7 @@ ITEM.Name = "Wave Taunt"
 ITEM.ID = 723
 ITEM.Description = "Hey Guys"
 ITEM.Rarity = 4
-ITEM.Image = "https://static.moat.gg/f/16945b3954d42dceea858fb9a7eaf1ca.png"
+ITEM.Image = "16945b3954d42dceea858fb9a7eaf1ca.png"
 ITEM.Collection = "Spring Collection"
 ITEM.WeaponClass = "weapon_ttt_taunt_wave"
 m_AddDroppableItem(ITEM, 'Special')
@@ -12943,7 +12943,7 @@ ITEM.Name = "Zombie Climb Taunt"
 ITEM.ID = 724
 ITEM.Description = "Best dance move eva"
 ITEM.Rarity = 7
-ITEM.Image = "https://static.moat.gg/f/16945b3954d42dceea858fb9a7eaf1ca.png"
+ITEM.Image = "16945b3954d42dceea858fb9a7eaf1ca.png"
 ITEM.Collection = "Spring Collection"
 ITEM.WeaponClass = "weapon_ttt_taunt_climb"
 m_AddDroppableItem(ITEM, 'Special')
@@ -12962,7 +12962,7 @@ ITEM.Name = "American Vape"
 ITEM.ID = 900
 ITEM.Description = "A special item given to people as a remembrance of 4/20"
 ITEM.Rarity = 8
-ITEM.Image = "https://static.moat.gg/f/18af240dd3af16fb834cf9e1e5372a6d.png"
+ITEM.Image = "18af240dd3af16fb834cf9e1e5372a6d.png"
 ITEM.Collection = "4/20 2017 Collection"
 ITEM.WeaponClass = "weapon_vape_american"
 m_AddDroppableItem(ITEM, 'Special')
@@ -12972,7 +12972,7 @@ ITEM.Name = "USA American Vape"
 ITEM.ID = 2580
 ITEM.Description = "A patriotic vape made in honor of President Trump"
 ITEM.Rarity = 8
-ITEM.Image = "https://static.moat.gg/f/18af240dd3af16fb834cf9e1e5372a6d.png"
+ITEM.Image = "18af240dd3af16fb834cf9e1e5372a6d.png"
 ITEM.Collection = "Independence Collection"
 ITEM.WeaponClass = "weapon_vape_american"
 m_AddDroppableItem(ITEM, 'Special')
@@ -12982,7 +12982,7 @@ ITEM.Name = "Butterfly Vape"
 ITEM.ID = 901
 ITEM.Description = "A special item given to people as a remembrance of 4/20"
 ITEM.Rarity = 8
-ITEM.Image = "https://static.moat.gg/f/18af240dd3af16fb834cf9e1e5372a6d.png"
+ITEM.Image = "18af240dd3af16fb834cf9e1e5372a6d.png"
 ITEM.Collection = "4/20 - 2017 Collection"
 ITEM.WeaponClass = "weapon_vape_butterfly"
 m_AddDroppableItem(ITEM, 'Special')
@@ -12992,7 +12992,7 @@ ITEM.Name = "Custom Vape"
 ITEM.ID = 902
 ITEM.Description = "A special item given to people as a remembrance of 4/20"
 ITEM.Rarity = 8
-ITEM.Image = "https://static.moat.gg/f/18af240dd3af16fb834cf9e1e5372a6d.png"
+ITEM.Image = "18af240dd3af16fb834cf9e1e5372a6d.png"
 ITEM.Collection = "4/20 - 2017 Collection"
 ITEM.WeaponClass = "weapon_vape_custom"
 m_AddDroppableItem(ITEM, 'Special')
@@ -13002,7 +13002,7 @@ ITEM.Name = "Dragon Vape"
 ITEM.ID = 903
 ITEM.Description = "A special item given to people as a remembrance of 4/20"
 ITEM.Rarity = 8
-ITEM.Image = "https://static.moat.gg/f/18af240dd3af16fb834cf9e1e5372a6d.png"
+ITEM.Image = "18af240dd3af16fb834cf9e1e5372a6d.png"
 ITEM.Collection = "4/20 - 2017 Collection"
 ITEM.WeaponClass = "weapon_vape_dragon"
 m_AddDroppableItem(ITEM, 'Special')
@@ -13012,7 +13012,7 @@ ITEM.Name = "Golden Vape"
 ITEM.ID = 904
 ITEM.Description = "A special item given to people as a remembrance of 4/20"
 ITEM.Rarity = 8
-ITEM.Image = "https://static.moat.gg/f/18af240dd3af16fb834cf9e1e5372a6d.png"
+ITEM.Image = "18af240dd3af16fb834cf9e1e5372a6d.png"
 ITEM.Collection = "4/20 - 2017 Collection"
 ITEM.WeaponClass = "weapon_vape_golden"
 m_AddDroppableItem(ITEM, 'Special')
@@ -13022,7 +13022,7 @@ ITEM.Name = "Hallucinogenic Vape"
 ITEM.ID = 905
 ITEM.Description = "A special item given to people as a remembrance of 4/20"
 ITEM.Rarity = 8
-ITEM.Image = "https://static.moat.gg/f/18af240dd3af16fb834cf9e1e5372a6d.png"
+ITEM.Image = "18af240dd3af16fb834cf9e1e5372a6d.png"
 ITEM.Collection = "4/20 - 2017 Collection"
 ITEM.WeaponClass = "weapon_vape_hallucinogenic"
 m_AddDroppableItem(ITEM, 'Special')
@@ -13032,7 +13032,7 @@ ITEM.Name = "Helium Vape"
 ITEM.ID = 906
 ITEM.Description = "A special item given to people as a remembrance of 4/20"
 ITEM.Rarity = 8
-ITEM.Image = "https://static.moat.gg/f/18af240dd3af16fb834cf9e1e5372a6d.png"
+ITEM.Image = "18af240dd3af16fb834cf9e1e5372a6d.png"
 ITEM.Collection = "4/20 - 2017 Collection"
 ITEM.WeaponClass = "weapon_vape_helium"
 m_AddDroppableItem(ITEM, 'Special')
@@ -13042,7 +13042,7 @@ ITEM.Name = "Juicy Vape"
 ITEM.ID = 907
 ITEM.Description = "A special item given to people as a remembrance of 4/20"
 ITEM.Rarity = 8
-ITEM.Image = "https://static.moat.gg/f/18af240dd3af16fb834cf9e1e5372a6d.png"
+ITEM.Image = "18af240dd3af16fb834cf9e1e5372a6d.png"
 ITEM.Collection = "4/20 - 2017 Collection"
 ITEM.WeaponClass = "weapon_vape_juicy"
 m_AddDroppableItem(ITEM, 'Special')
@@ -13052,7 +13052,7 @@ ITEM.Name = "Medicinal Vape"
 ITEM.ID = 908
 ITEM.Description = "A special item given to people as a remembrance of 4/20"
 ITEM.Rarity = 8
-ITEM.Image = "https://static.moat.gg/f/18af240dd3af16fb834cf9e1e5372a6d.png"
+ITEM.Image = "18af240dd3af16fb834cf9e1e5372a6d.png"
 ITEM.Collection = "4/20 - 2017 Collection"
 ITEM.WeaponClass = "weapon_vape_medicinal"
 m_AddDroppableItem(ITEM, 'Special')
@@ -13062,7 +13062,7 @@ ITEM.Name = "Mega Vape"
 ITEM.ID = 909
 ITEM.Description = "An exclusive collectors item. Causes BIG smoke every 30 minutes, just like a very expensive smoke grenade if you think about it"
 ITEM.Rarity = 8
-ITEM.Image = "https://static.moat.gg/f/18af240dd3af16fb834cf9e1e5372a6d.png"
+ITEM.Image = "18af240dd3af16fb834cf9e1e5372a6d.png"
 ITEM.Collection = "Limited Collection"
 ITEM.WeaponClass = "weapon_vape_mega"
 m_AddDroppableItem(ITEM, 'Special')
@@ -13072,7 +13072,7 @@ ITEM.Name = "White Vape"
 ITEM.ID = 910
 ITEM.Description = "A special item given to people as a remembrance of 4/20"
 ITEM.Rarity = 8
-ITEM.Image = "https://static.moat.gg/f/18af240dd3af16fb834cf9e1e5372a6d.png"
+ITEM.Image = "18af240dd3af16fb834cf9e1e5372a6d.png"
 ITEM.Collection = "4/20 - 2017 Collection"
 ITEM.WeaponClass = "weapon_vape"
 m_AddDroppableItem(ITEM, 'Special')
@@ -15214,7 +15214,7 @@ ITEM.Bone = "ValveBiped.Bip01_Spine4"
 
 ITEM.NameEffect = "electric"
 
-ITEM.Image = "https://static.moat.gg/f/d8488f994f9134a830a9624106145219.png"
+ITEM.Image = "d8488f994f9134a830a9624106145219.png"
 local particle = "TeslaHitBoxes"
 if CLIENT then
     net.Receive("TeslaEffect",function()
@@ -16638,7 +16638,7 @@ ITEM.Name = "Easter Icon"
 ITEM.Description = "But from this earth, this grave, this dust, my God shall raise me up, I trust"
 ITEM.Collection = "Easter Collection"
 ITEM.Model = "models/moat/mg_hat_easteregg.mdl"
-ITEM.Image = "https://static.moat.gg/f/6ad1a835688e7dd265fdda23e405f2c2.png"
+ITEM.Image = "6ad1a835688e7dd265fdda23e405f2c2.png"
 ITEM.Attachment = "eyes"
 
 function ITEM:ModifyClientsideModel(pl, m, p, a)
@@ -17838,7 +17838,7 @@ ITEM.Name = "Hatching Noob"
 ITEM.Description = "I like to hide in my shell some times"
 ITEM.Collection = "Easter Collection"
 ITEM.Model = "models/custom_prop/moatgaming/eastegg/eastegg.mdl"
-ITEM.Image = "https://static.moat.gg/f/24e1b504b09d4c6625e51cd2f7140b3b.png"
+ITEM.Image = "24e1b504b09d4c6625e51cd2f7140b3b.png"
 ITEM.Attachment = "eyes"
 
 function ITEM:ModifyClientsideModel(pl, m, p, a)
@@ -18032,7 +18032,7 @@ ITEM.Name = "Holy Cuteness"
 ITEM.Description = "OMFGGG MOM ITS SO CUTE!!!! CAN WE KEEP ITT PELASE PLEASE PELASEEEE .."
 ITEM.Collection = "Easter Collection"
 ITEM.Model = "models/moat/mg_hat_easterchick.mdl"
-ITEM.Image = "https://static.moat.gg/f/bd134f0c72698bc5e8df2bede9015f1f.png"
+ITEM.Image = "bd134f0c72698bc5e8df2bede9015f1f.png"
 ITEM.Attachment = "eyes"
 
 function ITEM:ModifyClientsideModel(pl, m, p, a)
@@ -18600,7 +18600,7 @@ ITEM.Name = "Playboy Parti Bunni"
 ITEM.Description = "Catch me wearing this around the mansion"
 ITEM.Collection = "Easter Collection"
 ITEM.Model = "models/moat/mg_hat_easterhat.mdl"
-ITEM.Image = "https://static.moat.gg/f/8cd435b47a8606ad6f0112eeb870085f.png"
+ITEM.Image = "8cd435b47a8606ad6f0112eeb870085f.png"
 ITEM.Attachment = "eyes"
 
 function ITEM:ModifyClientsideModel(pl, m, p, a)
@@ -18619,7 +18619,7 @@ ITEM.Name = "Pot Head"
 ITEM.Description = "Don't forget to water your flowers"
 ITEM.Collection = "Easter Collection"
 ITEM.Model = "models/moat/mg_hat_easterflowers.mdl"
-ITEM.Image = "https://static.moat.gg/f/7e81543cab4cc40c0414fe1ff9d17d75.png"
+ITEM.Image = "7e81543cab4cc40c0414fe1ff9d17d75.png"
 ITEM.Attachment = "eyes"
 
 function ITEM:ModifyClientsideModel(pl, m, p, a)
@@ -18638,7 +18638,7 @@ ITEM.Name = "Pot Head"
 ITEM.Description = "Don't forget to water your flowers"
 ITEM.Collection = "Easter 2020 Collection"
 ITEM.Model = "models/moat/mg_hat_easterflowers.mdl"
-ITEM.Image = "https://static.moat.gg/f/7e81543cab4cc40c0414fe1ff9d17d75.png"
+ITEM.Image = "7e81543cab4cc40c0414fe1ff9d17d75.png"
 ITEM.Attachment = "eyes"
 
 function ITEM:ModifyClientsideModel(pl, m, p, a)
@@ -32409,7 +32409,7 @@ ITEM.ID = 68
 ITEM.Name = "Credit Goblin"
 ITEM.NameColor = Color(0, 255, 128)
 ITEM.Description = "%s_ chance to receive 1 credit after a kill when using this power-up"
-ITEM.Image = "https://static.moat.gg/ttt/credit_goblin64.png" 
+ITEM.Image = "/credit_goblin64.png" 
 ITEM.Rarity = 4
 ITEM.Collection = "Aqua Palm Collection"
 ITEM.Stats = {
@@ -32427,7 +32427,7 @@ ITEM.ID = 79
 ITEM.Name = "Silent"
 ITEM.NameColor = Color(83, 183, 255)
 ITEM.Description = "Your footsteps are muffled and killing someone has a %s_ chance to muffle their screams"
-ITEM.Image = "https://static.moat.gg/ttt/silent64.png"
+ITEM.Image = "/silent64.png"
 ITEM.Rarity = 4
 ITEM.Collection = "Aqua Palm Collection"
 ITEM.Stats = {
@@ -32449,7 +32449,7 @@ ITEM.Rarity = 8
 ITEM.Active = true
 ITEM.Price = 10000
 ITEM.Collection = "Gamma Collection"
-ITEM.Image = "https://tera.gg/ttt/misc/highend_talent64.png"
+ITEM.Image = "https://moat.gg/ttt/misc/highend_talent64.png"
 ITEM.ItemUsed = function(pl, slot, item)
     m_ForceTierUp(pl, slot, itemtbl)
 end
@@ -32463,7 +32463,7 @@ ITEM.Rarity = 8
 ITEM.Active = true
 ITEM.Price = 10000
 ITEM.Collection = "Gamma Collection"
-ITEM.Image = "https://tera.gg/ttt/misc/highend_talent64.png"
+ITEM.Image = "https://moat.gg/ttt/misc/highend_talent64.png"
 ITEM.ItemUsed = function(pl, slot, item)
 	m_ForceTierDown(pl, slot, itemtbl)
 end
@@ -32477,7 +32477,7 @@ ITEM.Rarity = 8
 ITEM.Active = true
 ITEM.Price = 10000
 ITEM.Collection = "Gamma Collection"
-ITEM.Image = "https://tera.gg/ttt/misc/highend_talent64.png"
+ITEM.Image = "https://moat.gg/ttt/misc/highend_talent64.png"
 ITEM.ItemUsed = function(pl, slot, item)
 	m_ForceTierReset(pl, slot, itemtbl)
 end
@@ -32491,7 +32491,7 @@ ITEM.Rarity = 8
 ITEM.Active = true
 ITEM.Price = 10000
 ITEM.Collection = "Gamma Collection"
-ITEM.Image = "https://tera.gg/ttt/misc/highend_talent64.png"
+ITEM.Image = "https://moat.gg/ttt/misc/highend_talent64.png"
 ITEM.ItemUsed = function(pl, slot, item)
     m_ForceMaxTier(pl, slot, itemtbl)
 end
@@ -32505,7 +32505,7 @@ ITEM.Rarity = 8
 ITEM.Active = true
 ITEM.Price = 10000
 ITEM.Collection = "Gamma Collection"
-ITEM.Image = "https://tera.gg/ttt/misc/highend_talent64.png"
+ITEM.Image = "https://moat.gg/ttt/misc/highend_talent64.png"
 ITEM.ItemCheck = 17
 ITEM.ItemUsed = function(pl, slot, item)
     m_ForceLevelUp(pl, slot, item)
@@ -32567,7 +32567,7 @@ ITEM.NameColor = Color( 139, 0, 166 )
 
 ITEM.Description = "When killed, you will deal %s damage to your attacker"
 
-ITEM.Image = "https://tera.gg/ttt/misc/smithfallicon.png" 
+ITEM.Image = "https://moat.gg/ttt/misc/smithfallicon.png" 
 
 ITEM.Rarity = 7
 

@@ -3,55 +3,55 @@ sfx = sfx or {}
 
 function sfx.Dustbin()
 	if (convar:GetInt() > 0) then
-		cdn.PlayURL "https://static.moat.gg/ttt/2533282972.mp3"
+		cdn.PlayURL "/2533282972.mp3"
 	end
 end
 
 function sfx.Cut()
 	if (convar:GetInt() > 0) then
-		cdn.PlayURL("https://static.moat.gg/ttt/cut.ogg")
+		cdn.PlayURL("/cut.ogg")
 	end
 end
 
 function sfx.Tick()
 	if (convar:GetInt() > 0) then
-		cdn.PlayURL("https://static.moat.gg/ttt/cut.ogg", .1)
+		cdn.PlayURL("/cut.ogg", .1)
 	end
 end
 
 function sfx.Bells()
 	if (convar:GetInt() > 0) then
-		cdn.PlayURL "https://static.moat.gg/ttt/message.ogg"
+		cdn.PlayURL "/message.ogg"
 	end
 end
 
 function sfx.Subtract()
 	if (convar:GetInt() > 0) then
-		cdn.PlayURL "https://static.moat.gg/ttt/click4.ogg"
+		cdn.PlayURL "/click4.ogg"
 	end
 end
 
 function sfx.Add()
 	if (convar:GetInt() > 0) then
-		cdn.PlayURL "https://static.moat.gg/ttt/click5.ogg"
+		cdn.PlayURL "/click5.ogg"
 	end
 end
 
 function sfx.Max()
 	if (convar:GetInt() > 0) then
-		cdn.PlayURL "https://static.moat.gg/ttt/click6.ogg"
+		cdn.PlayURL "/click6.ogg"
 	end
 end
 
 function sfx.Agree()
 	if (convar:GetInt() > 0) then
-		cdn.PlayURL "https://static.moat.gg/ttt/accept.mp3"
+		cdn.PlayURL "/accept.mp3"
 	end
 end
 
 function sfx.Decline()
 	if (convar:GetInt() > 0) then
-		cdn.PlayURL "https://static.moat.gg/ttt/decline.wav"
+		cdn.PlayURL "/decline.wav"
 	end
 end
 
@@ -69,7 +69,7 @@ end
 
 function sfx.Click2()
 	if (convar:GetInt() > 0) then
-		cdn.PlayURL "https://static.moat.gg/ttt/appear-online.ogg"
+		cdn.PlayURL "/appear-online.ogg"
 	end
 end
 
@@ -104,7 +104,7 @@ function sfx.ClickSound(s, func)
 				if (func) then
 					func()
 				else
-					cdn.PlayURL "https://static.moat.gg/ttt/appear-online.ogg"
+					cdn.PlayURL "/appear-online.ogg"
 				end
 			end
 		end

@@ -332,19 +332,19 @@ function meta:m_DropInventoryItem(cmd_item, cmd_class, drop_cosmetics, delay_le_
 
 		if (dropped_item and dropped_item.u and item_to_drop and item_to_drop.Rarity and not dont_show_chat) then
 			if (item_to_drop.Rarity == 6) then
-				cdn.PlayURL("https://static.moat.gg/ttt/Stinger_loot_04.wav", .5)
+				cdn.PlayURL("/Stinger_loot_04.wav", .5)
 				util.GlobalScreenShake(5, 5, 10, 5000)
 			elseif (item_to_drop.Rarity == 7) then
-				cdn.PlayURL("https://static.moat.gg/ttt/Stinger_loot_07.wav", .5)
+				cdn.PlayURL("/Stinger_loot_07.wav", .5)
 				util.GlobalScreenShake(5, 5, 10, 5000)
             elseif (item_to_drop.Rarity == 8) then
-				self:PlayURL("https://static.moat.gg/ttt/Stinger_loot_03.wav", .5)
+				self:PlayURL("/Stinger_loot_03.wav", .5)
 				self:ScreenShake(5, 5, 10, 5000)
             elseif (item_to_drop.Rarity == 9) then
-                cdn.PlayURL("https://static.moat.gg/ttt/Arcana_drop.mp3", .5)
+                cdn.PlayURL("/Arcana_drop.mp3", .5)
 				util.GlobalScreenShake(25, 25, 15, 5000)
             elseif (tonumber(dropped_item.u) == 912 or titan_tier_ids[tostring(dropped_item.u)]) then
-                cdn.PlayURL("https://static.moat.gg/ttt/0deac606259916ecf13fb7aba1b0deeb.mp3", .5)
+                cdn.PlayURL("/0deac606259916ecf13fb7aba1b0deeb.mp3", .5)
 			end
         end
 

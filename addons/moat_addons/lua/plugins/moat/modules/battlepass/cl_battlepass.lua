@@ -304,7 +304,7 @@ function make_about()
         surface.DrawOutlinedRect(0, 0, w, 45)
     end
 
-    --cdn.DrawImage("https://static.moat.gg/f/cWeit2ZL5WhFze49xX7jV76mFvOG.png", (w/2) - (235/2), 55, 254, 235, Color(255, 255, 255, 225))
+    --cdn.DrawImage("cWeit2ZL5WhFze49xX7jV76mFvOG.png", (w/2) - (235/2), 55, 254, 235, Color(255, 255, 255, 225))
     local lbl = vgui.Create("DLabel", BP_ABOUT)
     lbl:SetPos(10, 145)
     lbl:SetText("Welcome to the Summer Climb! Here, for a limited time you will be able to earn XP and level up your Summer Climb to earn free rewards! Please keep in mind that any of the guns that you preview in the Summer Climb are just that, a preview, and the gun that you earn will be random and unique! <3\n\nSome quick info:\n- Earned XP towards the Summer Climb is not affected by Quadra XP (This might change)\n- Experience lovers (weapon XP) do not count towards the Summer Climb\n- XP from Dailies do count towards the Summer Climb\n- Dailies give half of their XP as rewards towards the Summer Climb\n\nPlease remember to be nice to other players and to not meta game for the Summer Climb rewards!\n- Moat TTT Staff Team <3\n\nEnjoy the event! (To get started, press 'Summer Climb' in the tab above)")
